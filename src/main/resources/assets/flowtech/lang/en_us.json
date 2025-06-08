@@ -1,9 +1,9 @@
 {
   "creativetab.flowtech.flowtech": "FlowTech",
 
-  "block.flowtech.fast_flow_pad": "Fast Flow Pad",
-  "block.flowtech.faster_flow_pad": "Faster Flow Pad",
-  "block.flowtech.fastest_flow_pad": "Fastest Flow Pad",
+  "block.flowtech.flow_pad_fast": "Fast Flow Pad",
+  "block.flowtech.flow_pad_faster": "Faster Flow Pad",
+  "block.flowtech.flow_pad_fastest": "Fastest Flow Pad",
   "block.flowtech.attack_pad": "Attack Pad",
   "block.flowtech.flowtech_collector": "FlowTech Collector",
   "block.flowtech.flowtech_controller": "FlowTech Controller",
@@ -12,6 +12,7 @@
   "block.flowtech.umbrite_nether_ore": "Umbrite Nether Ore",
   "block.flowtech.umbrite_end_ore": "Umbrite End Ore",
   "block.flowtech.umbrite_block": "Umbrite Block",
+  "block.flowtech.raw_umbrite_block": "Raw Umbrite Block",
 
   "item.flowtech.bane_of_arthropods_module": "Bane of Arthropods Module",
   "item.flowtech.fire_aspect_module": "Fire Aspect Module",
@@ -24,6 +25,6 @@
   "item.flowtech.pad_wrench": "Pad Wrench",
   "item.flowtech.raw_umbrite": "Raw Umbrite Ore",
   "item.flowtech.umbrite_ingot": "Umbrite Ingot",
-  "item.flowtech.umbrite_nugget": "Umbrite NUgget"
+  "item.flowtech.umbrite_nugget": "Umbrite Nugget"
 
 }

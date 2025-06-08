@@ -1,4 +1,4 @@
-// 1.21.1	2025-06-08T15:41:56.6386748	Item Models: flowtech
+// 1.21.1	2025-06-08T16:28:46.9242949	Item Models: flowtech
 9a7e91cf91bd3ceab02b3c8e47e33abea6fcf34d assets/flowtech/models/item/bane_of_arthropods_module.json
 a62085c41aac376b4a6c3f973a0fc2777977d50b assets/flowtech/models/item/fire_aspect_module.json
 c63ac35d4fd47b419d676532da9464d0dafbdc6b assets/flowtech/models/item/item_filter_module.json
@@ -10,3 +10,4 @@ bbb415439d79c505b6a5a6cd3b49f658be2ddb6a assets/flowtech/models/item/pad_wrench.
 445c0c0e9bf2bc61f90c473e6b3376af36eafcef assets/flowtech/models/item/smite_module.json
 46188a59909493e02a2fb0c6e5a85f64cf01b10e assets/flowtech/models/item/stack_size_increase_module.json
 2a4801b887bd2b268396ad2bd8b8489836a713f6 assets/flowtech/models/item/umbrite_ingot.json
+2a39690fbdbd42e88488cbe1a6bd51163c574ca4 assets/flowtech/models/item/umbrite_nugget.json

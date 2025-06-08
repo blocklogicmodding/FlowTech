@@ -1,9 +1,9 @@
 {
   "values": [
     "flowtech:attack_pad",
-    "flowtech:fast_flow_pad",
-    "flowtech:faster_flow_pad",
-    "flowtech:fastest_flow_pad",
+    "flowtech:flow_pad_fast",
+    "flowtech:flow_pad_faster",
+    "flowtech:flow_pad_fastest",
     "flowtech:flowtech_controller",
     "flowtech:flowtech_collector",
     "flowtech:umbrite_block",

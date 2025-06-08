@@ -1,6 +1,7 @@
 package com.blocklogic.flowtech.block;
 
 import com.blocklogic.flowtech.FlowTech;
+import com.blocklogic.flowtech.block.custom.*;
 import com.blocklogic.flowtech.item.ModItems;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -16,24 +17,24 @@ import java.util.function.Supplier;
 public class ModBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(FlowTech.MODID);
 
-    public static final DeferredBlock<Block> FAST_FLOW_PAD = registerBlock("fast_flow_pad",
-            () -> new Block(BlockBehaviour.Properties.of()
+    public static final DeferredBlock<Block> FAST_FLOW_PAD = registerBlock("flow_pad_fast",
+            () -> new FastFlowPadBlock(BlockBehaviour.Properties.of()
                     .strength(2.0F)
                     .requiresCorrectToolForDrops()
                     .sound(SoundType.STONE)
                     .noOcclusion()
             ));
 
-    public static final DeferredBlock<Block> FASTER_FLOW_PAD = registerBlock("faster_flow_pad",
-            () -> new Block(BlockBehaviour.Properties.of()
+    public static final DeferredBlock<Block> FASTER_FLOW_PAD = registerBlock("flow_pad_faster",
+            () -> new FasterFlowPadBlock(BlockBehaviour.Properties.of()
                     .strength(2.0F)
                     .requiresCorrectToolForDrops()
                     .sound(SoundType.STONE)
                     .noOcclusion()
             ));
 
-    public static final DeferredBlock<Block> FASTEST_FLOW_PAD = registerBlock("fastest_flow_pad",
-            () -> new Block(BlockBehaviour.Properties.of()
+    public static final DeferredBlock<Block> FASTEST_FLOW_PAD = registerBlock("flow_pad_fastest",
+            () -> new FastestFlowPadBlock(BlockBehaviour.Properties.of()
                     .strength(2.0F)
                     .requiresCorrectToolForDrops()
                     .sound(SoundType.STONE)
@@ -41,7 +42,7 @@ public class ModBlocks {
             ));
 
     public static final DeferredBlock<Block> ATTACK_PAD = registerBlock("attack_pad",
-            () -> new Block(BlockBehaviour.Properties.of()
+            () -> new AttackPadBlock(BlockBehaviour.Properties.of()
                     .strength(2.0F)
                     .requiresCorrectToolForDrops()
                     .sound(SoundType.STONE)
@@ -49,14 +50,14 @@ public class ModBlocks {
             ));
 
     public static final DeferredBlock<Block> FLOWTECH_COLLECTOR = registerBlock("flowtech_collector",
-            () -> new Block(BlockBehaviour.Properties.of()
+            () -> new FlowtechCollectorBlock(BlockBehaviour.Properties.of()
                     .strength(3.0F)
                     .requiresCorrectToolForDrops()
                     .sound(SoundType.STONE)
             ));
 
     public static final DeferredBlock<Block> FLOWTECH_CONTROLLER = registerBlock("flowtech_controller",
-            () -> new Block(BlockBehaviour.Properties.of()
+            () -> new FlowtechControllerBlock(BlockBehaviour.Properties.of()
                     .strength(3.0F)
                     .requiresCorrectToolForDrops()
                     .sound(SoundType.STONE)

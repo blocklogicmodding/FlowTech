@@ -24,5 +24,6 @@ public class ModItemModelProvider extends ItemModelProvider {
         basicItem(ModItems.PAD_WRENCH.get());
         basicItem(ModItems.RAW_UMBRITE.get());
         basicItem(ModItems.UMBRITE_INGOT.get());
+        basicItem(ModItems.UMBRITE_NUGGET.get());
     }
 }

@@ -3,16 +3,16 @@
   "category": "misc",
   "key": {
     "D": {
-      "item": "minecraft:diamond"
+      "item": "minecraft:diamond_block"
     },
     "F": {
-      "item": "flowtech:fast_flow_pad"
+      "item": "flowtech:flow_pad_faster"
     },
     "S": {
       "tag": "c:stones"
     },
     "U": {
-      "item": "flowtech:umbrite_ingot"
+      "item": "flowtech:umbrite_block"
     }
   },
   "pattern": [
@@ -22,6 +22,6 @@
   ],
   "result": {
     "count": 8,
-    "id": "flowtech:faster_flow_pad"
+    "id": "flowtech:flow_pad_fastest"
   }
 }

@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_quartz": {
+    "has_fast_flow_pad": {
       "conditions": {
         "items": [
           {
-            "items": "minecraft:quartz"
+            "items": "flowtech:flow_pad_fast"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "flowtech:fast_flow_pad"
+        "recipe": "flowtech:flow_pad_faster"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -21,12 +21,12 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_quartz"
+      "has_fast_flow_pad"
     ]
   ],
   "rewards": {
     "recipes": [
-      "flowtech:fast_flow_pad"
+      "flowtech:flow_pad_faster"
     ]
   }
 }

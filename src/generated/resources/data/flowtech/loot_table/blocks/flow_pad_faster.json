@@ -11,11 +11,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "flowtech:fast_flow_pad"
+          "name": "flowtech:flow_pad_faster"
         }
       ],
       "rolls": 1.0
     }
   ],
-  "random_sequence": "flowtech:blocks/fast_flow_pad"
+  "random_sequence": "flowtech:blocks/flow_pad_faster"
 }

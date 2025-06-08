@@ -2,11 +2,11 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "I": {
-      "item": "minecraft:iron_ingot"
+    "D": {
+      "item": "minecraft:diamond"
     },
-    "Q": {
-      "item": "minecraft:quartz_block"
+    "F": {
+      "item": "flowtech:flow_pad_fast"
     },
     "S": {
       "tag": "c:stones"
@@ -16,12 +16,12 @@
     }
   },
   "pattern": [
-    "IUI",
-    "UQU",
+    "DUD",
+    "UFU",
     "SSS"
   ],
   "result": {
     "count": 8,
-    "id": "flowtech:fast_flow_pad"
+    "id": "flowtech:flow_pad_faster"
   }
 }

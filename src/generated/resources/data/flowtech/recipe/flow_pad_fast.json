@@ -2,26 +2,26 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "D": {
-      "item": "minecraft:diamond_block"
+    "I": {
+      "item": "minecraft:iron_ingot"
     },
-    "F": {
-      "item": "flowtech:faster_flow_pad"
+    "Q": {
+      "item": "minecraft:quartz_block"
     },
     "S": {
       "tag": "c:stones"
     },
     "U": {
-      "item": "flowtech:umbrite_block"
+      "item": "flowtech:umbrite_ingot"
     }
   },
   "pattern": [
-    "DUD",
-    "UFU",
+    "IUI",
+    "UQU",
     "SSS"
   ],
   "result": {
     "count": 8,
-    "id": "flowtech:fastest_flow_pad"
+    "id": "flowtech:flow_pad_fast"
   }
 }
