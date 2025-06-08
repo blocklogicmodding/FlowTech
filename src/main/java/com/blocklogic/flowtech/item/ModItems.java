@@ -1,6 +1,7 @@
 package com.blocklogic.flowtech.item;
 
 import com.blocklogic.flowtech.FlowTech;
+import com.blocklogic.flowtech.item.custom.HammerItem;
 import net.minecraft.world.item.*;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredItem;
@@ -64,6 +65,10 @@ public class ModItems {
     public static final DeferredItem<HoeItem> UMBRITE_HOE = ITEMS.register("umbrite_hoe",
             () -> new HoeItem(ModToolTiers.UMBRITE, new Item.Properties()
                     .attributes(HoeItem.createAttributes(ModToolTiers.UMBRITE, 0F, -3.0F))));
+
+    public static final DeferredItem<HammerItem> UMBRITE_HAMMER = ITEMS.register("umbrite_hammer",
+            () -> new HammerItem(ModToolTiers.UMBRITE, new Item.Properties()
+                    .attributes(PickaxeItem.createAttributes(ModToolTiers.UMBRITE, 5F, -3.5F))));
 
     public static void register (IEventBus eventBus) {
         ITEMS.register(eventBus);

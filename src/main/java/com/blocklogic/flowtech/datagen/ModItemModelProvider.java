@@ -34,6 +34,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         handheldItem(ModItems.UMBRITE_AXE);
         handheldItem(ModItems.UMBRITE_SHOVEL);
         handheldItem(ModItems.UMBRITE_HOE);
+        handheldItem(ModItems.UMBRITE_HAMMER);
     }
 
     private ItemModelBuilder handheldItem (DeferredItem<?> item) {
