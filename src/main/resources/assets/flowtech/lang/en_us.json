@@ -32,6 +32,12 @@
   "item.flowtech.umbrite_axe": "Umbrite Axe",
   "item.flowtech.umbrite_shovel": "Umbrite Shovel",
   "item.flowtech.umbrite_hoe": "Umbrite Hoe",
-  "item.flowtech.umbrite_hammer": "Umbrite Hammer"
+  "item.flowtech.umbrite_hammer": "Umbrite Hammer",
+
+  "menu.flowtech.collector": "FlowTech Collector",
+  "menu.flowtech.controller": "FlowTech Controller",
+
+  "gui.flowtech.collector": "Collector",
+  "gui.flowtech.controller": "Controller"
 
 }
