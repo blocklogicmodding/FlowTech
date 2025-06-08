@@ -26,7 +26,6 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         List<ItemLike> UMBRITE_SMELTABLES = List.of(ModItems.RAW_UMBRITE, ModBlocks.UMBRITE_STONE_ORE_BLOCK, ModBlocks.UMBRITE_DEEPSLATE_ORE_BLOCK, ModBlocks.UMBRITE_NETHER_ORE_BLOCK, ModBlocks.UMBRITE_END_ORE_BLOCK);
         List<ItemLike> UMBRITE_RAW_BLOCK_SMELTABLES = List.of(ModBlocks.RAW_UMBRITE_BLOCK);
 
-        // Raw Umbrite
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.RAW_UMBRITE_BLOCK.get())
                 .pattern("UUU")
                 .pattern("UUU")
@@ -40,7 +39,6 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .unlockedBy("has_raw_umbrite_block", has(ModBlocks.RAW_UMBRITE_BLOCK))
                 .save(recipeOutput);
 
-        // Umbrite
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.UMBRITE_BLOCK.get())
                 .pattern("UUU")
                 .pattern("UUU")
@@ -74,7 +72,6 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         oreSmelting(recipeOutput, UMBRITE_RAW_BLOCK_SMELTABLES, RecipeCategory.MISC, ModBlocks.UMBRITE_BLOCK.get(), 0.5F, 300, "umbrite");
         oreBlasting(recipeOutput, UMBRITE_SMELTABLES, RecipeCategory.MISC, ModBlocks.UMBRITE_BLOCK.get(), 0.5F, 150, "umbrite");
 
-        // Machines
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.FLOWTECH_CONTROLLER.get())
                 .pattern("UCU")
                 .pattern("IBI")
@@ -98,7 +95,6 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .unlockedBy("has_ender_eye", has(Items.ENDER_EYE))
                 .save(recipeOutput);
 
-        // Pads
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.ATTACK_PAD.get(), 4)
                 .pattern("USU")
                 .pattern("AQA")
@@ -143,7 +139,6 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .unlockedBy("has_faster_flow_pad", has(ModBlocks.FASTER_FLOW_PAD))
                 .save(recipeOutput);
 
-        // Pad Wrench
         ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.PAD_WRENCH.get())
                 .pattern("  U")
                 .pattern(" S ")
@@ -153,7 +148,6 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .unlockedBy("has_umbrite_ingot", has(ModItems.UMBRITE_INGOT))
                 .save(recipeOutput);
 
-        // FlowTech Controller Modules
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.SHARPNESS_MODULE.get())
                 .pattern("UIU")
                 .pattern("ISI")
@@ -205,7 +199,6 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .unlockedBy("has_gold_ingot", has(Items.GOLD_INGOT))
                 .save(recipeOutput);
 
-        // Collector Modules
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.ITEM_FILTER_MODULE.get())
                 .pattern("PPP")
                 .pattern("IHI")
@@ -237,7 +230,6 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .unlockedBy("has_ender_eye", has(Items.ENDER_EYE))
                 .save(recipeOutput);
 
-        // Umbrite Tools
         ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.UMBRITE_SWORD.get())
                 .pattern("U")
                 .pattern("U")
@@ -283,8 +275,6 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .unlockedBy("has_umbrite_ingot", has(ModItems.UMBRITE_INGOT))
                 .save(recipeOutput);
 
-
-        // Umbrite Hammer (3x3 mining tool)
         ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.UMBRITE_HAMMER.get())
                 .pattern("UBU")
                 .pattern("UBU")
@@ -294,44 +284,6 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .define('S', Items.STICK)
                 .unlockedBy("has_umbrite_block", has(ModBlocks.UMBRITE_BLOCK))
                 .save(recipeOutput);
-
-        /*
-        // Umbrite Armor
-        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.UMBRITE_HELMET.get())
-                .pattern("UUU")
-                .pattern("UIU")
-                .define('U', ModItems.UMBRITE_INGOT.get())
-                .define('I', Items.IRON_HELMET)
-                .unlockedBy("has_umbrite_ingot", has(ModItems.UMBRITE_INGOT))
-                .save(recipeOutput);
-
-        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.UMBRITE_CHESTPLATE.get())
-                .pattern("UIU")
-                .pattern("UUU")
-                .pattern("UUU")
-                .define('U', ModItems.UMBRITE_INGOT.get())
-                .define('I', Items.IRON_CHESTPLATE)
-                .unlockedBy("has_umbrite_ingot", has(ModItems.UMBRITE_INGOT))
-                .save(recipeOutput);
-
-        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.UMBRITE_LEGGINGS.get())
-                .pattern("UUU")
-                .pattern("UIU")
-                .pattern("U U")
-                .define('U', ModItems.UMBRITE_INGOT.get())
-                .define('I', Items.IRON_LEGGINGS)
-                .unlockedBy("has_umbrite_ingot", has(ModItems.UMBRITE_INGOT))
-                .save(recipeOutput);
-
-        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.UMBRITE_BOOTS.get())
-                .pattern("U U")
-                .pattern("UIU")
-                .define('U', ModItems.UMBRITE_INGOT.get())
-                .define('I', Items.IRON_BOOTS)
-                .unlockedBy("has_umbrite_ingot", has(ModItems.UMBRITE_INGOT))
-                .save(recipeOutput);
-
-         */
     }
 
     protected static void oreSmelting(RecipeOutput recipeOutput, List<ItemLike> ingredients, RecipeCategory category, ItemLike result,
