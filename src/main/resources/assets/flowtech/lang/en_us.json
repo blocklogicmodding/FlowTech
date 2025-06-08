@@ -38,6 +38,35 @@
   "menu.flowtech.controller": "FlowTech Controller",
 
   "gui.flowtech.collector": "Collector",
-  "gui.flowtech.controller": "Controller"
+  "gui.flowtech.controller": "Controller",
+  "gui.flowtech.collector.xp_input": "XP Amount",
 
+  "tooltip.flowtech.collector.xp_input": "Enter the amount of XP to withdraw or deposit",
+
+  "tooltip.flowtech.collector.side_config.top": "Toggle extraction from the top side",
+  "tooltip.flowtech.collector.side_config.east": "Toggle extraction from the east side",
+  "tooltip.flowtech.collector.side_config.front": "Toggle extraction from the front side",
+  "tooltip.flowtech.collector.side_config.west": "Toggle extraction from the west side",
+  "tooltip.flowtech.collector.side_config.bottom": "Toggle extraction from the bottom side",
+  "tooltip.flowtech.collector.side_config.back": "Toggle extraction from the back side",
+
+  "tooltip.flowtech.collector.offset.down_up.decrease": "Decrease Down/Up pickup zone offset",
+  "tooltip.flowtech.collector.offset.down_up.increase": "Increase Down/Up pickup zone offset",
+  "tooltip.flowtech.collector.offset.down_up.value": "Down/Up Offset: %s",
+
+  "tooltip.flowtech.collector.offset.north_south.decrease": "Decrease North/South pickup zone offset",
+  "tooltip.flowtech.collector.offset.north_south.increase": "Increase North/South pickup zone offset",
+  "tooltip.flowtech.collector.offset.north_south.value": "North/South Offset: %s",
+
+  "tooltip.flowtech.collector.offset.east_west.decrease": "Decrease East/West pickup zone offset",
+  "tooltip.flowtech.collector.offset.east_west.increase": "Increase East/West pickup zone offset",
+  "tooltip.flowtech.collector.offset.east_west.value": "East/West Offset: %s",
+
+  "tooltip.flowtech.collector.wireframe_toggle": "Toggle pickup zone wireframe visibility",
+
+  "tooltip.flowtech.collector.xp.withdraw": "Withdraw XP from the collector",
+  "tooltip.flowtech.collector.xp.deposit": "Deposit XP into the collector",
+
+  "tooltip.flowtech.collector.xp_collection.enabled": "XP Collection: Enabled",
+  "tooltip.flowtech.collector.xp_collection.disabled": "XP Collection: Disabled"
 }
