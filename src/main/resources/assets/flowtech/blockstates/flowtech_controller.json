@@ -1,33 +1,18 @@
 {
   "variants": {
-    "facing=north,xp_collection=false": {
-      "model": "flowtech:block/flowtech_collector"
+    "facing=north": {
+      "model": "flowtech:block/flowtech_controller"
     },
-    "facing=north,xp_collection=true": {
-      "model": "flowtech:block/flowtech_collector_xp"
-    },
-    "facing=south,xp_collection=false": {
-      "model": "flowtech:block/flowtech_collector",
+    "facing=south": {
+      "model": "flowtech:block/flowtech_controller",
       "y": 180
     },
-    "facing=south,xp_collection=true": {
-      "model": "flowtech:block/flowtech_collector_xp",
-      "y": 180
-    },
-    "facing=east,xp_collection=false": {
-      "model": "flowtech:block/flowtech_collector",
+    "facing=east": {
+      "model": "flowtech:block/flowtech_controller",
       "y": 90
     },
-    "facing=east,xp_collection=true": {
-      "model": "flowtech:block/flowtech_collector_xp",
-      "y": 90
-    },
-    "facing=west,xp_collection=false": {
-      "model": "flowtech:block/flowtech_collector",
-      "y": 270
-    },
-    "facing=west,xp_collection=true": {
-      "model": "flowtech:block/flowtech_collector_xp",
+    "facing=west": {
+      "model": "flowtech:block/flowtech_controller",
       "y": 270
     }
   }

@@ -4,7 +4,11 @@ import com.blocklogic.flowtech.block.entity.FlowtechCollectorBlockEntity;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
@@ -12,8 +16,10 @@ import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
@@ -29,7 +35,10 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.world.level.storage.loot.LootParams;
+
+import javax.annotation.Nullable;
+import java.util.List;
 
 public class FlowtechCollectorBlock extends BaseEntityBlock {
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
@@ -79,11 +88,43 @@ public class FlowtechCollectorBlock extends BaseEntityBlock {
     protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
         if (state.getBlock() != newState.getBlock()) {
             if (level.getBlockEntity(pos) instanceof FlowtechCollectorBlockEntity collector) {
+                // Drop the output inventory contents
                 collector.drops();
                 level.updateNeighbourForOutputSignal(pos, this);
             }
         }
         super.onRemove(state, level, pos, newState, movedByPiston);
+    }
+
+    @Override
+    public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state) {
+        ItemStack stack = super.getCloneItemStack(level, pos, state);
+
+        if (level.getBlockEntity(pos) instanceof FlowtechCollectorBlockEntity collector) {
+            saveCollectorDataToItem(stack, collector, level);
+        }
+
+        return stack;
+    }
+
+    // THIS IS THE KEY METHOD - Gets called when block is broken by player
+    @Override
+    public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
+        if (!level.isClientSide && level.getBlockEntity(pos) instanceof FlowtechCollectorBlockEntity collector) {
+            // Create the item stack
+            ItemStack stack = new ItemStack(this);
+
+            // Save data to the item
+            saveCollectorDataToItem(stack, collector, level);
+
+            // Drop the item with saved data
+            popResource(level, pos, stack);
+
+            // Prevent normal drops by clearing the block entity data
+            collector.clearContents();
+        }
+
+        return super.playerWillDestroy(level, pos, state, player);
     }
 
     @Override
@@ -121,6 +162,34 @@ public class FlowtechCollectorBlock extends BaseEntityBlock {
 
         if (level.getBlockEntity(pos) instanceof FlowtechCollectorBlockEntity collector) {
             collector.loadFromBlockItem(stack);
+        }
+    }
+
+    private void saveCollectorDataToItem(ItemStack stack, FlowtechCollectorBlockEntity collector, LevelReader level) {
+        if (level instanceof ServerLevel serverLevel) {
+            HolderLookup.Provider registries = serverLevel.registryAccess();
+            CompoundTag tag = new CompoundTag();
+
+            // Save module slots
+            tag.put("moduleSlots", collector.moduleSlots.serializeNBT(registries));
+
+            // Save persistent data
+            tag.putInt("storedXP", collector.getStoredXP());
+            tag.putBoolean("xpCollectionEnabled", collector.isXpCollectionEnabled());
+            tag.putInt("downUpOffset", collector.getDownUpOffset());
+            tag.putInt("northSouthOffset", collector.getNorthSouthOffset());
+            tag.putInt("eastWestOffset", collector.getEastWestOffset());
+
+            // Save side configuration
+            tag.putBoolean("topSideActive", collector.isTopSideActive());
+            tag.putBoolean("eastSideActive", collector.isEastSideActive());
+            tag.putBoolean("frontSideActive", collector.isFrontSideActive());
+            tag.putBoolean("westSideActive", collector.isWestSideActive());
+            tag.putBoolean("bottomSideActive", collector.isBottomSideActive());
+            tag.putBoolean("backSideActive", collector.isBackSideActive());
+
+            // Save the data to the item
+            stack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
         }
     }
 }

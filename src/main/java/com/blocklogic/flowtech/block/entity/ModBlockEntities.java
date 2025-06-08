@@ -5,6 +5,7 @@ import com.blocklogic.flowtech.block.ModBlocks;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -28,6 +29,28 @@ public class ModBlockEntities {
     }
 
     private static void registerCapabilities(RegisterCapabilitiesEvent event) {
-        FlowtechCollectorBlockEntity.registerCapabilities(event);
+        // Register ItemHandler capability for FlowtechCollectorBlockEntity
+        event.registerBlockEntity(
+                Capabilities.ItemHandler.BLOCK,
+                COLLECTOR_BE.get(),
+                (blockEntity, direction) -> {
+                    if (blockEntity instanceof FlowtechCollectorBlockEntity collector) {
+                        return collector.getItemHandler(direction);
+                    }
+                    return null;
+                }
+        );
+
+        // Register ItemHandler capability for FlowtechControllerBlockEntity
+        event.registerBlockEntity(
+                Capabilities.ItemHandler.BLOCK,
+                CONTROLLER_BE.get(),
+                (blockEntity, direction) -> {
+                    if (blockEntity instanceof FlowtechControllerBlockEntity controller) {
+                        return controller.inventory;
+                    }
+                    return null;
+                }
+        );
     }
 }

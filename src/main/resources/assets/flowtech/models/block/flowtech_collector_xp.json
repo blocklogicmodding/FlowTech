@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:block/cube",
   "textures": {
-    "north": "flowtech:block/collector_xp_on",
+    "north": "flowtech:block/collector_front_xp_on",
     "south": "flowtech:block/collector_back_xp_on",
     "east": "flowtech:block/sides",
     "west": "flowtech:block/sides",

@@ -180,49 +180,72 @@ public class FlowtechCollectorBlockEntity extends BlockEntity implements MenuPro
         CustomData customData = stack.get(DataComponents.CUSTOM_DATA);
         if (customData != null) {
             CompoundTag tag = customData.copyTag();
-            HolderLookup.Provider registries = level.registryAccess();
+            if (level != null) {
+                HolderLookup.Provider registries = level.registryAccess();
 
-            // Load module slots
-            if (tag.contains("moduleSlots")) {
-                moduleSlots.deserializeNBT(registries, tag.getCompound("moduleSlots"));
+                // Load module slots
+                if (tag.contains("moduleSlots")) {
+                    moduleSlots.deserializeNBT(registries, tag.getCompound("moduleSlots"));
+                }
+
+                // Load persistent data
+                storedXP = tag.getInt("storedXP");
+                xpCollectionEnabled = tag.getBoolean("xpCollectionEnabled");
+                downUpOffset = tag.getInt("downUpOffset");
+                northSouthOffset = tag.getInt("northSouthOffset");
+                eastWestOffset = tag.getInt("eastWestOffset");
+
+                // Load side configuration
+                topSideActive = tag.getBoolean("topSideActive");
+                eastSideActive = tag.getBoolean("eastSideActive");
+                frontSideActive = tag.getBoolean("frontSideActive");
+                westSideActive = tag.getBoolean("westSideActive");
+                bottomSideActive = tag.getBoolean("bottomSideActive");
+                backSideActive = tag.getBoolean("backSideActive");
+
+                // Update block state for XP collection immediately
+                if (!level.isClientSide()) {
+                    FlowtechCollectorBlock.updateXpCollectionState(level, worldPosition, xpCollectionEnabled);
+                }
+
+                setChanged();
+
+                // Force update to clients
+                if (!level.isClientSide()) {
+                    level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+                }
             }
-
-            // Load persistent data
-            storedXP = tag.getInt("storedXP");
-            xpCollectionEnabled = tag.getBoolean("xpCollectionEnabled");
-            downUpOffset = tag.getInt("downUpOffset");
-            northSouthOffset = tag.getInt("northSouthOffset");
-            eastWestOffset = tag.getInt("eastWestOffset");
-
-            // Load side configuration
-            topSideActive = tag.getBoolean("topSideActive");
-            eastSideActive = tag.getBoolean("eastSideActive");
-            frontSideActive = tag.getBoolean("frontSideActive");
-            westSideActive = tag.getBoolean("westSideActive");
-            bottomSideActive = tag.getBoolean("bottomSideActive");
-            backSideActive = tag.getBoolean("backSideActive");
-
-            // Update block state for XP collection
-            if (level != null && !level.isClientSide()) {
-                FlowtechCollectorBlock.updateXpCollectionState(level, worldPosition, xpCollectionEnabled);
-            }
-
-            setChanged();
         }
     }
 
     // Getters and setters for persistent data
     public int getStoredXP() { return storedXP; }
-    public void setStoredXP(int xp) { this.storedXP = Math.max(0, xp); setChanged(); }
+
+    public void setStoredXP(int xp) {
+        int oldXP = this.storedXP;
+        this.storedXP = Math.max(0, xp);
+
+        if (oldXP != this.storedXP) {
+            setChanged();
+            if (level != null && !level.isClientSide()) {
+                level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
+            }
+        }
+    }
 
     public boolean isXpCollectionEnabled() { return xpCollectionEnabled; }
     public void setXpCollectionEnabled(boolean enabled) {
         if (this.xpCollectionEnabled != enabled) {
             this.xpCollectionEnabled = enabled;
             setChanged();
-            // Update block state
+
+            // DEBUG: Print state change
+            System.out.println("XP Collection " + (enabled ? "ENABLED" : "DISABLED"));
+
+            // Update block state immediately
             if (level != null && !level.isClientSide()) {
                 FlowtechCollectorBlock.updateXpCollectionState(level, worldPosition, enabled);
+                level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
             }
         }
     }
@@ -270,12 +293,11 @@ public class FlowtechCollectorBlockEntity extends BlockEntity implements MenuPro
     }
 
     public void clearContents() {
-        for (int i = 0; i < moduleSlots.getSlots(); i++) {
-            moduleSlots.setStackInSlot(i, ItemStack.EMPTY);
-        }
+        // Clear ONLY the output inventory, keep modules for persistence
         for (int i = 0; i < outputInventory.getSlots(); i++) {
             outputInventory.setStackInSlot(i, ItemStack.EMPTY);
         }
+        // Don't clear modules here - they're saved to the block item
     }
 
     public void drops() {
@@ -284,6 +306,11 @@ public class FlowtechCollectorBlockEntity extends BlockEntity implements MenuPro
             inv.setItem(i, outputInventory.getStackInSlot(i));
         }
         Containers.dropContents(this.level, this.worldPosition, inv);
+
+        // Clear the output inventory after dropping
+        for (int i = 0; i < outputInventory.getSlots(); i++) {
+            outputInventory.setStackInSlot(i, ItemStack.EMPTY);
+        }
     }
 
     @Override
@@ -390,14 +417,29 @@ public class FlowtechCollectorBlockEntity extends BlockEntity implements MenuPro
     }
 
     private void collectXP() {
+        if (!xpCollectionEnabled) return; // Don't collect if disabled
+
         AABB collectionArea = getCollectionArea();
         List<ExperienceOrb> xpOrbs = level.getEntitiesOfClass(ExperienceOrb.class, collectionArea);
 
+        int collectedXP = 0;
         for (ExperienceOrb orb : xpOrbs) {
             if (orb.isAlive()) {
-                storedXP += orb.getValue();
+                collectedXP += orb.getValue();
                 orb.discard();
-                setChanged();
+            }
+        }
+
+        if (collectedXP > 0) {
+            storedXP += collectedXP;
+            setChanged();
+
+            // DEBUG: Print to console
+            System.out.println("Collected " + collectedXP + " XP, total now: " + storedXP);
+
+            // Force block state update
+            if (!level.isClientSide()) {
+                level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
             }
         }
     }

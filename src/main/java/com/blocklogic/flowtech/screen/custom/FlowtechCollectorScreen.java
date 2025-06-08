@@ -85,7 +85,7 @@ public class FlowtechCollectorScreen extends AbstractContainerScreen<FlowtechCol
     // UI Components
     private EditBox xpInputField;
 
-    // Config State Variables (sync with block entity)
+    // Config State Variables (sync with block entity) - These will be updated from server
     private boolean topSideActive = false;
     private boolean eastSideActive = false;
     private boolean frontSideActive = false;
@@ -305,32 +305,42 @@ public class FlowtechCollectorScreen extends AbstractContainerScreen<FlowtechCol
             // Send packet to server
             PacketDistributor.sendToServer(new CollectorConfigPacket(
                     menu.blockEntity.getBlockPos(), configType, 0, newValue));
+
+            // Reinitialize GUI to update button sprites
+            this.init();
         }
     }
 
     private void adjustOffset(String axis, int delta) {
         CollectorConfigPacket.ConfigType configType;
+        int currentValue;
         int newValue;
 
         switch (axis) {
             case "downUp" -> {
                 configType = CollectorConfigPacket.ConfigType.DOWN_UP_OFFSET;
-                newValue = Math.max(-10, Math.min(10, downUpOffset + delta));
+                currentValue = downUpOffset;
+                newValue = Math.max(-10, Math.min(10, currentValue + delta));
+                downUpOffset = newValue; // Update local state immediately
             }
             case "northSouth" -> {
                 configType = CollectorConfigPacket.ConfigType.NORTH_SOUTH_OFFSET;
-                newValue = Math.max(-10, Math.min(10, northSouthOffset + delta));
+                currentValue = northSouthOffset;
+                newValue = Math.max(-10, Math.min(10, currentValue + delta));
+                northSouthOffset = newValue; // Update local state immediately
             }
             case "eastWest" -> {
                 configType = CollectorConfigPacket.ConfigType.EAST_WEST_OFFSET;
-                newValue = Math.max(-10, Math.min(10, eastWestOffset + delta));
+                currentValue = eastWestOffset;
+                newValue = Math.max(-10, Math.min(10, currentValue + delta));
+                eastWestOffset = newValue; // Update local state immediately
             }
             default -> {
                 return;
             }
         }
 
-        // Send packet to server (don't update local state, let sync handle it)
+        // Send packet to server
         PacketDistributor.sendToServer(new CollectorConfigPacket(
                 menu.blockEntity.getBlockPos(), configType, newValue, false));
     }
@@ -451,9 +461,11 @@ public class FlowtechCollectorScreen extends AbstractContainerScreen<FlowtechCol
 
         // Handle XP Collection Toggle click
         if (mouseX >= x + 118 && mouseX <= x + 134 && mouseY >= y + 110 && mouseY <= y + 118) {
-            // Send packet to server (don't update local state, let sync handle it)
+            xpCollectionEnabled = !xpCollectionEnabled; // Update local state immediately
+
+            // Send packet to server
             PacketDistributor.sendToServer(new CollectorConfigPacket(
-                    menu.blockEntity.getBlockPos(), CollectorConfigPacket.ConfigType.XP_COLLECTION_TOGGLE, 0, !xpCollectionEnabled));
+                    menu.blockEntity.getBlockPos(), CollectorConfigPacket.ConfigType.XP_COLLECTION_TOGGLE, 0, xpCollectionEnabled));
 
             return true;
         }
@@ -500,7 +512,7 @@ public class FlowtechCollectorScreen extends AbstractContainerScreen<FlowtechCol
     @Override
     protected void containerTick() {
         super.containerTick();
-        // Periodically sync state from block entity
+        // Sync state from block entity every tick to ensure UI stays updated
         syncFromBlockEntity();
     }
 }

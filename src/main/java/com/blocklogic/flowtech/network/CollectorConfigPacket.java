@@ -7,6 +7,7 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
@@ -35,18 +36,55 @@ public record CollectorConfigPacket(
     public static void handle(CollectorConfigPacket packet, IPayloadContext context) {
         context.enqueueWork(() -> {
             if (context.player() instanceof ServerPlayer player) {
-                if (player.level().getBlockEntity(packet.pos()) instanceof FlowtechCollectorBlockEntity collector) {
+                ServerLevel level = player.serverLevel();
+
+                // Validate that the player is close enough to the block
+                if (player.distanceToSqr(packet.pos().getX() + 0.5, packet.pos().getY() + 0.5, packet.pos().getZ() + 0.5) > 64) {
+                    return; // Too far away
+                }
+
+                if (level.getBlockEntity(packet.pos()) instanceof FlowtechCollectorBlockEntity collector) {
                     switch (packet.configType()) {
-                        case XP_COLLECTION_TOGGLE -> collector.setXpCollectionEnabled(packet.boolValue());
-                        case DOWN_UP_OFFSET -> collector.setDownUpOffset(packet.value());
-                        case NORTH_SOUTH_OFFSET -> collector.setNorthSouthOffset(packet.value());
-                        case EAST_WEST_OFFSET -> collector.setEastWestOffset(packet.value());
-                        case TOP_SIDE -> collector.setTopSideActive(packet.boolValue());
-                        case EAST_SIDE -> collector.setEastSideActive(packet.boolValue());
-                        case FRONT_SIDE -> collector.setFrontSideActive(packet.boolValue());
-                        case WEST_SIDE -> collector.setWestSideActive(packet.boolValue());
-                        case BOTTOM_SIDE -> collector.setBottomSideActive(packet.boolValue());
-                        case BACK_SIDE -> collector.setBackSideActive(packet.boolValue());
+                        case XP_COLLECTION_TOGGLE -> {
+                            collector.setXpCollectionEnabled(packet.boolValue());
+                            level.sendBlockUpdated(packet.pos(), level.getBlockState(packet.pos()), level.getBlockState(packet.pos()), 3);
+                        }
+                        case DOWN_UP_OFFSET -> {
+                            collector.setDownUpOffset(packet.value());
+                            level.sendBlockUpdated(packet.pos(), level.getBlockState(packet.pos()), level.getBlockState(packet.pos()), 3);
+                        }
+                        case NORTH_SOUTH_OFFSET -> {
+                            collector.setNorthSouthOffset(packet.value());
+                            level.sendBlockUpdated(packet.pos(), level.getBlockState(packet.pos()), level.getBlockState(packet.pos()), 3);
+                        }
+                        case EAST_WEST_OFFSET -> {
+                            collector.setEastWestOffset(packet.value());
+                            level.sendBlockUpdated(packet.pos(), level.getBlockState(packet.pos()), level.getBlockState(packet.pos()), 3);
+                        }
+                        case TOP_SIDE -> {
+                            collector.setTopSideActive(packet.boolValue());
+                            level.sendBlockUpdated(packet.pos(), level.getBlockState(packet.pos()), level.getBlockState(packet.pos()), 3);
+                        }
+                        case EAST_SIDE -> {
+                            collector.setEastSideActive(packet.boolValue());
+                            level.sendBlockUpdated(packet.pos(), level.getBlockState(packet.pos()), level.getBlockState(packet.pos()), 3);
+                        }
+                        case FRONT_SIDE -> {
+                            collector.setFrontSideActive(packet.boolValue());
+                            level.sendBlockUpdated(packet.pos(), level.getBlockState(packet.pos()), level.getBlockState(packet.pos()), 3);
+                        }
+                        case WEST_SIDE -> {
+                            collector.setWestSideActive(packet.boolValue());
+                            level.sendBlockUpdated(packet.pos(), level.getBlockState(packet.pos()), level.getBlockState(packet.pos()), 3);
+                        }
+                        case BOTTOM_SIDE -> {
+                            collector.setBottomSideActive(packet.boolValue());
+                            level.sendBlockUpdated(packet.pos(), level.getBlockState(packet.pos()), level.getBlockState(packet.pos()), 3);
+                        }
+                        case BACK_SIDE -> {
+                            collector.setBackSideActive(packet.boolValue());
+                            level.sendBlockUpdated(packet.pos(), level.getBlockState(packet.pos()), level.getBlockState(packet.pos()), 3);
+                        }
                     }
                 }
             }
