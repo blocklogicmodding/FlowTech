@@ -60,10 +60,15 @@ public class FlowtechCollectorBlock extends BaseEntityBlock {
         return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
     }
 
+    @Override
+    protected RenderShape getRenderShape(BlockState state) {
+        return RenderShape.MODEL;
+    }
+
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
-        return new FlowtechControllerBlockEntity(blockPos, blockState);
+        return new FlowtechCollectorBlockEntity(blockPos, blockState);
     }
 
     @Override

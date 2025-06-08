@@ -14,8 +14,8 @@ import java.util.function.Supplier;
 public class ModCreativeTab {
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TAB = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, FlowTech.MODID);
 
-    public static final Supplier<CreativeModeTab> FLOWTCH = CREATIVE_MODE_TAB.register("flowtech",
-            () -> CreativeModeTab.builder().icon(() -> new ItemStack(ModBlocks.FLOWTECH_CONTROLLER.get()))
+    public static final Supplier<CreativeModeTab> FLOWTECH = CREATIVE_MODE_TAB.register("flowtech",
+            () -> CreativeModeTab.builder().icon(() -> new ItemStack(ModBlocks.FAST_FLOW_PAD.get()))
                     .title(Component.translatable("creativetab.flowtech.flowtech"))
                     .displayItems((ItemDisplayParameters, output) -> {
                         output.accept(ModBlocks.FAST_FLOW_PAD);
