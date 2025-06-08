@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "item": "minecraft:blaze_rod"
+    },
+    "F": {
+      "item": "minecraft:flint_and_steel"
+    },
+    "U": {
+      "item": "flowtech:umbrite_ingot"
+    }
+  },
+  "pattern": [
+    "UBU",
+    "BFB",
+    "UBU"
+  ],
+  "result": {
+    "count": 1,
+    "id": "flowtech:fire_aspect_module"
+  }
+}

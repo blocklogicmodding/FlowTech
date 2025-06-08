@@ -1,3 +1,29 @@
 {
+  "creativetab.flowtech.flowtech": "FlowTech",
+
+  "block.flowtech.fast_flow_pad": "Fast Flow Pad",
+  "block.flowtech.faster_flow_pad": "Faster Flow Pad",
+  "block.flowtech.fastest_flow_pad": "Fastest Flow Pad",
+  "block.flowtech.attack_pad": "Attack Pad",
+  "block.flowtech.flowtech_collector": "FlowTech Collector",
+  "block.flowtech.flowtech_controller": "FlowTech Controller",
+  "block.flowtech.umbrite_stone_ore": "Umbrite Stone Ore",
+  "block.flowtech.umbrite_deepslate_ore": "Umbrite Deepslate Ore",
+  "block.flowtech.umbrite_nether_ore": "Umbrite Nether Ore",
+  "block.flowtech.umbrite_end_ore": "Umbrite End Ore",
+  "block.flowtech.umbrite_block": "Umbrite Block",
+
+  "item.flowtech.bane_of_arthropods_module": "Bane of Arthropods Module",
+  "item.flowtech.fire_aspect_module": "Fire Aspect Module",
+  "item.flowtech.sharpness_module": "Sharpness Module",
+  "item.flowtech.smite_module": "Smite Module",
+  "item.flowtech.looting_module": "Looting Module",
+  "item.flowtech.stack_size_increase_module": "Stack Size Increase Module",
+  "item.flowtech.pickup_zone_size_increase_module": "Pickup Zone Size Increase Module",
+  "item.flowtech.item_filter_module": "Item Filter Module",
+  "item.flowtech.pad_wrench": "Pad Wrench",
+  "item.flowtech.raw_umbrite": "Raw Umbrite Ore",
+  "item.flowtech.umbrite_ingot": "Umbrite Ingot",
+  "item.flowtech.umbrite_nugget": "Umbrite NUgget"
 
 }

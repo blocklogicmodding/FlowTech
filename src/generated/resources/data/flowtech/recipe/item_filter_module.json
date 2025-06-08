@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "H": {
+      "item": "minecraft:hopper"
+    },
+    "I": {
+      "item": "minecraft:iron_bars"
+    },
+    "P": {
+      "item": "minecraft:paper"
+    },
+    "U": {
+      "item": "flowtech:umbrite_ingot"
+    }
+  },
+  "pattern": [
+    "PPP",
+    "IHI",
+    "UIU"
+  ],
+  "result": {
+    "count": 1,
+    "id": "flowtech:item_filter_module"
+  }
+}

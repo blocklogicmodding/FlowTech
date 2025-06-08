@@ -1,0 +1,6 @@
+{
+  "values": [
+    "flowtech:flowtech_controller",
+    "flowtech:flowtech_collector"
+  ]
+}

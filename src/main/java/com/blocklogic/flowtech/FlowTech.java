@@ -1,5 +1,8 @@
 package com.blocklogic.flowtech;
 
+import com.blocklogic.flowtech.block.ModBlocks;
+import com.blocklogic.flowtech.item.ModCreativeTab;
+import com.blocklogic.flowtech.item.ModItems;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -48,6 +51,9 @@ public class FlowTech
 
         NeoForge.EVENT_BUS.register(this);
 
+        ModBlocks.register(modEventBus);
+        ModItems.register(modEventBus);
+        ModCreativeTab.register(modEventBus);
 
         modEventBus.addListener(this::addCreative);
 

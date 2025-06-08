@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "D": {
+      "item": "minecraft:diamond"
+    },
+    "F": {
+      "item": "flowtech:fast_flow_pad"
+    },
+    "S": {
+      "tag": "c:stones"
+    },
+    "U": {
+      "item": "flowtech:umbrite_ingot"
+    }
+  },
+  "pattern": [
+    "DUD",
+    "UFU",
+    "SSS"
+  ],
+  "result": {
+    "count": 8,
+    "id": "flowtech:faster_flow_pad"
+  }
+}

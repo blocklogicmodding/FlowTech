@@ -1,0 +1,12 @@
+{
+  "values": [
+    "flowtech:bane_of_arthropods_module",
+    "flowtech:fire_aspect_module",
+    "flowtech:sharpness_module",
+    "flowtech:smite_module",
+    "flowtech:looting_module",
+    "flowtech:stack_size_increase_module",
+    "flowtech:pickup_zone_size_increase_module",
+    "flowtech:item_filter_module"
+  ]
+}

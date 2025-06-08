@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:blasting",
+  "category": "blocks",
+  "cookingtime": 150,
+  "experience": 0.5,
+  "group": "umbrite",
+  "ingredient": {
+    "item": "flowtech:umbrite_stone_ore"
+  },
+  "result": {
+    "count": 1,
+    "id": "flowtech:umbrite_block"
+  }
+}

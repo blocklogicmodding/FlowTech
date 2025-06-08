@@ -1,0 +1,13 @@
+// 1.21.1	2025-06-08T15:41:56.6416499	Loot Tables
+b3499d451566397d7e55e64afbbc5e83caca5b83 data/flowtech/loot_table/blocks/attack_pad.json
+097c26cbe484c5bebdf8522139cc601b8932e10e data/flowtech/loot_table/blocks/faster_flow_pad.json
+85b7c655a9125673bec2da5fae22a800840797b9 data/flowtech/loot_table/blocks/fastest_flow_pad.json
+347d9e6c4311d8275c1378e16222086b5289b2b3 data/flowtech/loot_table/blocks/fast_flow_pad.json
+c5d6dc9c102f9b1a7691b8ed601cc68616b76534 data/flowtech/loot_table/blocks/flowtech_collector.json
+c3404cd9237743a7ab592a5a800c5a547aeefeb7 data/flowtech/loot_table/blocks/flowtech_controller.json
+8d7dece41fd67f8138d66d82e27995f0457afc3e data/flowtech/loot_table/blocks/raw_umbrite_block.json
+ff2402fb5057810a85bbd415d8f3c2073355727b data/flowtech/loot_table/blocks/umbrite_block.json
+924c07cda34f6e6f399ce2c16b6840ce3489aa6f data/flowtech/loot_table/blocks/umbrite_deepslate_ore.json
+be3fab39c32e8722a07e197da0eeacebf6d3b6de data/flowtech/loot_table/blocks/umbrite_end_ore.json
+f584e177d456705b8ee526b6ca291458f06bc25c data/flowtech/loot_table/blocks/umbrite_nether_ore.json
+c066680067a71cd38c12648e4d89cb12ece201fe data/flowtech/loot_table/blocks/umbrite_stone_ore.json

@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "north": "flowtech:block/flowtech_controller_front",
+    "south": "flowtech:block/sides",
+    "east": "flowtech:block/sides",
+    "west": "flowtech:block/sides",
+    "up": "flowtech:block/top",
+    "down": "flowtech:block/bottom",
+    "particle": "flowtech:block/flowtech_controller_front"
+  }
+}

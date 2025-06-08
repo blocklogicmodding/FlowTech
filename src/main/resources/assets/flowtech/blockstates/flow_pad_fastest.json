@@ -1,0 +1,19 @@
+{
+	"variants": {
+		"facing=north": {
+			"model": "flowtech:block/flow_pad_fastest"
+		},
+		"facing=south": {
+			"model": "flowtech:block/flow_pad_fastest",
+			"y": 180
+		},
+		"facing=east": {
+			"model": "flowtech:block/flow_pad_fastest",
+			"y": 90
+		},
+		"facing=west": {
+			"model": "flowtech:block/flow_pad_fastest",
+			"y": 270
+		}
+	}
+}

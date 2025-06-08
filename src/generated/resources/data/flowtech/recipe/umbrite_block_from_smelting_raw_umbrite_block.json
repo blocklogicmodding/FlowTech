@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:smelting",
+  "category": "blocks",
+  "cookingtime": 300,
+  "experience": 0.5,
+  "group": "umbrite",
+  "ingredient": {
+    "item": "flowtech:raw_umbrite_block"
+  },
+  "result": {
+    "count": 1,
+    "id": "flowtech:umbrite_block"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "flowtech:block/flowtech_collector"
+    },
+    "facing=south": {
+      "model": "flowtech:block/flowtech_collector",
+      "y": 180
+    },
+    "facing=east": {
+      "model": "flowtech:block/flowtech_collector",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "flowtech:block/flowtech_collector",
+      "y": 270
+    }
+  }
+}
