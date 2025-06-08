@@ -1,6 +1,9 @@
 package com.blocklogic.flowtech.screen.custom;
 
 import com.blocklogic.flowtech.FlowTech;
+import com.blocklogic.flowtech.client.renderer.CollectorWireframeRenderer;
+import com.blocklogic.flowtech.network.CollectorConfigPacket;
+import com.blocklogic.flowtech.network.CollectorXpPacket;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
@@ -12,6 +15,7 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 import java.util.List;
 
@@ -81,7 +85,7 @@ public class FlowtechCollectorScreen extends AbstractContainerScreen<FlowtechCol
     // UI Components
     private EditBox xpInputField;
 
-    // Config State Variables (these would normally sync with the block entity)
+    // Config State Variables (sync with block entity)
     private boolean topSideActive = false;
     private boolean eastSideActive = false;
     private boolean frontSideActive = false;
@@ -107,6 +111,27 @@ public class FlowtechCollectorScreen extends AbstractContainerScreen<FlowtechCol
         this.imageWidth = 234;
         this.inventoryLabelY = 72 + 70;
         this.inventoryLabelX = 8 + 30;
+
+        // Sync state from block entity
+        syncFromBlockEntity();
+    }
+
+    private void syncFromBlockEntity() {
+        if (menu.blockEntity != null) {
+            topSideActive = menu.blockEntity.isTopSideActive();
+            eastSideActive = menu.blockEntity.isEastSideActive();
+            frontSideActive = menu.blockEntity.isFrontSideActive();
+            westSideActive = menu.blockEntity.isWestSideActive();
+            bottomSideActive = menu.blockEntity.isBottomSideActive();
+            backSideActive = menu.blockEntity.isBackSideActive();
+
+            downUpOffset = menu.blockEntity.getDownUpOffset();
+            northSouthOffset = menu.blockEntity.getNorthSouthOffset();
+            eastWestOffset = menu.blockEntity.getEastWestOffset();
+
+            xpCollectionEnabled = menu.blockEntity.isXpCollectionEnabled();
+            storedXP = menu.blockEntity.getStoredXP();
+        }
     }
 
     @Override
@@ -116,7 +141,6 @@ public class FlowtechCollectorScreen extends AbstractContainerScreen<FlowtechCol
         int leftPos = (this.width - this.imageWidth) / 2;
         int topPos = (this.height - this.imageHeight) / 2;
 
-        // Clear existing widgets
         this.clearWidgets();
 
         // Initialize XP Input Field
@@ -128,7 +152,20 @@ public class FlowtechCollectorScreen extends AbstractContainerScreen<FlowtechCol
         this.xpInputField.setTooltip(Tooltip.create(Component.translatable("tooltip.flowtech.collector.xp_input")));
         this.addRenderableWidget(this.xpInputField);
 
-        // Side Config Buttons with tooltips
+        // Side Config Buttons
+        addSideConfigButtons(leftPos, topPos);
+
+        // Offset Control Buttons
+        addOffsetButtons(leftPos, topPos);
+
+        // Wireframe Toggle
+        addWireframeButton(leftPos, topPos);
+
+        // XP Buttons
+        addXpButtons(leftPos, topPos);
+    }
+
+    private void addSideConfigButtons(int leftPos, int topPos) {
         ImageButton topSideButton = new ImageButton(leftPos + 203, topPos + 15, 12, 12,
                 createConditionalSprites(SIDE_CONFIG_SIDES_SPRITES, () -> topSideActive),
                 button -> toggleSideConfig("top"));
@@ -164,8 +201,10 @@ public class FlowtechCollectorScreen extends AbstractContainerScreen<FlowtechCol
                 button -> toggleSideConfig("back"));
         backSideButton.setTooltip(Tooltip.create(Component.translatable("tooltip.flowtech.collector.side_config.back")));
         this.addRenderableWidget(backSideButton);
+    }
 
-        // Down/Up Offset Controls with tooltips
+    private void addOffsetButtons(int leftPos, int topPos) {
+        // Down/Up Offset Controls
         ImageButton duDecreaseButton = new ImageButton(leftPos + 190, topPos + 64, 10, 10, REDUCE_OFFSET_SPRITES,
                 button -> adjustOffset("downUp", -1));
         duDecreaseButton.setTooltip(Tooltip.create(Component.translatable("tooltip.flowtech.collector.offset.down_up.decrease")));
@@ -176,7 +215,7 @@ public class FlowtechCollectorScreen extends AbstractContainerScreen<FlowtechCol
         duIncreaseButton.setTooltip(Tooltip.create(Component.translatable("tooltip.flowtech.collector.offset.down_up.increase")));
         this.addRenderableWidget(duIncreaseButton);
 
-        // North/South Offset Controls with tooltips
+        // North/South Offset Controls
         ImageButton nsDecreaseButton = new ImageButton(leftPos + 190, topPos + 86, 10, 10, REDUCE_OFFSET_SPRITES,
                 button -> adjustOffset("northSouth", -1));
         nsDecreaseButton.setTooltip(Tooltip.create(Component.translatable("tooltip.flowtech.collector.offset.north_south.decrease")));
@@ -187,7 +226,7 @@ public class FlowtechCollectorScreen extends AbstractContainerScreen<FlowtechCol
         nsIncreaseButton.setTooltip(Tooltip.create(Component.translatable("tooltip.flowtech.collector.offset.north_south.increase")));
         this.addRenderableWidget(nsIncreaseButton);
 
-        // East/West Offset Controls with tooltips
+        // East/West Offset Controls
         ImageButton ewDecreaseButton = new ImageButton(leftPos + 190, topPos + 108, 10, 10, REDUCE_OFFSET_SPRITES,
                 button -> adjustOffset("eastWest", -1));
         ewDecreaseButton.setTooltip(Tooltip.create(Component.translatable("tooltip.flowtech.collector.offset.east_west.decrease")));
@@ -197,15 +236,17 @@ public class FlowtechCollectorScreen extends AbstractContainerScreen<FlowtechCol
                 button -> adjustOffset("eastWest", 1));
         ewIncreaseButton.setTooltip(Tooltip.create(Component.translatable("tooltip.flowtech.collector.offset.east_west.increase")));
         this.addRenderableWidget(ewIncreaseButton);
+    }
 
-        // Show Wireframe Toggle with tooltip
+    private void addWireframeButton(int leftPos, int topPos) {
         ImageButton wireframeButton = new ImageButton(leftPos + 155, topPos + 109, 10, 10,
                 createConditionalSprites(TOGGLE_WIREFRAME_SPRITES, () -> showWireframe),
                 button -> toggleWireframe());
         wireframeButton.setTooltip(Tooltip.create(Component.translatable("tooltip.flowtech.collector.wireframe_toggle")));
         this.addRenderableWidget(wireframeButton);
+    }
 
-        // XP Buttons with tooltips
+    private void addXpButtons(int leftPos, int topPos) {
         ImageButton withdrawButton = new ImageButton(leftPos + 52, topPos + 109, 10, 10, WITHDRAW_XP_SPRITES,
                 button -> withdrawXP());
         withdrawButton.setTooltip(Tooltip.create(Component.translatable("tooltip.flowtech.collector.xp.withdraw")));
@@ -230,36 +271,74 @@ public class FlowtechCollectorScreen extends AbstractContainerScreen<FlowtechCol
     }
 
     private void toggleSideConfig(String side) {
-        switch (side) {
-            case "top" -> topSideActive = !topSideActive;
-            case "east" -> eastSideActive = !eastSideActive;
-            case "front" -> frontSideActive = !frontSideActive;
-            case "west" -> westSideActive = !westSideActive;
-            case "bottom" -> bottomSideActive = !bottomSideActive;
-            case "back" -> backSideActive = !backSideActive;
+        CollectorConfigPacket.ConfigType configType = switch (side) {
+            case "top" -> CollectorConfigPacket.ConfigType.TOP_SIDE;
+            case "east" -> CollectorConfigPacket.ConfigType.EAST_SIDE;
+            case "front" -> CollectorConfigPacket.ConfigType.FRONT_SIDE;
+            case "west" -> CollectorConfigPacket.ConfigType.WEST_SIDE;
+            case "bottom" -> CollectorConfigPacket.ConfigType.BOTTOM_SIDE;
+            case "back" -> CollectorConfigPacket.ConfigType.BACK_SIDE;
+            default -> null;
+        };
+
+        if (configType != null) {
+            boolean newValue = switch (side) {
+                case "top" -> !topSideActive;
+                case "east" -> !eastSideActive;
+                case "front" -> !frontSideActive;
+                case "west" -> !westSideActive;
+                case "bottom" -> !bottomSideActive;
+                case "back" -> !backSideActive;
+                default -> false;
+            };
+
+            // Update local state for immediate visual feedback
+            switch (side) {
+                case "top" -> topSideActive = newValue;
+                case "east" -> eastSideActive = newValue;
+                case "front" -> frontSideActive = newValue;
+                case "west" -> westSideActive = newValue;
+                case "bottom" -> bottomSideActive = newValue;
+                case "back" -> backSideActive = newValue;
+            }
+
+            // Send packet to server
+            PacketDistributor.sendToServer(new CollectorConfigPacket(
+                    menu.blockEntity.getBlockPos(), configType, 0, newValue));
         }
-        // TODO: Send packet to server to update block entity
-        this.init(); // Rebuild GUI to update button sprites
     }
 
     private void adjustOffset(String axis, int delta) {
+        CollectorConfigPacket.ConfigType configType;
+        int newValue;
+
         switch (axis) {
             case "downUp" -> {
-                downUpOffset = Math.max(-10, Math.min(10, downUpOffset + delta));
+                configType = CollectorConfigPacket.ConfigType.DOWN_UP_OFFSET;
+                newValue = Math.max(-10, Math.min(10, downUpOffset + delta));
             }
             case "northSouth" -> {
-                northSouthOffset = Math.max(-10, Math.min(10, northSouthOffset + delta));
+                configType = CollectorConfigPacket.ConfigType.NORTH_SOUTH_OFFSET;
+                newValue = Math.max(-10, Math.min(10, northSouthOffset + delta));
             }
             case "eastWest" -> {
-                eastWestOffset = Math.max(-10, Math.min(10, eastWestOffset + delta));
+                configType = CollectorConfigPacket.ConfigType.EAST_WEST_OFFSET;
+                newValue = Math.max(-10, Math.min(10, eastWestOffset + delta));
+            }
+            default -> {
+                return;
             }
         }
-        // TODO: Send packet to server to update block entity
+
+        // Send packet to server (don't update local state, let sync handle it)
+        PacketDistributor.sendToServer(new CollectorConfigPacket(
+                menu.blockEntity.getBlockPos(), configType, newValue, false));
     }
 
     private void toggleWireframe() {
         showWireframe = !showWireframe;
-        // TODO: Send packet to server and/or handle client-side wireframe rendering respecting the installed modules
+        // Toggle wireframe rendering
+        CollectorWireframeRenderer.toggleWireframe(menu.blockEntity.getBlockPos());
         this.init(); // Rebuild GUI to update button sprite
     }
 
@@ -267,7 +346,11 @@ public class FlowtechCollectorScreen extends AbstractContainerScreen<FlowtechCol
         try {
             int amount = Integer.parseInt(xpInputField.getValue());
             if (amount > 0 && amount <= storedXP) {
-                // TODO: Send packet to server to withdraw XP
+                // Send packet to server
+                PacketDistributor.sendToServer(new CollectorXpPacket(
+                        menu.blockEntity.getBlockPos(), CollectorXpPacket.XpAction.WITHDRAW, amount));
+
+                // Update local state for immediate feedback
                 storedXP -= amount;
                 xpInputField.setValue("0");
             }
@@ -280,8 +363,11 @@ public class FlowtechCollectorScreen extends AbstractContainerScreen<FlowtechCol
         try {
             int amount = Integer.parseInt(xpInputField.getValue());
             if (amount > 0) {
-                // TODO: Send packet to server to deposit XP
-                // For now, just simulate adding to stored XP
+                // Send packet to server
+                PacketDistributor.sendToServer(new CollectorXpPacket(
+                        menu.blockEntity.getBlockPos(), CollectorXpPacket.XpAction.DEPOSIT, amount));
+
+                // Update local state for immediate feedback
                 storedXP = Math.min(maxStoredXP, storedXP + amount);
                 xpInputField.setValue("0");
             }
@@ -309,14 +395,11 @@ public class FlowtechCollectorScreen extends AbstractContainerScreen<FlowtechCol
 
     private void renderOffsetValues(GuiGraphics guiGraphics, int x, int y) {
         var poseStack = guiGraphics.pose();
+        float scale = 0.65f;
 
-        float scale = 0.65f; // scale factor for smaller text
-
-        // ───── Scale and render the offset values ─────
         poseStack.pushPose();
         poseStack.scale(scale, scale, 1.0f);
 
-        // Adjusted positions (scaled down, so coordinates must be scaled up)
         guiGraphics.drawString(this.font,
                 (downUpOffset >= 0 ? "+" : "") + downUpOffset,
                 (int)((x + 203) / scale),
@@ -337,7 +420,6 @@ public class FlowtechCollectorScreen extends AbstractContainerScreen<FlowtechCol
 
         poseStack.popPose();
 
-        // ───── Scale and render the labels ─────
         poseStack.pushPose();
         poseStack.scale(scale, scale, 1.0f);
 
@@ -349,20 +431,13 @@ public class FlowtechCollectorScreen extends AbstractContainerScreen<FlowtechCol
     }
 
     private void renderXPCollectionToggle(GuiGraphics guiGraphics, int x, int y) {
-        // Render XP Collection Toggle Slider
         ResourceLocation toggleHandle = ResourceLocation.fromNamespaceAndPath(FlowTech.MODID, "toggle_scroller_handle");
-
-        int handleX = xpCollectionEnabled ? x + 125 : x + 117; // End position vs Start position
+        int handleX = xpCollectionEnabled ? x + 125 : x + 117;
         int handleY = y + 110;
-
-        // Render toggle handle using blitSprite for GUI sprites
         guiGraphics.blitSprite(toggleHandle, handleX, handleY, 6, 10);
     }
 
     private void renderXPBar(GuiGraphics guiGraphics, int x, int y) {
-        var poseStack = guiGraphics.pose();
-
-        // Render XP Bar fill
         if (storedXP > 0) {
             int fillWidth = (int) ((218.0f * storedXP) / maxStoredXP);
             guiGraphics.fill(x + 8, y + 125, x + 8 + fillWidth, y + 133, 0xFF00FF00);
@@ -371,13 +446,15 @@ public class FlowtechCollectorScreen extends AbstractContainerScreen<FlowtechCol
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        // Handle XP Collection Toggle click
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
 
+        // Handle XP Collection Toggle click
         if (mouseX >= x + 118 && mouseX <= x + 134 && mouseY >= y + 110 && mouseY <= y + 118) {
-            xpCollectionEnabled = !xpCollectionEnabled;
-            // TODO: Send packet to server to update block entity and update blockstate to show collection on/off
+            // Send packet to server (don't update local state, let sync handle it)
+            PacketDistributor.sendToServer(new CollectorConfigPacket(
+                    menu.blockEntity.getBlockPos(), CollectorConfigPacket.ConfigType.XP_COLLECTION_TOGGLE, 0, !xpCollectionEnabled));
+
             return true;
         }
 
@@ -387,10 +464,7 @@ public class FlowtechCollectorScreen extends AbstractContainerScreen<FlowtechCol
     @Override
     public void render(GuiGraphics pGuiGraphics, int mouseX, int mouseY, float partialTick) {
         super.render(pGuiGraphics, mouseX, mouseY, partialTick);
-
-        // Render custom tooltips for areas that don't have widgets
         renderCustomTooltips(pGuiGraphics, mouseX, mouseY);
-
         this.renderTooltip(pGuiGraphics, mouseX, mouseY);
     }
 
@@ -421,5 +495,12 @@ public class FlowtechCollectorScreen extends AbstractContainerScreen<FlowtechCol
             Component tooltipText = Component.translatable("tooltip.flowtech.collector.offset.east_west.value", eastWestOffset);
             guiGraphics.renderTooltip(this.font, tooltipText, mouseX, mouseY);
         }
+    }
+
+    @Override
+    protected void containerTick() {
+        super.containerTick();
+        // Periodically sync state from block entity
+        syncFromBlockEntity();
     }
 }

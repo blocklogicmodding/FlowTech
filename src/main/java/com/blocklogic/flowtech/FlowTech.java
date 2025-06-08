@@ -4,6 +4,7 @@ import com.blocklogic.flowtech.block.ModBlocks;
 import com.blocklogic.flowtech.block.entity.ModBlockEntities;
 import com.blocklogic.flowtech.item.ModCreativeTab;
 import com.blocklogic.flowtech.item.ModItems;
+import com.blocklogic.flowtech.network.ModNetwork;
 import com.blocklogic.flowtech.screen.ModMenuTypes;
 import com.blocklogic.flowtech.screen.custom.FlowtechCollectorScreen;
 import com.blocklogic.flowtech.screen.custom.FlowtechControllerScreen;
@@ -61,6 +62,7 @@ public class FlowTech
         ModCreativeTab.register(modEventBus);
         ModBlockEntities.register(modEventBus);
         ModMenuTypes.register(modEventBus);
+        ModNetwork.register(modEventBus);
 
         modEventBus.addListener(this::addCreative);
 

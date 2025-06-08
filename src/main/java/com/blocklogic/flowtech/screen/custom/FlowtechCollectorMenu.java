@@ -2,6 +2,7 @@ package com.blocklogic.flowtech.screen.custom;
 
 import com.blocklogic.flowtech.block.ModBlocks;
 import com.blocklogic.flowtech.block.entity.FlowtechCollectorBlockEntity;
+import com.blocklogic.flowtech.item.ModItems;
 import com.blocklogic.flowtech.screen.ModMenuTypes;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
@@ -30,22 +31,49 @@ public class FlowtechCollectorMenu extends AbstractContainerMenu {
         addPlayerInventory(inv);
         addPlayerHotbar(inv);
 
-        this.addSlot(new SlotItemHandler(this.blockEntity.inventory, 0, 152, 15));// Pickup Zone Size Increase Module
-        this.addSlot(new SlotItemHandler(this.blockEntity.inventory, 1, 152, 33));// Slot Stack Size Increase Module
-        this.addSlot(new SlotItemHandler(this.blockEntity.inventory, 2, 152, 51));// Item Filter Slot 1
-        this.addSlot(new SlotItemHandler(this.blockEntity.inventory, 3, 152, 69));// Item Filter Slot 2
-        this.addSlot(new SlotItemHandler(this.blockEntity.inventory, 4, 152, 87));// Item Filter Slot 3
+        // Module slots (5 total)
+        this.addSlot(new ModuleSlot(this.blockEntity.moduleSlots, 0, 152, 15, ModItems.PICKUP_ZONE_SIZE_MODULE.get()));  // Pickup Zone modules
+        this.addSlot(new ModuleSlot(this.blockEntity.moduleSlots, 1, 152, 33, ModItems.STACK_SIZE_MODULE.get()));        // Stack Size modules
+        this.addSlot(new ModuleSlot(this.blockEntity.moduleSlots, 2, 152, 51, ModItems.ITEM_FILTER_MODULE.get()));       // Filter 1
+        this.addSlot(new ModuleSlot(this.blockEntity.moduleSlots, 3, 152, 69, ModItems.ITEM_FILTER_MODULE.get()));       // Filter 2
+        this.addSlot(new ModuleSlot(this.blockEntity.moduleSlots, 4, 152, 87, ModItems.ITEM_FILTER_MODULE.get()));       // Filter 3
 
-        // Collector internal storage slots (extract only, can't insert)
-        int slotIndex = 5;
+        // Output inventory slots (35 slots, 5x7 grid) - extract only
+        int slotIndex = 0;
         for (int row = 0; row < 5; row++) {
             for (int col = 0; col < 7; col++) {
                 int x = 8 + (col * 18);
                 int y = 15 + (row * 18);
-
-                this.addSlot(new Slot(inv, slotIndex, x, y));
+                this.addSlot(new OutputSlot(this.blockEntity.outputInventory, slotIndex, x, y));
                 slotIndex++;
             }
+        }
+    }
+
+    // Custom slot for modules with type validation
+    private static class ModuleSlot extends SlotItemHandler {
+        private final net.minecraft.world.item.Item allowedModule;
+
+        public ModuleSlot(net.neoforged.neoforge.items.IItemHandler itemHandler, int index, int xPosition, int yPosition, net.minecraft.world.item.Item allowedModule) {
+            super(itemHandler, index, xPosition, yPosition);
+            this.allowedModule = allowedModule;
+        }
+
+        @Override
+        public boolean mayPlace(ItemStack stack) {
+            return stack.getItem() == allowedModule;
+        }
+    }
+
+    // Custom slot for output inventory - extract only
+    private static class OutputSlot extends SlotItemHandler {
+        public OutputSlot(net.neoforged.neoforge.items.IItemHandler itemHandler, int index, int xPosition, int yPosition) {
+            super(itemHandler, index, xPosition, yPosition);
+        }
+
+        @Override
+        public boolean mayPlace(ItemStack stack) {
+            return false; // No insertion allowed
         }
     }
 
@@ -55,36 +83,62 @@ public class FlowtechCollectorMenu extends AbstractContainerMenu {
     private static final int PLAYER_INVENTORY_SLOT_COUNT = PLAYER_INVENTORY_COLUMN_COUNT * PLAYER_INVENTORY_ROW_COUNT;
     private static final int VANILLA_SLOT_COUNT = HOTBAR_SLOT_COUNT + PLAYER_INVENTORY_SLOT_COUNT;
     private static final int VANILLA_FIRST_SLOT_INDEX = 0;
-    private static final int TE_INVENTORY_FIRST_SLOT_INDEX = VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT;
+    private static final int MODULE_SLOTS_FIRST_INDEX = VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT;
+    private static final int MODULE_SLOTS_COUNT = 5;
+    private static final int OUTPUT_SLOTS_FIRST_INDEX = MODULE_SLOTS_FIRST_INDEX + MODULE_SLOTS_COUNT;
+    private static final int OUTPUT_SLOTS_COUNT = 35;
 
-    private static final int TE_INVENTORY_SLOT_COUNT = 40;
     @Override
-    public ItemStack quickMoveStack(Player playerIn, int pIndex) {
-        Slot sourceSlot = slots.get(pIndex);
-        if (sourceSlot == null || !sourceSlot.hasItem()) return ItemStack.EMPTY;  //EMPTY_ITEM
+    public ItemStack quickMoveStack(Player player, int slotIndex) {
+        Slot sourceSlot = slots.get(slotIndex);
+        if (sourceSlot == null || !sourceSlot.hasItem()) {
+            return ItemStack.EMPTY;
+        }
+
         ItemStack sourceStack = sourceSlot.getItem();
         ItemStack copyOfSourceStack = sourceStack.copy();
 
-        if (pIndex < VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT) {
-            if (!moveItemStackTo(sourceStack, TE_INVENTORY_FIRST_SLOT_INDEX, TE_INVENTORY_FIRST_SLOT_INDEX
-                    + TE_INVENTORY_SLOT_COUNT, false)) {
-                return ItemStack.EMPTY;
+        // From player inventory to container
+        if (slotIndex < VANILLA_SLOT_COUNT) {
+            // Check if it's a module that can go into module slots
+            if (isValidModule(sourceStack)) {
+                if (!moveItemStackTo(sourceStack, MODULE_SLOTS_FIRST_INDEX, MODULE_SLOTS_FIRST_INDEX + MODULE_SLOTS_COUNT, false)) {
+                    return ItemStack.EMPTY;
+                }
+            } else {
+                return ItemStack.EMPTY; // Can't move non-modules
             }
-        } else if (pIndex < TE_INVENTORY_FIRST_SLOT_INDEX + TE_INVENTORY_SLOT_COUNT) {
+        }
+        // From module slots back to player inventory
+        else if (slotIndex < MODULE_SLOTS_FIRST_INDEX + MODULE_SLOTS_COUNT) {
             if (!moveItemStackTo(sourceStack, VANILLA_FIRST_SLOT_INDEX, VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT, false)) {
                 return ItemStack.EMPTY;
             }
-        } else {
-            System.out.println("Invalid slotIndex:" + pIndex);
+        }
+        // From output slots to player inventory
+        else if (slotIndex < OUTPUT_SLOTS_FIRST_INDEX + OUTPUT_SLOTS_COUNT) {
+            if (!moveItemStackTo(sourceStack, VANILLA_FIRST_SLOT_INDEX, VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT, false)) {
+                return ItemStack.EMPTY;
+            }
+        }
+        else {
             return ItemStack.EMPTY;
         }
+
         if (sourceStack.getCount() == 0) {
             sourceSlot.set(ItemStack.EMPTY);
         } else {
             sourceSlot.setChanged();
         }
-        sourceSlot.onTake(playerIn, sourceStack);
+
+        sourceSlot.onTake(player, sourceStack);
         return copyOfSourceStack;
+    }
+
+    private boolean isValidModule(ItemStack stack) {
+        return stack.getItem() == ModItems.PICKUP_ZONE_SIZE_MODULE.get() ||
+                stack.getItem() == ModItems.STACK_SIZE_MODULE.get() ||
+                stack.getItem() == ModItems.ITEM_FILTER_MODULE.get();
     }
 
     @Override
