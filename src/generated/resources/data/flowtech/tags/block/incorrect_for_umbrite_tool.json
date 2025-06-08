@@ -1,0 +1,8 @@
+{
+  "remove": [
+    "#flowtech:needs_umbrite_tool"
+  ],
+  "values": [
+    "#minecraft:needs_iron_tool"
+  ]
+}

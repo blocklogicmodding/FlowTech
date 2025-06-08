@@ -39,6 +39,13 @@ public class ModBlockTagProvider extends BlockTagsProvider {
                 .add(ModBlocks.UMBRITE_NETHER_ORE_BLOCK.get())
                 .add(ModBlocks.UMBRITE_END_ORE_BLOCK.get());
 
+        tag(ModTags.Blocks.NEEDS_UMBRITE_TOOL)
+                .addTag(BlockTags.NEEDS_IRON_TOOL);
+
+        tag(ModTags.Blocks.INCORRECT_FOR_UMBRITE_TOOL)
+                .addTag(BlockTags.NEEDS_IRON_TOOL)
+                .remove(ModTags.Blocks.NEEDS_UMBRITE_TOOL);
+
         tag(ModTags.Blocks.FLOWTECH_PADS)
                 .add(ModBlocks.ATTACK_PAD.get())
                 .add(ModBlocks.FAST_FLOW_PAD.get())

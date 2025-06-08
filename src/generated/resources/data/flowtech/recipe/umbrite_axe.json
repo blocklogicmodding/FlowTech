@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "S": {
+      "item": "minecraft:stick"
+    },
+    "U": {
+      "item": "flowtech:umbrite_ingot"
+    }
+  },
+  "pattern": [
+    "UU",
+    "US",
+    " S"
+  ],
+  "result": {
+    "count": 1,
+    "id": "flowtech:umbrite_axe"
+  }
+}

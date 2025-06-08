@@ -1,10 +1,15 @@
-// 1.21.1	2025-06-08T15:41:56.6446258	Tags for minecraft:item mod id flowtech
+// 1.21.1	2025-06-08T17:21:36.9848433	Tags for minecraft:item mod id flowtech
 1bffd8644842c5a99e87d8b87e58dce9fd98752f data/c/tags/item/ingots.json
 80569f23f5eb46979180327d05958f7cdbbc8f0b data/c/tags/item/ores.json
 170a514aec7c5a38578a9ec028696b68bd749991 data/c/tags/item/raw_materials.json
 77859f5d709bc807815e3475dab54be553881c9b data/flowtech/tags/item/flowtech_modules.json
-5a91b258387fbc47b4b78f5d0eb930cf31a87d4e data/flowtech/tags/item/flowtech_tools.json
+9648f22ad646c703385a554673827a24d7e44a6b data/flowtech/tags/item/flowtech_tools.json
 1bffd8644842c5a99e87d8b87e58dce9fd98752f data/flowtech/tags/item/ingots/umbrite.json
 62f1e89591fbd8c0e51f94e49db63089f6950a78 data/flowtech/tags/item/nuggets/umbrite.json
 80569f23f5eb46979180327d05958f7cdbbc8f0b data/flowtech/tags/item/ores/umbrite.json
 170a514aec7c5a38578a9ec028696b68bd749991 data/flowtech/tags/item/raw_materials/umbrite.json
+57730d18ff16cd6d3238537f906040bf50e43b86 data/minecraft/tags/item/axes.json
+df3bdab19d81e36e4b2f43795ba174824305a75c data/minecraft/tags/item/hoes.json
+fc04c42b20eaf3da13f663f09680711e328cea51 data/minecraft/tags/item/pickaxes.json
+b3f66133cc9401d7c7aec4a9665f6021909257fb data/minecraft/tags/item/shovels.json
+309b38c1156f8ee9e8a5d7aa4baa5fe2e22ebf62 data/minecraft/tags/item/swords.json

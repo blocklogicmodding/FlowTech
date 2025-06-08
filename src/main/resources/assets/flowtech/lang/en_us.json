@@ -25,6 +25,12 @@
   "item.flowtech.pad_wrench": "Pad Wrench",
   "item.flowtech.raw_umbrite": "Raw Umbrite Ore",
   "item.flowtech.umbrite_ingot": "Umbrite Ingot",
-  "item.flowtech.umbrite_nugget": "Umbrite Nugget"
+  "item.flowtech.umbrite_nugget": "Umbrite Nugget",
+
+  "item.flowtech.umbrite_sword": "Umbrite Sword",
+  "item.flowtech.umbrite_pickaxe": "Umbrite Pickaxe",
+  "item.flowtech.umbrite_axe": "Umbrite Axe",
+  "item.flowtech.umbrite_shovel": "Umbrite Shovel",
+  "item.flowtech.umbrite_hoe": "Umbrite Hoe"
 
 }

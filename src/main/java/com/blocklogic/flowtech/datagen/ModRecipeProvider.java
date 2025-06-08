@@ -238,7 +238,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .save(recipeOutput);
 
         // Umbrite Tools
-        /*
+
         ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.UMBRITE_SWORD.get())
                 .pattern("U")
                 .pattern("U")
@@ -284,6 +284,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .unlockedBy("has_umbrite_ingot", has(ModItems.UMBRITE_INGOT))
                 .save(recipeOutput);
 
+        /*
         // Umbrite Hammer (3x3 mining tool)
         ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.UMBRITE_HAMMER.get())
                 .pattern("UBU")

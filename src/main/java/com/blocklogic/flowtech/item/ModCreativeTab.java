@@ -43,6 +43,12 @@ public class ModCreativeTab {
                         output.accept(ModItems.RAW_UMBRITE);
                         output.accept(ModItems.UMBRITE_INGOT);
                         output.accept(ModItems.UMBRITE_NUGGET);
+
+                        output.accept(ModItems.UMBRITE_SWORD);
+                        output.accept(ModItems.UMBRITE_PICKAXE);
+                        output.accept(ModItems.UMBRITE_AXE);
+                        output.accept(ModItems.UMBRITE_SHOVEL);
+                        output.accept(ModItems.UMBRITE_HOE);
                     }).build());
 
     public static void register (IEventBus eventBus) {

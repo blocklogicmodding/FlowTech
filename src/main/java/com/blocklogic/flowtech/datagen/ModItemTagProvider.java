@@ -64,6 +64,17 @@ public class ModItemTagProvider extends ItemTagsProvider {
                 .add(ModItems.ITEM_FILTER_MODULE.get());
 
         tag(ModTags.Items.FLOWTECH_TOOLS)
-                .add(ModItems.PAD_WRENCH.get());
+                .add(ModItems.PAD_WRENCH.get())
+                .add(ModItems.UMBRITE_SWORD.get())
+                .add(ModItems.UMBRITE_PICKAXE.get())
+                .add(ModItems.UMBRITE_AXE.get())
+                .add(ModItems.UMBRITE_SHOVEL.get())
+                .add(ModItems.UMBRITE_HOE.get());
+
+        tag(ItemTags.SWORDS).add(ModItems.UMBRITE_SWORD.get());
+        tag(ItemTags.PICKAXES).add(ModItems.UMBRITE_PICKAXE.get());
+        tag(ItemTags.AXES).add(ModItems.UMBRITE_AXE.get());
+        tag(ItemTags.SHOVELS).add(ModItems.UMBRITE_SHOVEL.get());
+        tag(ItemTags.HOES).add(ModItems.UMBRITE_HOE.get());
     }
 }
