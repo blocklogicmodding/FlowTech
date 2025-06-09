@@ -57,7 +57,7 @@ public class FlowtechCollectorBlockEntity extends BlockEntity implements MenuPro
     }
 
     private int tickCounter = 0;
-    private static final int COLLECTION_INTERVAL = 100;
+    private static final int COLLECTION_INTERVAL = 5;
 
     public final ItemStackHandler moduleSlots = new ItemStackHandler(4) {
         @Override
