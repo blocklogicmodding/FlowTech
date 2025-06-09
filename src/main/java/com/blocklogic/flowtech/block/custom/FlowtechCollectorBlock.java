@@ -127,8 +127,7 @@ public class FlowtechCollectorBlock extends BaseEntityBlock {
             // Drop the item with saved data
             popResource(level, pos, stack);
 
-            // Prevent normal drops by clearing the block entity data
-            collector.clearContents();
+            // DON'T clear contents here - let onRemove handle the dropping
         }
 
         return super.playerWillDestroy(level, pos, state, player);

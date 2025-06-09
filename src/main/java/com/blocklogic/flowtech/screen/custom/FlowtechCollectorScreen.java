@@ -134,6 +134,58 @@ public class FlowtechCollectorScreen extends AbstractContainerScreen<FlowtechCol
         }
     }
 
+    // Convert raw XP to player level
+    private int xpToLevel(int xp) {
+        if (xp < 0) return 0;
+
+        int level = 0;
+        int remaining = xp;
+
+        while (remaining > 0) {
+            int xpForNextLevel = getXpNeededForLevel(level);
+            if (remaining >= xpForNextLevel) {
+                remaining -= xpForNextLevel;
+                level++;
+            } else {
+                break;
+            }
+        }
+        return level;
+    }
+
+    // Get XP needed to go from level to level+1
+    private int getXpNeededForLevel(int level) {
+        if (level >= 30) {
+            return 112 + (level - 30) * 9;
+        } else if (level >= 16) {
+            return 37 + (level - 15) * 5;
+        } else {
+            return 7 + level * 2;
+        }
+    }
+
+    // Convert player level to total XP points
+    private int levelToXp(int level) {
+        if (level <= 0) return 0;
+
+        int totalXp = 0;
+        for (int i = 0; i < level; i++) {
+            totalXp += getXpNeededForLevel(i);
+        }
+        return totalXp;
+    }
+
+    // Get partial progress through current level (0.0 to 1.0)
+    private float getLevelProgress(int xp) {
+        int level = xpToLevel(xp);
+        int xpForCurrentLevel = levelToXp(level);
+        int xpForNextLevel = getXpNeededForLevel(level);
+        int progressXp = xp - xpForCurrentLevel;
+
+        if (xpForNextLevel == 0) return 0.0f;
+        return (float) progressXp / xpForNextLevel;
+    }
+
     @Override
     protected void init() {
         super.init();
@@ -144,12 +196,12 @@ public class FlowtechCollectorScreen extends AbstractContainerScreen<FlowtechCol
         this.clearWidgets();
 
         // Initialize XP Input Field
-        this.xpInputField = new EditBox(this.font, leftPos + 9, topPos + 110, 39, 8, Component.translatable("gui.flowtech.collector.xp_input"));
-        this.xpInputField.setMaxLength(6);
+        this.xpInputField = new EditBox(this.font, leftPos + 9, topPos + 110, 39, 8, Component.translatable("gui.flowtech.collector.xp_input_levels"));
+        this.xpInputField.setMaxLength(4); // Reduced since we're using levels now
         this.xpInputField.setValue("0");
         this.xpInputField.setBordered(false);
         this.xpInputField.setTextColor(0xFFFFFF);
-        this.xpInputField.setTooltip(Tooltip.create(Component.translatable("tooltip.flowtech.collector.xp_input")));
+        this.xpInputField.setTooltip(Tooltip.create(Component.translatable("tooltip.flowtech.collector.xp_input_levels")));
         this.addRenderableWidget(this.xpInputField);
 
         // Side Config Buttons
@@ -354,15 +406,18 @@ public class FlowtechCollectorScreen extends AbstractContainerScreen<FlowtechCol
 
     private void withdrawXP() {
         try {
-            int amount = Integer.parseInt(xpInputField.getValue());
-            if (amount > 0 && amount <= storedXP) {
-                // Send packet to server
-                PacketDistributor.sendToServer(new CollectorXpPacket(
-                        menu.blockEntity.getBlockPos(), CollectorXpPacket.XpAction.WITHDRAW, amount));
+            int levels = Integer.parseInt(xpInputField.getValue());
+            if (levels > 0) {
+                int xpAmount = levelToXp(levels);
+                if (xpAmount <= storedXP) {
+                    // Send packet to server
+                    PacketDistributor.sendToServer(new CollectorXpPacket(
+                            menu.blockEntity.getBlockPos(), CollectorXpPacket.XpAction.WITHDRAW, xpAmount));
 
-                // Update local state for immediate feedback
-                storedXP -= amount;
-                xpInputField.setValue("0");
+                    // Update local state for immediate feedback
+                    storedXP -= xpAmount;
+                    xpInputField.setValue("0");
+                }
             }
         } catch (NumberFormatException e) {
             xpInputField.setValue("0");
@@ -371,14 +426,15 @@ public class FlowtechCollectorScreen extends AbstractContainerScreen<FlowtechCol
 
     private void depositXP() {
         try {
-            int amount = Integer.parseInt(xpInputField.getValue());
-            if (amount > 0) {
+            int levels = Integer.parseInt(xpInputField.getValue());
+            if (levels > 0) {
+                int xpAmount = levelToXp(levels);
                 // Send packet to server
                 PacketDistributor.sendToServer(new CollectorXpPacket(
-                        menu.blockEntity.getBlockPos(), CollectorXpPacket.XpAction.DEPOSIT, amount));
+                        menu.blockEntity.getBlockPos(), CollectorXpPacket.XpAction.DEPOSIT, xpAmount));
 
                 // Update local state for immediate feedback
-                storedXP = Math.min(maxStoredXP, storedXP + amount);
+                storedXP = Math.min(maxStoredXP, storedXP + xpAmount);
                 xpInputField.setValue("0");
             }
         } catch (NumberFormatException e) {
@@ -400,7 +456,7 @@ public class FlowtechCollectorScreen extends AbstractContainerScreen<FlowtechCol
         // Render custom elements
         renderOffsetValues(guiGraphics, x, y);
         renderXPCollectionToggle(guiGraphics, x, y);
-        renderXPBar(guiGraphics, x, y);
+        renderXPDisplay(guiGraphics, x, y);
     }
 
     private void renderOffsetValues(GuiGraphics guiGraphics, int x, int y) {
@@ -447,11 +503,25 @@ public class FlowtechCollectorScreen extends AbstractContainerScreen<FlowtechCol
         guiGraphics.blitSprite(toggleHandle, handleX, handleY, 6, 10);
     }
 
-    private void renderXPBar(GuiGraphics guiGraphics, int x, int y) {
-        if (storedXP > 0) {
-            int fillWidth = (int) ((218.0f * storedXP) / maxStoredXP);
-            guiGraphics.fill(x + 8, y + 125, x + 8 + fillWidth, y + 133, 0xFF00FF00);
-        }
+    private void renderXPDisplay(GuiGraphics guiGraphics, int x, int y) {
+        var poseStack = guiGraphics.pose();
+        float scale = 0.65f;
+
+        poseStack.pushPose();
+        poseStack.scale(scale, scale, 1.0f);
+
+        // Convert to levels
+        int storedLevels = xpToLevel(storedXP);
+
+        // Format: "Level 47"
+        String xpDisplayText = String.format("Levels Stored: %,d", storedLevels);
+
+        guiGraphics.drawString(this.font, xpDisplayText,
+                (int)((x + 8) / scale),
+                (int)((y + 125) / scale),
+                0x000000, false);
+
+        poseStack.popPose();
     }
 
     @Override
@@ -475,6 +545,8 @@ public class FlowtechCollectorScreen extends AbstractContainerScreen<FlowtechCol
 
     @Override
     public void render(GuiGraphics pGuiGraphics, int mouseX, int mouseY, float partialTick) {
+        // Force sync before rendering to ensure latest data is displayed
+        syncFromBlockEntity();
         super.render(pGuiGraphics, mouseX, mouseY, partialTick);
         renderCustomTooltips(pGuiGraphics, mouseX, mouseY);
         this.renderTooltip(pGuiGraphics, mouseX, mouseY);
@@ -489,6 +561,27 @@ public class FlowtechCollectorScreen extends AbstractContainerScreen<FlowtechCol
             Component tooltipText = xpCollectionEnabled ?
                     Component.translatable("tooltip.flowtech.collector.xp_collection.enabled") :
                     Component.translatable("tooltip.flowtech.collector.xp_collection.disabled");
+            guiGraphics.renderTooltip(this.font, tooltipText, mouseX, mouseY);
+        }
+
+        // XP Display tooltip (scaled coordinates)
+        float scale = 0.65f;
+        int scaledX = (int)((x + 8) / scale);
+        int scaledY = (int)((y + 121) / scale);
+        int displayWidth = this.font.width(getXpDisplayText()) * (int)(scale * 100) / 100;
+        int displayHeight = (int)(this.font.lineHeight * scale);
+
+        // Convert back to screen coordinates for hit testing
+        int actualX = x + 20;
+        int actualY = y + 127;
+        int actualWidth = (int)(displayWidth * scale);
+        int actualHeight = displayHeight;
+
+        if (mouseX >= actualX && mouseX <= actualX + actualWidth &&
+                mouseY >= actualY && mouseY <= actualY + actualHeight) {
+
+            Component tooltipText = Component.translatable("tooltip.flowtech.collector.xp_display",
+                    String.format("%,d", storedXP));
             guiGraphics.renderTooltip(this.font, tooltipText, mouseX, mouseY);
         }
 
@@ -507,6 +600,11 @@ public class FlowtechCollectorScreen extends AbstractContainerScreen<FlowtechCol
             Component tooltipText = Component.translatable("tooltip.flowtech.collector.offset.east_west.value", eastWestOffset);
             guiGraphics.renderTooltip(this.font, tooltipText, mouseX, mouseY);
         }
+    }
+
+    private String getXpDisplayText() {
+        int storedLevels = xpToLevel(storedXP);
+        return String.format("Level %,d", storedLevels);
     }
 
     @Override

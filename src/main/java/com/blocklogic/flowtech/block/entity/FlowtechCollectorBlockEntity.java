@@ -116,16 +116,26 @@ public class FlowtechCollectorBlockEntity extends BlockEntity implements MenuPro
             return outputInventory; // Internal access gets full inventory
         }
 
-        // Check if this side is configured for extraction
+        // Get the block's facing direction
+        Direction blockFacing = getBlockState().getValue(FlowtechCollectorBlock.FACING);
+
+        // Map absolute direction to relative side based on block facing
         boolean sideActive = switch (direction) {
             case UP -> topSideActive;
             case DOWN -> bottomSideActive;
-            case NORTH -> getBlockState().getValue(FlowtechCollectorBlock.FACING) == Direction.NORTH ? frontSideActive : backSideActive;
-            case SOUTH -> getBlockState().getValue(FlowtechCollectorBlock.FACING) == Direction.SOUTH ? frontSideActive : backSideActive;
-            case EAST -> getBlockState().getValue(FlowtechCollectorBlock.FACING) == Direction.EAST ? frontSideActive :
-                    (getBlockState().getValue(FlowtechCollectorBlock.FACING) == Direction.WEST ? backSideActive : eastSideActive);
-            case WEST -> getBlockState().getValue(FlowtechCollectorBlock.FACING) == Direction.WEST ? frontSideActive :
-                    (getBlockState().getValue(FlowtechCollectorBlock.FACING) == Direction.EAST ? backSideActive : westSideActive);
+            case NORTH, SOUTH, EAST, WEST -> {
+                if (direction == blockFacing) {
+                    yield frontSideActive; // This direction is the front of the block
+                } else if (direction == blockFacing.getOpposite()) {
+                    yield backSideActive; // This direction is the back of the block
+                } else if (direction == blockFacing.getClockWise()) {
+                    yield eastSideActive; // Relative east side
+                } else if (direction == blockFacing.getCounterClockWise()) {
+                    yield westSideActive; // Relative west side
+                } else {
+                    yield false;
+                }
+            }
         };
 
         if (sideActive) {

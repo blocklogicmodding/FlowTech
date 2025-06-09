@@ -39,9 +39,9 @@
 
   "gui.flowtech.collector": "Collector",
   "gui.flowtech.controller": "Controller",
-  "gui.flowtech.collector.xp_input": "XP Amount",
+  "gui.flowtech.collector.xp_input_levels": "Levels",
 
-  "tooltip.flowtech.collector.xp_input": "Enter the amount of XP to withdraw or deposit",
+  "tooltip.flowtech.collector.xp_input_levels": "Enter the number of levels to withdraw or deposit",
 
   "tooltip.flowtech.collector.side_config.top": "Toggle extraction from the top side",
   "tooltip.flowtech.collector.side_config.east": "Toggle extraction from the east side",
@@ -64,9 +64,11 @@
 
   "tooltip.flowtech.collector.wireframe_toggle": "Toggle pickup zone wireframe visibility",
 
-  "tooltip.flowtech.collector.xp.withdraw": "Withdraw XP from the collector",
-  "tooltip.flowtech.collector.xp.deposit": "Deposit XP into the collector",
+  "tooltip.flowtech.collector.xp.withdraw": "Withdraw levels from the collector",
+  "tooltip.flowtech.collector.xp.deposit": "Deposit levels into the collector",
 
   "tooltip.flowtech.collector.xp_collection.enabled": "XP Collection: Enabled",
-  "tooltip.flowtech.collector.xp_collection.disabled": "XP Collection: Disabled"
+  "tooltip.flowtech.collector.xp_collection.disabled": "XP Collection: Disabled",
+
+  "tooltip.flowtech.collector.xp_display": "XP: %s"
 }
