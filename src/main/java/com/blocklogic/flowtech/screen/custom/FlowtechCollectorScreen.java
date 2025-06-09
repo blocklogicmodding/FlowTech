@@ -82,6 +82,21 @@ public class FlowtechCollectorScreen extends AbstractContainerScreen<FlowtechCol
             ResourceLocation.fromNamespaceAndPath(FlowTech.MODID, "deposit_xp_btn_hover")
     );
 
+    // XP ALL Button Sprites
+    private static final WidgetSprites WITHDRAW_ALL_XP_SPRITES = new WidgetSprites(
+            ResourceLocation.fromNamespaceAndPath(FlowTech.MODID, "withdraw_all_xp_btn"),
+            ResourceLocation.fromNamespaceAndPath(FlowTech.MODID, "withdraw_all_xp_btn"),
+            ResourceLocation.fromNamespaceAndPath(FlowTech.MODID, "withdraw_all_xp_btn_hover"),
+            ResourceLocation.fromNamespaceAndPath(FlowTech.MODID, "withdraw_all_xp_btn_hover")
+    );
+
+    private static final WidgetSprites DEPOSIT_ALL_XP_SPRITES = new WidgetSprites(
+            ResourceLocation.fromNamespaceAndPath(FlowTech.MODID, "deposit_all_xp_btn"),
+            ResourceLocation.fromNamespaceAndPath(FlowTech.MODID, "deposit_all_xp_btn"),
+            ResourceLocation.fromNamespaceAndPath(FlowTech.MODID, "deposit_all_xp_btn_hover"),
+            ResourceLocation.fromNamespaceAndPath(FlowTech.MODID, "deposit_all_xp_btn_hover")
+    );
+
     // UI Components
     private EditBox xpInputField;
 
@@ -308,6 +323,17 @@ public class FlowtechCollectorScreen extends AbstractContainerScreen<FlowtechCol
                 button -> depositXP());
         depositButton.setTooltip(Tooltip.create(Component.translatable("tooltip.flowtech.collector.xp.deposit")));
         this.addRenderableWidget(depositButton);
+
+        // New Withdraw ALL and Deposit ALL buttons
+        ImageButton withdrawAllButton = new ImageButton(leftPos + 77, topPos + 109, 10, 10, WITHDRAW_ALL_XP_SPRITES,
+                button -> withdrawAllXP());
+        withdrawAllButton.setTooltip(Tooltip.create(Component.translatable("tooltip.flowtech.collector.xp.withdraw_all")));
+        this.addRenderableWidget(withdrawAllButton);
+
+        ImageButton depositAllButton = new ImageButton(leftPos + 90, topPos + 109, 10, 10, DEPOSIT_ALL_XP_SPRITES,
+                button -> depositAllXP());
+        depositAllButton.setTooltip(Tooltip.create(Component.translatable("tooltip.flowtech.collector.xp.deposit_all")));
+        this.addRenderableWidget(depositAllButton);
     }
 
     private WidgetSprites createConditionalSprites(WidgetSprites baseSprites, java.util.function.Supplier<Boolean> isActive) {
@@ -442,6 +468,32 @@ public class FlowtechCollectorScreen extends AbstractContainerScreen<FlowtechCol
         }
     }
 
+    private void withdrawAllXP() {
+        if (storedXP > 0) {
+            // Send packet to server to withdraw all stored XP
+            PacketDistributor.sendToServer(new CollectorXpPacket(
+                    menu.blockEntity.getBlockPos(), CollectorXpPacket.XpAction.WITHDRAW, storedXP));
+
+            // Update local state for immediate feedback
+            storedXP = 0;
+            xpInputField.setValue("0");
+        }
+    }
+
+    private void depositAllXP() {
+        // Get player's current total XP
+        int playerXP = minecraft.player.totalExperience;
+        if (playerXP > 0) {
+            // Send packet to server to deposit all player XP
+            PacketDistributor.sendToServer(new CollectorXpPacket(
+                    menu.blockEntity.getBlockPos(), CollectorXpPacket.XpAction.DEPOSIT, playerXP));
+
+            // Update local state for immediate feedback
+            storedXP = Math.min(maxStoredXP, storedXP + playerXP);
+            xpInputField.setValue("0");
+        }
+    }
+
     @Override
     protected void renderBg(GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
@@ -567,13 +619,13 @@ public class FlowtechCollectorScreen extends AbstractContainerScreen<FlowtechCol
         // XP Display tooltip (scaled coordinates)
         float scale = 0.65f;
         int scaledX = (int)((x + 8) / scale);
-        int scaledY = (int)((y + 121) / scale);
+        int scaledY = (int)((y + 125) / scale);
         int displayWidth = this.font.width(getXpDisplayText()) * (int)(scale * 100) / 100;
         int displayHeight = (int)(this.font.lineHeight * scale);
 
         // Convert back to screen coordinates for hit testing
-        int actualX = x + 20;
-        int actualY = y + 127;
+        int actualX = x + 8;
+        int actualY = y + 125;
         int actualWidth = (int)(displayWidth * scale);
         int actualHeight = displayHeight;
 
@@ -604,7 +656,7 @@ public class FlowtechCollectorScreen extends AbstractContainerScreen<FlowtechCol
 
     private String getXpDisplayText() {
         int storedLevels = xpToLevel(storedXP);
-        return String.format("Level %,d", storedLevels);
+        return String.format("Levels Stored: %,d", storedLevels);
     }
 
     @Override

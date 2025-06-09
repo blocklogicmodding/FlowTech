@@ -64,8 +64,10 @@
 
   "tooltip.flowtech.collector.wireframe_toggle": "Toggle pickup zone wireframe visibility",
 
-  "tooltip.flowtech.collector.xp.withdraw": "Withdraw levels from the collector",
-  "tooltip.flowtech.collector.xp.deposit": "Deposit levels into the collector",
+  "tooltip.flowtech.collector.xp.withdraw": "Withdraw levels from the Collector",
+  "tooltip.flowtech.collector.xp.deposit": "Deposit levels into the Collector",
+  "tooltip.flowtech.collector.xp.withdraw_all": "Withdraw all stored XP from the Collector",
+  "tooltip.flowtech.collector.xp.deposit_all": "Deposit all your XP into the Collector",
 
   "tooltip.flowtech.collector.xp_collection.enabled": "XP Collection: Enabled",
   "tooltip.flowtech.collector.xp_collection.disabled": "XP Collection: Disabled",
