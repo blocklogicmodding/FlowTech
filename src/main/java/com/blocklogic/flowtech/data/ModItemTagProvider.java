@@ -1,4 +1,4 @@
-package com.blocklogic.flowtech.datagen;
+package com.blocklogic.flowtech.data;
 
 import com.blocklogic.flowtech.FlowTech;
 import com.blocklogic.flowtech.block.ModBlocks;
@@ -54,8 +54,7 @@ public class ModItemTagProvider extends ItemTagsProvider {
                 .add(ModItems.SHARPNESS_MODULE.get())
                 .add(ModItems.SMITE_MODULE.get())
                 .add(ModItems.LOOTING_MODULE.get())
-                .add(ModItems.STACK_SIZE_MODULE.get())
-                .add(ModItems.PICKUP_ZONE_SIZE_MODULE.get())
+                .add(ModItems.COLLECTION_RADIUS_INCREASE_MODULE.get())
                 .add(ModItems.VOID_FILTER_MODULE.get());
 
         tag(ModTags.Items.FLOWTECH_TOOLS)

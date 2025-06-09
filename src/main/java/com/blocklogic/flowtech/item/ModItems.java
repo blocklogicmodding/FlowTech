@@ -24,10 +24,7 @@ public class ModItems {
     public static final DeferredItem<Item> SMITE_MODULE = ITEMS.register("smite_module",
             () -> new Item(new Item.Properties()));
 
-    public static final DeferredItem<Item> STACK_SIZE_MODULE = ITEMS.register("stack_size_increase_module",
-            () -> new Item(new Item.Properties()));
-
-    public static final DeferredItem<Item> PICKUP_ZONE_SIZE_MODULE = ITEMS.register("pickup_zone_size_increase_module",
+    public static final DeferredItem<Item> COLLECTION_RADIUS_INCREASE_MODULE = ITEMS.register("collection_radius_increase_module",
             () -> new Item(new Item.Properties()));
 
     public static final DeferredItem<Item> VOID_FILTER_MODULE = ITEMS.register("void_filter_module",

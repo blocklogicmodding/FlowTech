@@ -1,4 +1,4 @@
-package com.blocklogic.flowtech.datagen;
+package com.blocklogic.flowtech.data;
 
 import com.blocklogic.flowtech.FlowTech;
 import com.blocklogic.flowtech.item.ModItems;
@@ -21,8 +21,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         basicItem(ModItems.SHARPNESS_MODULE.get());
         basicItem(ModItems.SMITE_MODULE.get());
         basicItem(ModItems.LOOTING_MODULE.get());
-        basicItem(ModItems.STACK_SIZE_MODULE.get());
-        basicItem(ModItems.PICKUP_ZONE_SIZE_MODULE.get());
+        basicItem(ModItems.COLLECTION_RADIUS_INCREASE_MODULE.get());
         basicItem(ModItems.VOID_FILTER_MODULE.get());
         basicItem(ModItems.PAD_WRENCH.get());
         basicItem(ModItems.RAW_UMBRITE.get());

@@ -1,4 +1,4 @@
-package com.blocklogic.flowtech.datagen;
+package com.blocklogic.flowtech.data;
 
 import com.blocklogic.flowtech.block.ModBlocks;
 import com.blocklogic.flowtech.item.ModItems;

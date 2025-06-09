@@ -1,8 +1,8 @@
-// 1.21.1	2025-06-09T14:51:41.2777516	Tags for minecraft:item mod id flowtech
+// 1.21.1	2025-06-09T20:31:46.5115719	Tags for minecraft:item mod id flowtech
 1bffd8644842c5a99e87d8b87e58dce9fd98752f data/c/tags/item/ingots.json
 80569f23f5eb46979180327d05958f7cdbbc8f0b data/c/tags/item/ores.json
 170a514aec7c5a38578a9ec028696b68bd749991 data/c/tags/item/raw_materials.json
-e545f05433a574ce6fd9304c8fb0fb89b88a55e6 data/flowtech/tags/item/flowtech_modules.json
+874831ce160f458a014464893703c6210cf8d585 data/flowtech/tags/item/flowtech_modules.json
 5a91b258387fbc47b4b78f5d0eb930cf31a87d4e data/flowtech/tags/item/flowtech_tools.json
 1bffd8644842c5a99e87d8b87e58dce9fd98752f data/flowtech/tags/item/ingots/umbrite.json
 62f1e89591fbd8c0e51f94e49db63089f6950a78 data/flowtech/tags/item/nuggets/umbrite.json

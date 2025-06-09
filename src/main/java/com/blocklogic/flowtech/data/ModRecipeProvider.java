@@ -1,4 +1,4 @@
-package com.blocklogic.flowtech.datagen;
+package com.blocklogic.flowtech.data;
 
 import com.blocklogic.flowtech.FlowTech;
 import com.blocklogic.flowtech.block.ModBlocks;
@@ -210,17 +210,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .unlockedBy("has_hopper", has(Items.HOPPER))
                 .save(recipeOutput);
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.STACK_SIZE_MODULE.get())
-                .pattern("UBU")
-                .pattern("BCB")
-                .pattern("UBU")
-                .define('U', ModItems.UMBRITE_INGOT.get())
-                .define('B', ModBlocks.UMBRITE_BLOCK.get())
-                .define('C', Items.ENDER_CHEST)
-                .unlockedBy("has_ender_chest", has(Items.ENDER_CHEST))
-                .save(recipeOutput);
-
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.PICKUP_ZONE_SIZE_MODULE.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.COLLECTION_RADIUS_INCREASE_MODULE.get())
                 .pattern("UEU")
                 .pattern("ERE")
                 .pattern("UEU")

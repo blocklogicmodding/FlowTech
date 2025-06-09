@@ -1,4 +1,4 @@
-package com.blocklogic.flowtech.datagen;
+package com.blocklogic.flowtech.data;
 
 import com.blocklogic.flowtech.FlowTech;
 import net.minecraft.core.HolderLookup;

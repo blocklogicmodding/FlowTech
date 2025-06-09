@@ -36,8 +36,7 @@ public class ModCreativeTab {
                         output.accept(ModItems.SHARPNESS_MODULE);
                         output.accept(ModItems.SMITE_MODULE);
                         output.accept(ModItems.LOOTING_MODULE);
-                        output.accept(ModItems.STACK_SIZE_MODULE);
-                        output.accept(ModItems.PICKUP_ZONE_SIZE_MODULE);
+                        output.accept(ModItems.COLLECTION_RADIUS_INCREASE_MODULE);
                         output.accept(ModItems.VOID_FILTER_MODULE);
                         output.accept(ModItems.PAD_WRENCH);
                         output.accept(ModItems.RAW_UMBRITE);

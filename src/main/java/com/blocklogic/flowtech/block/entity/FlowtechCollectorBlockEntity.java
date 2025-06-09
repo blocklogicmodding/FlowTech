@@ -1,7 +1,6 @@
 package com.blocklogic.flowtech.block.entity;
 
 import com.blocklogic.flowtech.block.custom.FlowtechCollectorBlock;
-import com.blocklogic.flowtech.network.CollectorInventorySyncPacket;
 import com.blocklogic.flowtech.screen.custom.FlowtechCollectorMenu;
 import com.mojang.logging.LogUtils;
 import net.minecraft.core.BlockPos;
@@ -13,8 +12,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
@@ -34,7 +31,6 @@ import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import net.neoforged.neoforge.items.wrapper.EmptyItemHandler;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.slf4j.Logger;
 
 import java.util.List;
@@ -49,34 +45,12 @@ public class FlowtechCollectorBlockEntity extends BlockEntity implements MenuPro
     private int tickCounter = 0;
     private static final int COLLECTION_INTERVAL = 10;
 
-    public void syncInventoryToClients() {
-        if (level != null && !level.isClientSide()) {
-            try {
-                CompoundTag inventoryTag = outputInventory.serializeNBT(level.registryAccess());
-
-                // Send to all players with this container open
-                if (level instanceof ServerLevel serverLevel) {
-                    for (ServerPlayer player : serverLevel.players()) {
-                        if (player.containerMenu instanceof FlowtechCollectorMenu menu &&
-                                menu.blockEntity == this) {
-                            PacketDistributor.sendToPlayer(player, new CollectorInventorySyncPacket(
-                                    getBlockPos(), inventoryTag, getSlotCapacity()));
-                        }
-                    }
-                }
-            } catch (Exception e) {
-                LOGGER.error("Failed to sync inventory for collector at {}", getBlockPos(), e);
-            }
-        }
-    }
-
-    public final ItemStackHandler moduleSlots = new ItemStackHandler(5) {
+    public final ItemStackHandler moduleSlots = new ItemStackHandler(4) {
         @Override
         public int getSlotLimit(int slot) {
             return switch (slot) {
                 case 0 -> 8;
-                case 1 -> 10;
-                case 2, 3, 4 -> 1;
+                case 1, 2, 3 -> 1;
                 default -> 1;
             };
         }
@@ -87,7 +61,6 @@ public class FlowtechCollectorBlockEntity extends BlockEntity implements MenuPro
             if (!level.isClientSide()) {
                 try {
                     level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
-                    syncInventoryToClients(); // Add this line
                 } catch (Exception e) {
                     LOGGER.error("Failed to send block update for collector at {}", getBlockPos(), e);
                 }
@@ -112,37 +85,58 @@ public class FlowtechCollectorBlockEntity extends BlockEntity implements MenuPro
 
     public final ItemStackHandler outputInventory = new ItemStackHandler(35) {
         @Override
-        public int getSlotLimit(int slot) {
-            return getSlotCapacity(); // Use dynamic capacity
+        protected int getStackLimit(int slot, ItemStack stack) {
+            // Allow full stacks - use the item's natural max stack size (typically 64)
+            return stack.getMaxStackSize();
         }
 
         @Override
         public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
-            return stack;
+            if (stack.isEmpty()) return ItemStack.EMPTY;
+
+            int limit = getStackLimit(slot, stack);
+            ItemStack existing = getStackInSlot(slot);
+
+            if (!existing.isEmpty() && !ItemStack.isSameItemSameComponents(stack, existing)) {
+                return stack;
+            }
+
+            int existingCount = existing.getCount();
+            int canInsert = limit - existingCount;
+            if (canInsert <= 0) return stack;
+
+            int toInsert = Math.min(stack.getCount(), canInsert);
+
+            if (!simulate) {
+                if (existing.isEmpty()) {
+                    setStackInSlot(slot, stack.copyWithCount(toInsert));
+                } else {
+                    existing.grow(toInsert);
+                }
+            }
+
+            return toInsert == stack.getCount() ? ItemStack.EMPTY : stack.copyWithCount(stack.getCount() - toInsert);
         }
 
         @Override
         protected void onContentsChanged(int slot) {
             setChanged();
             if (!level.isClientSide()) {
-                try {
-                    level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
-                    syncInventoryToClients(); // Add this line
-                } catch (Exception e) {
-                    LOGGER.error("Failed to send block update for collector at {}", getBlockPos(), e);
-                }
+                // ONLY send block update - NO custom sync packets!
+                level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
             }
         }
 
         @Override
         public boolean isItemValid(int slot, ItemStack stack) {
+            // Allow items to be inserted into output inventory
             if (stack.isEmpty()) {
                 return false;
             }
 
             try {
                 stack.save(level.registryAccess());
-                return false;
+                return true; // Changed from false to true to allow item insertion
             } catch (Exception e) {
                 LOGGER.warn("Rejected invalid item {} for collector output slot {}", stack, slot, e);
                 return false;
@@ -345,12 +339,6 @@ public class FlowtechCollectorBlockEntity extends BlockEntity implements MenuPro
         return baseRange + modules;
     }
 
-    public int getSlotCapacity() {
-        int baseCapacity = 64;
-        int modules = moduleSlots.getStackInSlot(1).getCount();
-        return baseCapacity + (modules * 64);
-    }
-
     public void clearContents() {
         for (int i = 0; i < outputInventory.getSlots(); i++) {
             outputInventory.setStackInSlot(i, ItemStack.EMPTY);
@@ -377,7 +365,7 @@ public class FlowtechCollectorBlockEntity extends BlockEntity implements MenuPro
             tag.put("moduleSlots", moduleSlots.serializeNBT(registries));
         } catch (Exception e) {
             LOGGER.error("Failed to serialize module slots for collector at {}", getBlockPos(), e);
-            tag.put("moduleSlots", new ItemStackHandler(5).serializeNBT(registries));
+            tag.put("moduleSlots", new ItemStackHandler(4).serializeNBT(registries));
         }
 
         try {
@@ -541,9 +529,9 @@ public class FlowtechCollectorBlockEntity extends BlockEntity implements MenuPro
     }
 
     private boolean canCollectItem(ItemStack stack) {
-        ItemStack filter1 = moduleSlots.getStackInSlot(2);
-        ItemStack filter2 = moduleSlots.getStackInSlot(3);
-        ItemStack filter3 = moduleSlots.getStackInSlot(4);
+        ItemStack filter1 = moduleSlots.getStackInSlot(1);
+        ItemStack filter2 = moduleSlots.getStackInSlot(2);
+        ItemStack filter3 = moduleSlots.getStackInSlot(3);
 
         if (filter1.isEmpty() && filter2.isEmpty() && filter3.isEmpty()) {
             return true;
@@ -553,35 +541,10 @@ public class FlowtechCollectorBlockEntity extends BlockEntity implements MenuPro
     }
 
     private ItemStack insertIntoInventory(ItemStack stack) {
-        int slotCapacity = getSlotCapacity();
-
         for (int i = 0; i < outputInventory.getSlots(); i++) {
-            ItemStack slotStack = outputInventory.getStackInSlot(i);
-
-            if (slotStack.isEmpty()) {
-                int insertAmount = Math.min(stack.getCount(), slotCapacity);
-                ItemStack toInsert = stack.copy();
-                toInsert.setCount(insertAmount);
-                outputInventory.setStackInSlot(i, toInsert);
-
-                stack.shrink(insertAmount);
-                if (stack.isEmpty()) {
-                    return ItemStack.EMPTY;
-                }
-            } else if (ItemStack.isSameItemSameComponents(stack, slotStack)) {
-                int spaceLeft = slotCapacity - slotStack.getCount();
-                if (spaceLeft > 0) {
-                    int insertAmount = Math.min(stack.getCount(), spaceLeft);
-                    slotStack.grow(insertAmount);
-                    stack.shrink(insertAmount);
-
-                    if (stack.isEmpty()) {
-                        return ItemStack.EMPTY;
-                    }
-                }
-            }
+            stack = outputInventory.insertItem(i, stack, false);
+            if (stack.isEmpty()) break;
         }
-
         return stack;
     }
 

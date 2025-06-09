@@ -25,11 +25,5 @@ public class ModNetwork {
                 CollectorXpPacket.STREAM_CODEC,
                 CollectorXpPacket::handle
         );
-
-        registrar.playToClient(
-                CollectorInventorySyncPacket.TYPE,
-                CollectorInventorySyncPacket.STREAM_CODEC,
-                CollectorInventorySyncPacket::handle
-        );
     }
 }

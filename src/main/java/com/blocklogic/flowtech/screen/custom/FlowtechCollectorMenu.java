@@ -10,9 +10,11 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.SlotItemHandler;
 
 public class FlowtechCollectorMenu extends AbstractContainerMenu {
@@ -31,11 +33,10 @@ public class FlowtechCollectorMenu extends AbstractContainerMenu {
         addPlayerInventory(inv);
         addPlayerHotbar(inv);
 
-        this.addSlot(new ModuleSlot(this.blockEntity.moduleSlots, 0, 152, 15, ModItems.PICKUP_ZONE_SIZE_MODULE.get()));
-        this.addSlot(new ModuleSlot(this.blockEntity.moduleSlots, 1, 152, 33, ModItems.STACK_SIZE_MODULE.get()));
-        this.addSlot(new ModuleSlot(this.blockEntity.moduleSlots, 2, 152, 51, ModItems.VOID_FILTER_MODULE.get()));
-        this.addSlot(new ModuleSlot(this.blockEntity.moduleSlots, 3, 152, 69, ModItems.VOID_FILTER_MODULE.get()));
-        this.addSlot(new ModuleSlot(this.blockEntity.moduleSlots, 4, 152, 87, ModItems.VOID_FILTER_MODULE.get()));
+        this.addSlot(new ModuleSlot(this.blockEntity.moduleSlots, 0, 152, 15, ModItems.COLLECTION_RADIUS_INCREASE_MODULE.get()));
+        this.addSlot(new ModuleSlot(this.blockEntity.moduleSlots, 1, 152, 51, ModItems.VOID_FILTER_MODULE.get()));
+        this.addSlot(new ModuleSlot(this.blockEntity.moduleSlots, 2, 152, 69, ModItems.VOID_FILTER_MODULE.get()));
+        this.addSlot(new ModuleSlot(this.blockEntity.moduleSlots, 3, 152, 87, ModItems.VOID_FILTER_MODULE.get()));
 
         int slotIndex = 0;
         for (int row = 0; row < 5; row++) {
@@ -51,7 +52,7 @@ public class FlowtechCollectorMenu extends AbstractContainerMenu {
     private static class ModuleSlot extends SlotItemHandler {
         private final net.minecraft.world.item.Item allowedModule;
 
-        public ModuleSlot(net.neoforged.neoforge.items.IItemHandler itemHandler, int index, int xPosition, int yPosition, net.minecraft.world.item.Item allowedModule) {
+        public ModuleSlot(IItemHandler itemHandler, int index, int xPosition, int yPosition, Item allowedModule) {
             super(itemHandler, index, xPosition, yPosition);
             this.allowedModule = allowedModule;
         }
@@ -62,22 +63,27 @@ public class FlowtechCollectorMenu extends AbstractContainerMenu {
         }
     }
 
-    private static class OutputSlot extends SlotItemHandler {
+    public static class OutputSlot extends SlotItemHandler {
         private final FlowtechCollectorBlockEntity collector;
 
-        public OutputSlot(net.neoforged.neoforge.items.IItemHandler itemHandler, int index, int xPosition, int yPosition, FlowtechCollectorBlockEntity collector) {
+        public OutputSlot(IItemHandler itemHandler, int index, int xPosition, int yPosition, FlowtechCollectorBlockEntity collector) {
             super(itemHandler, index, xPosition, yPosition);
             this.collector = collector;
         }
 
         @Override
         public int getMaxStackSize() {
-            return collector.getSlotCapacity();
+            return getItemHandler().getSlotLimit(getSlotIndex()); // ← Use the handler's limit
+        }
+
+        @Override
+        public int getMaxStackSize(ItemStack stack) {
+            return getItemHandler().getSlotLimit(getSlotIndex()); // ← Use the handler's limit
         }
 
         @Override
         public boolean mayPlace(ItemStack stack) {
-            return false;
+            return false; // Output only
         }
     }
 
@@ -88,7 +94,7 @@ public class FlowtechCollectorMenu extends AbstractContainerMenu {
     private static final int VANILLA_SLOT_COUNT = HOTBAR_SLOT_COUNT + PLAYER_INVENTORY_SLOT_COUNT;
     private static final int VANILLA_FIRST_SLOT_INDEX = 0;
     private static final int MODULE_SLOTS_FIRST_INDEX = VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT;
-    private static final int MODULE_SLOTS_COUNT = 5;
+    private static final int MODULE_SLOTS_COUNT = 4;
     private static final int OUTPUT_SLOTS_FIRST_INDEX = MODULE_SLOTS_FIRST_INDEX + MODULE_SLOTS_COUNT;
     private static final int OUTPUT_SLOTS_COUNT = 35;
 
@@ -136,8 +142,7 @@ public class FlowtechCollectorMenu extends AbstractContainerMenu {
     }
 
     private boolean isValidModule(ItemStack stack) {
-        return stack.getItem() == ModItems.PICKUP_ZONE_SIZE_MODULE.get() ||
-                stack.getItem() == ModItems.STACK_SIZE_MODULE.get() ||
+        return stack.getItem() == ModItems.COLLECTION_RADIUS_INCREASE_MODULE.get() ||
                 stack.getItem() == ModItems.VOID_FILTER_MODULE.get();
     }
 
