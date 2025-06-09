@@ -38,6 +38,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.world.level.storage.loot.LootParams;
 
 import javax.annotation.Nullable;
+import java.util.Collections;
 import java.util.List;
 
 public class FlowtechCollectorBlock extends BaseEntityBlock {
@@ -82,6 +83,12 @@ public class FlowtechCollectorBlock extends BaseEntityBlock {
     @Override
     public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
         return new FlowtechCollectorBlockEntity(blockPos, blockState);
+    }
+
+    // Override getDrops to return empty list since we handle drops manually
+    @Override
+    protected List<ItemStack> getDrops(BlockState state, LootParams.Builder params) {
+        return Collections.emptyList();
     }
 
     @Override
