@@ -23,18 +23,11 @@ public class ModItemModelProvider extends ItemModelProvider {
         basicItem(ModItems.LOOTING_MODULE.get());
         basicItem(ModItems.STACK_SIZE_MODULE.get());
         basicItem(ModItems.PICKUP_ZONE_SIZE_MODULE.get());
-        basicItem(ModItems.ITEM_FILTER_MODULE.get());
+        basicItem(ModItems.VOID_FILTER_MODULE.get());
         basicItem(ModItems.PAD_WRENCH.get());
         basicItem(ModItems.RAW_UMBRITE.get());
         basicItem(ModItems.UMBRITE_INGOT.get());
         basicItem(ModItems.UMBRITE_NUGGET.get());
-
-        handheldItem(ModItems.UMBRITE_SWORD);
-        handheldItem(ModItems.UMBRITE_PICKAXE);
-        handheldItem(ModItems.UMBRITE_AXE);
-        handheldItem(ModItems.UMBRITE_SHOVEL);
-        handheldItem(ModItems.UMBRITE_HOE);
-        handheldItem(ModItems.UMBRITE_HAMMER);
     }
 
     private ItemModelBuilder handheldItem (DeferredItem<?> item) {

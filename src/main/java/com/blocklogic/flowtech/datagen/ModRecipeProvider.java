@@ -118,11 +118,11 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .save(recipeOutput);
 
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.FASTER_FLOW_PAD.get(), 8)
-                .pattern("DUD")
+                .pattern("GUG")
                 .pattern("UFU")
                 .pattern("SSS")
                 .define('U', ModItems.UMBRITE_INGOT.get())
-                .define('D', Items.DIAMOND)
+                .define('G', Items.GOLD_BLOCK)
                 .define('S', Tags.Items.STONES)
                 .define('F', ModBlocks.FAST_FLOW_PAD.get())
                 .unlockedBy("has_fast_flow_pad", has(ModBlocks.FAST_FLOW_PAD))
@@ -199,12 +199,12 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .unlockedBy("has_gold_ingot", has(Items.GOLD_INGOT))
                 .save(recipeOutput);
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.ITEM_FILTER_MODULE.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.VOID_FILTER_MODULE.get())
                 .pattern("PPP")
-                .pattern("IHI")
-                .pattern("UIU")
+                .pattern("OHO")
+                .pattern("UOU")
                 .define('U', ModItems.UMBRITE_INGOT.get())
-                .define('I', Items.IRON_BARS)
+                .define('O', Tags.Items.OBSIDIANS)
                 .define('P', Items.PAPER)
                 .define('H', Items.HOPPER)
                 .unlockedBy("has_hopper", has(Items.HOPPER))
@@ -228,61 +228,6 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .define('E', Items.ENDER_EYE)
                 .define('R', Items.OBSERVER)
                 .unlockedBy("has_ender_eye", has(Items.ENDER_EYE))
-                .save(recipeOutput);
-
-        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.UMBRITE_SWORD.get())
-                .pattern("U")
-                .pattern("U")
-                .pattern("S")
-                .define('U', ModItems.UMBRITE_INGOT.get())
-                .define('S', Items.STICK)
-                .unlockedBy("has_umbrite_ingot", has(ModItems.UMBRITE_INGOT))
-                .save(recipeOutput);
-
-        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.UMBRITE_PICKAXE.get())
-                .pattern("UUU")
-                .pattern(" S ")
-                .pattern(" S ")
-                .define('U', ModItems.UMBRITE_INGOT.get())
-                .define('S', Items.STICK)
-                .unlockedBy("has_umbrite_ingot", has(ModItems.UMBRITE_INGOT))
-                .save(recipeOutput);
-
-        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.UMBRITE_AXE.get())
-                .pattern("UU")
-                .pattern("US")
-                .pattern(" S")
-                .define('U', ModItems.UMBRITE_INGOT.get())
-                .define('S', Items.STICK)
-                .unlockedBy("has_umbrite_ingot", has(ModItems.UMBRITE_INGOT))
-                .save(recipeOutput);
-
-        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.UMBRITE_SHOVEL.get())
-                .pattern("U")
-                .pattern("S")
-                .pattern("S")
-                .define('U', ModItems.UMBRITE_INGOT.get())
-                .define('S', Items.STICK)
-                .unlockedBy("has_umbrite_ingot", has(ModItems.UMBRITE_INGOT))
-                .save(recipeOutput);
-
-        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.UMBRITE_HOE.get())
-                .pattern("UU")
-                .pattern(" S")
-                .pattern(" S")
-                .define('U', ModItems.UMBRITE_INGOT.get())
-                .define('S', Items.STICK)
-                .unlockedBy("has_umbrite_ingot", has(ModItems.UMBRITE_INGOT))
-                .save(recipeOutput);
-
-        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.UMBRITE_HAMMER.get())
-                .pattern("UBU")
-                .pattern("UBU")
-                .pattern(" S ")
-                .define('U', ModItems.UMBRITE_INGOT.get())
-                .define('B', ModBlocks.UMBRITE_BLOCK.get())
-                .define('S', Items.STICK)
-                .unlockedBy("has_umbrite_block", has(ModBlocks.UMBRITE_BLOCK))
                 .save(recipeOutput);
     }
 

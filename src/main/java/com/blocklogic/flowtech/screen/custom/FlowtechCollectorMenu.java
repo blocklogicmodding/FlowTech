@@ -34,9 +34,9 @@ public class FlowtechCollectorMenu extends AbstractContainerMenu {
         // Module slots (5 total)
         this.addSlot(new ModuleSlot(this.blockEntity.moduleSlots, 0, 152, 15, ModItems.PICKUP_ZONE_SIZE_MODULE.get()));  // Pickup Zone modules
         this.addSlot(new ModuleSlot(this.blockEntity.moduleSlots, 1, 152, 33, ModItems.STACK_SIZE_MODULE.get()));        // Stack Size modules
-        this.addSlot(new ModuleSlot(this.blockEntity.moduleSlots, 2, 152, 51, ModItems.ITEM_FILTER_MODULE.get()));       // Filter 1
-        this.addSlot(new ModuleSlot(this.blockEntity.moduleSlots, 3, 152, 69, ModItems.ITEM_FILTER_MODULE.get()));       // Filter 2
-        this.addSlot(new ModuleSlot(this.blockEntity.moduleSlots, 4, 152, 87, ModItems.ITEM_FILTER_MODULE.get()));       // Filter 3
+        this.addSlot(new ModuleSlot(this.blockEntity.moduleSlots, 2, 152, 51, ModItems.VOID_FILTER_MODULE.get()));       // Filter 1
+        this.addSlot(new ModuleSlot(this.blockEntity.moduleSlots, 3, 152, 69, ModItems.VOID_FILTER_MODULE.get()));       // Filter 2
+        this.addSlot(new ModuleSlot(this.blockEntity.moduleSlots, 4, 152, 87, ModItems.VOID_FILTER_MODULE.get()));       // Filter 3
 
         // Output inventory slots (35 slots, 5x7 grid) - extract only
         int slotIndex = 0;
@@ -138,7 +138,7 @@ public class FlowtechCollectorMenu extends AbstractContainerMenu {
     private boolean isValidModule(ItemStack stack) {
         return stack.getItem() == ModItems.PICKUP_ZONE_SIZE_MODULE.get() ||
                 stack.getItem() == ModItems.STACK_SIZE_MODULE.get() ||
-                stack.getItem() == ModItems.ITEM_FILTER_MODULE.get();
+                stack.getItem() == ModItems.VOID_FILTER_MODULE.get();
     }
 
     @Override

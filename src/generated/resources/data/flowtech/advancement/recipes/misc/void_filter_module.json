@@ -1,32 +1,32 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_the_recipe": {
-      "conditions": {
-        "recipe": "flowtech:umbrite_hammer"
-      },
-      "trigger": "minecraft:recipe_unlocked"
-    },
-    "has_umbrite_block": {
+    "has_hopper": {
       "conditions": {
         "items": [
           {
-            "items": "flowtech:umbrite_block"
+            "items": "minecraft:hopper"
           }
         ]
       },
       "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "flowtech:void_filter_module"
+      },
+      "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
       "has_the_recipe",
-      "has_umbrite_block"
+      "has_hopper"
     ]
   ],
   "rewards": {
     "recipes": [
-      "flowtech:umbrite_hammer"
+      "flowtech:void_filter_module"
     ]
   }
 }

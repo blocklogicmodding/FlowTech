@@ -7,6 +7,6 @@
     "flowtech:looting_module",
     "flowtech:stack_size_increase_module",
     "flowtech:pickup_zone_size_increase_module",
-    "flowtech:item_filter_module"
+    "flowtech:void_filter_module"
   ]
 }

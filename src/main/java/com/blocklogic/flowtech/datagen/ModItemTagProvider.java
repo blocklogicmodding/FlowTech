@@ -5,13 +5,8 @@ import com.blocklogic.flowtech.block.ModBlocks;
 import com.blocklogic.flowtech.item.ModItems;
 import com.blocklogic.flowtech.util.ModTags;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.ItemTags;
-import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
@@ -61,23 +56,9 @@ public class ModItemTagProvider extends ItemTagsProvider {
                 .add(ModItems.LOOTING_MODULE.get())
                 .add(ModItems.STACK_SIZE_MODULE.get())
                 .add(ModItems.PICKUP_ZONE_SIZE_MODULE.get())
-                .add(ModItems.ITEM_FILTER_MODULE.get());
+                .add(ModItems.VOID_FILTER_MODULE.get());
 
         tag(ModTags.Items.FLOWTECH_TOOLS)
-                .add(ModItems.PAD_WRENCH.get())
-                .add(ModItems.UMBRITE_SWORD.get())
-                .add(ModItems.UMBRITE_PICKAXE.get())
-                .add(ModItems.UMBRITE_AXE.get())
-                .add(ModItems.UMBRITE_SHOVEL.get())
-                .add(ModItems.UMBRITE_HOE.get())
-                .add(ModItems.UMBRITE_HAMMER.get());
-
-
-        tag(ItemTags.SWORDS).add(ModItems.UMBRITE_SWORD.get());
-        tag(ItemTags.PICKAXES).add(ModItems.UMBRITE_PICKAXE.get());
-        tag(ItemTags.AXES).add(ModItems.UMBRITE_AXE.get());
-        tag(ItemTags.SHOVELS).add(ModItems.UMBRITE_SHOVEL.get());
-        tag(ItemTags.HOES).add(ModItems.UMBRITE_HOE.get());
-        tag(ItemTags.PICKAXES).add(ModItems.UMBRITE_HAMMER.get());
+                .add(ModItems.PAD_WRENCH.get());
     }
 }

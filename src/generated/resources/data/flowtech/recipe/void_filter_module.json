@@ -5,8 +5,8 @@
     "H": {
       "item": "minecraft:hopper"
     },
-    "I": {
-      "item": "minecraft:iron_bars"
+    "O": {
+      "tag": "c:obsidians"
     },
     "P": {
       "item": "minecraft:paper"
@@ -17,11 +17,11 @@
   },
   "pattern": [
     "PPP",
-    "IHI",
-    "UIU"
+    "OHO",
+    "UOU"
   ],
   "result": {
     "count": 1,
-    "id": "flowtech:item_filter_module"
+    "id": "flowtech:void_filter_module"
   }
 }
