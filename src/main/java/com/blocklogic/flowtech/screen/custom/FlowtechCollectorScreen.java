@@ -90,6 +90,13 @@ public class FlowtechCollectorScreen extends AbstractContainerScreen<FlowtechCol
             ResourceLocation.fromNamespaceAndPath(FlowTech.MODID, "deposit_all_xp_btn_hover")
     );
 
+    private static final WidgetSprites RESET_OFFSET_SPRITES = new WidgetSprites(
+            ResourceLocation.fromNamespaceAndPath(FlowTech.MODID, "collection_zone_offset_reset_btn"),
+            ResourceLocation.fromNamespaceAndPath(FlowTech.MODID, "collection_zone_offset_reset_btn"),
+            ResourceLocation.fromNamespaceAndPath(FlowTech.MODID, "collection_zone_offset_reset_btn_hover"),
+            ResourceLocation.fromNamespaceAndPath(FlowTech.MODID, "collection_zone_offset_reset_btn_hover")
+    );
+
     private EditBox xpInputField;
 
     private boolean topSideActive = false;
@@ -270,6 +277,11 @@ public class FlowtechCollectorScreen extends AbstractContainerScreen<FlowtechCol
                 button -> adjustOffset("eastWest", 1));
         ewIncreaseButton.setTooltip(Tooltip.create(Component.translatable("tooltip.flowtech.collector.offset.east_west.increase")));
         this.addRenderableWidget(ewIncreaseButton);
+
+        ImageButton resetOffsetButton = new ImageButton(leftPos + 215, topPos + 125, 12, 12, RESET_OFFSET_SPRITES,
+                button -> resetAllOffsets());
+        resetOffsetButton.setTooltip(Tooltip.create(Component.translatable("tooltip.flowtech.collector.offset.reset_all")));
+        this.addRenderableWidget(resetOffsetButton);
     }
 
     private void addWireframeButton(int leftPos, int topPos) {
@@ -391,6 +403,21 @@ public class FlowtechCollectorScreen extends AbstractContainerScreen<FlowtechCol
         this.init();
     }
 
+    private void resetAllOffsets() {
+        downUpOffset = 0;
+        northSouthOffset = 0;
+        eastWestOffset = 0;
+
+        PacketDistributor.sendToServer(new CollectorConfigPacket(
+                menu.blockEntity.getBlockPos(), CollectorConfigPacket.ConfigType.DOWN_UP_OFFSET, 0, false));
+
+        PacketDistributor.sendToServer(new CollectorConfigPacket(
+                menu.blockEntity.getBlockPos(), CollectorConfigPacket.ConfigType.NORTH_SOUTH_OFFSET, 0, false));
+
+        PacketDistributor.sendToServer(new CollectorConfigPacket(
+                menu.blockEntity.getBlockPos(), CollectorConfigPacket.ConfigType.EAST_WEST_OFFSET, 0, false));
+    }
+
     private void withdrawXP() {
         try {
             int levels = Integer.parseInt(xpInputField.getValue());
@@ -492,9 +519,9 @@ public class FlowtechCollectorScreen extends AbstractContainerScreen<FlowtechCol
         poseStack.pushPose();
         poseStack.scale(scale, scale, 1.0f);
 
-        guiGraphics.drawString(this.font, "D/U Offset", (int)((x + 190) / scale), (int)((y + 58) / scale), 0x000000, false);
-        guiGraphics.drawString(this.font, "N/S Offset", (int)((x + 190) / scale), (int)((y + 80) / scale), 0x000000, false);
-        guiGraphics.drawString(this.font, "E/W Offset", (int)((x + 190) / scale), (int)((y + 102) / scale), 0x000000, false);
+        guiGraphics.drawString(this.font, Component.translatable("gui.flowtech.collector.offset.down_up").getString(), (int)((x + 190) / scale), (int)((y + 58) / scale), 0x000000, false);
+        guiGraphics.drawString(this.font, Component.translatable("gui.flowtech.collector.offset.north_south").getString(), (int)((x + 190) / scale), (int)((y + 80) / scale), 0x000000, false);
+        guiGraphics.drawString(this.font, Component.translatable("gui.flowtech.collector.offset.east_west").getString(), (int)((x + 190) / scale), (int)((y + 102) / scale), 0x000000, false);
 
         poseStack.popPose();
     }
@@ -515,7 +542,7 @@ public class FlowtechCollectorScreen extends AbstractContainerScreen<FlowtechCol
 
         int storedLevels = xpToLevel(storedXP);
 
-        String xpDisplayText = String.format("Levels Stored: %,d", storedLevels);
+        String xpDisplayText = String.format(Component.translatable("gui.flowtech.collector.xp_levels_stored").getString(), storedLevels);
 
         guiGraphics.drawString(this.font, xpDisplayText,
                 (int)((x + 8) / scale),

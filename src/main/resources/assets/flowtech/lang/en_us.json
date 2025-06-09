@@ -42,34 +42,35 @@
 
   "tooltip.flowtech.collector.xp_input_levels": "Enter the number of levels to withdraw or deposit",
 
-  "tooltip.flowtech.collector.side_config.top": "Toggle extraction from the top side",
-  "tooltip.flowtech.collector.side_config.east": "Toggle extraction from the east side",
-  "tooltip.flowtech.collector.side_config.front": "Toggle extraction from the front side",
-  "tooltip.flowtech.collector.side_config.west": "Toggle extraction from the west side",
-  "tooltip.flowtech.collector.side_config.bottom": "Toggle extraction from the bottom side",
-  "tooltip.flowtech.collector.side_config.back": "Toggle extraction from the back side",
+  "tooltip.flowtech.collector.side_config.top": "Toggle Extraction from the Top",
+  "tooltip.flowtech.collector.side_config.east": "Toggle Extraction from the East",
+  "tooltip.flowtech.collector.side_config.front": "Toggle Extraction from the Front",
+  "tooltip.flowtech.collector.side_config.west": "Toggle Extraction from the West",
+  "tooltip.flowtech.collector.side_config.bottom": "Toggle Extraction from the Bottom",
+  "tooltip.flowtech.collector.side_config.back": "Toggle Extraction from the Back",
 
-  "tooltip.flowtech.collector.offset.down_up.decrease": "Decrease Down/Up pickup zone offset",
-  "tooltip.flowtech.collector.offset.down_up.increase": "Increase Down/Up pickup zone offset",
+  "tooltip.flowtech.collector.offset.down_up.decrease": "Decrease Down/Up Collection Radius",
+  "tooltip.flowtech.collector.offset.down_up.increase": "Increase Down/Up Collection Radius",
   "tooltip.flowtech.collector.offset.down_up.value": "Down/Up Offset: %s",
-
-  "tooltip.flowtech.collector.offset.north_south.decrease": "Decrease North/South pickup zone offset",
-  "tooltip.flowtech.collector.offset.north_south.increase": "Increase North/South pickup zone offset",
+  "tooltip.flowtech.collector.offset.north_south.decrease": "Decrease North/South Collection Radius",
+  "tooltip.flowtech.collector.offset.north_south.increase": "Increase North/South Collection Radius",
   "tooltip.flowtech.collector.offset.north_south.value": "North/South Offset: %s",
-
-  "tooltip.flowtech.collector.offset.east_west.decrease": "Decrease East/West pickup zone offset",
-  "tooltip.flowtech.collector.offset.east_west.increase": "Increase East/West pickup zone offset",
+  "tooltip.flowtech.collector.offset.east_west.decrease": "Decrease East/West Collection Radius",
+  "tooltip.flowtech.collector.offset.east_west.increase": "Increase East/West Collection Radius",
   "tooltip.flowtech.collector.offset.east_west.value": "East/West Offset: %s",
+  "tooltip.flowtech.collector.offset.reset_all": "Reset Offsets",
+  "gui.flowtech.collector.offset.down_up": "D/U Offset",
+  "gui.flowtech.collector.offset.north_south": "N/S Offset",
+  "gui.flowtech.collector.offset.east_west": "E/W Offset",
 
-  "tooltip.flowtech.collector.wireframe_toggle": "Toggle pickup zone wireframe visibility",
+  "tooltip.flowtech.collector.wireframe_toggle": "Show/Hide Collection Radius",
 
   "tooltip.flowtech.collector.xp.withdraw": "Withdraw levels from the Collector",
   "tooltip.flowtech.collector.xp.deposit": "Deposit levels into the Collector",
   "tooltip.flowtech.collector.xp.withdraw_all": "Withdraw all stored XP from the Collector",
   "tooltip.flowtech.collector.xp.deposit_all": "Deposit all your XP into the Collector",
-
   "tooltip.flowtech.collector.xp_collection.enabled": "XP Collection: Enabled",
   "tooltip.flowtech.collector.xp_collection.disabled": "XP Collection: Disabled",
-
+  "gui.flowtech.collector.xp_levels_stored": "Levels Stored: %,d",
   "tooltip.flowtech.collector.xp_display": "XP: %s"
 }

@@ -27,7 +27,6 @@ public class CollectorWireframeRenderer {
 
     public static void toggleWireframe(BlockPos collectorPos) {
         if (activeCollectorPos != null && activeCollectorPos.equals(collectorPos)) {
-            // Same collector - toggle off
             showWireframes = false;
             activeCollectorPos = null;
         } else {
@@ -65,8 +64,7 @@ public class CollectorWireframeRenderer {
 
         if (level.getBlockEntity(activeCollectorPos) instanceof FlowtechCollectorBlockEntity collector) {
             AABB pickupZone = calculatePickupZone(collector);
-
-            renderWireframe(event.getPoseStack(), pickupZone, player.position());
+            renderWireframe(event.getPoseStack(), pickupZone, event.getCamera().getPosition());
         } else {
             clearWireframes();
         }
@@ -102,7 +100,7 @@ public class CollectorWireframeRenderer {
 
         LevelRenderer.renderLineBox(poseStack, buffer, aabb, red, green, blue, alpha);
 
-        bufferSource.endBatch();
+        bufferSource.endBatch(RenderType.lines());
         poseStack.popPose();
     }
 }
