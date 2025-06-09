@@ -42,7 +42,7 @@ public class FlowtechCollectorMenu extends AbstractContainerMenu {
             for (int col = 0; col < 7; col++) {
                 int x = 8 + (col * 18);
                 int y = 15 + (row * 18);
-                this.addSlot(new OutputSlot(this.blockEntity.outputInventory, slotIndex, x, y));
+                this.addSlot(new OutputSlot(this.blockEntity.outputInventory, slotIndex, x, y, this.blockEntity));
                 slotIndex++;
             }
         }
@@ -63,8 +63,16 @@ public class FlowtechCollectorMenu extends AbstractContainerMenu {
     }
 
     private static class OutputSlot extends SlotItemHandler {
-        public OutputSlot(net.neoforged.neoforge.items.IItemHandler itemHandler, int index, int xPosition, int yPosition) {
+        private final FlowtechCollectorBlockEntity collector;
+
+        public OutputSlot(net.neoforged.neoforge.items.IItemHandler itemHandler, int index, int xPosition, int yPosition, FlowtechCollectorBlockEntity collector) {
             super(itemHandler, index, xPosition, yPosition);
+            this.collector = collector;
+        }
+
+        @Override
+        public int getMaxStackSize() {
+            return collector.getSlotCapacity();
         }
 
         @Override

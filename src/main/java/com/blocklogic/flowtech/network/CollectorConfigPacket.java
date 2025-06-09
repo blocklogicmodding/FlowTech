@@ -85,6 +85,8 @@ public record CollectorConfigPacket(
                             level.sendBlockUpdated(packet.pos(), level.getBlockState(packet.pos()), level.getBlockState(packet.pos()), 3);
                         }
                     }
+
+                    collector.syncInventoryToClients();
                 }
             }
         });

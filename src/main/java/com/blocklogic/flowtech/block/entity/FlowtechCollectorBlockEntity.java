@@ -1,6 +1,7 @@
 package com.blocklogic.flowtech.block.entity;
 
 import com.blocklogic.flowtech.block.custom.FlowtechCollectorBlock;
+import com.blocklogic.flowtech.network.CollectorInventorySyncPacket;
 import com.blocklogic.flowtech.screen.custom.FlowtechCollectorMenu;
 import com.mojang.logging.LogUtils;
 import net.minecraft.core.BlockPos;
@@ -12,6 +13,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
@@ -31,6 +34,7 @@ import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import net.neoforged.neoforge.items.wrapper.EmptyItemHandler;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.slf4j.Logger;
 
 import java.util.List;
@@ -44,6 +48,27 @@ public class FlowtechCollectorBlockEntity extends BlockEntity implements MenuPro
 
     private int tickCounter = 0;
     private static final int COLLECTION_INTERVAL = 10;
+
+    public void syncInventoryToClients() {
+        if (level != null && !level.isClientSide()) {
+            try {
+                CompoundTag inventoryTag = outputInventory.serializeNBT(level.registryAccess());
+
+                // Send to all players with this container open
+                if (level instanceof ServerLevel serverLevel) {
+                    for (ServerPlayer player : serverLevel.players()) {
+                        if (player.containerMenu instanceof FlowtechCollectorMenu menu &&
+                                menu.blockEntity == this) {
+                            PacketDistributor.sendToPlayer(player, new CollectorInventorySyncPacket(
+                                    getBlockPos(), inventoryTag, getSlotCapacity()));
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                LOGGER.error("Failed to sync inventory for collector at {}", getBlockPos(), e);
+            }
+        }
+    }
 
     public final ItemStackHandler moduleSlots = new ItemStackHandler(5) {
         @Override
@@ -62,6 +87,7 @@ public class FlowtechCollectorBlockEntity extends BlockEntity implements MenuPro
             if (!level.isClientSide()) {
                 try {
                     level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
+                    syncInventoryToClients(); // Add this line
                 } catch (Exception e) {
                     LOGGER.error("Failed to send block update for collector at {}", getBlockPos(), e);
                 }
@@ -86,6 +112,11 @@ public class FlowtechCollectorBlockEntity extends BlockEntity implements MenuPro
 
     public final ItemStackHandler outputInventory = new ItemStackHandler(35) {
         @Override
+        public int getSlotLimit(int slot) {
+            return getSlotCapacity(); // Use dynamic capacity
+        }
+
+        @Override
         public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
             return stack;
         }
@@ -96,6 +127,7 @@ public class FlowtechCollectorBlockEntity extends BlockEntity implements MenuPro
             if (!level.isClientSide()) {
                 try {
                     level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
+                    syncInventoryToClients(); // Add this line
                 } catch (Exception e) {
                     LOGGER.error("Failed to send block update for collector at {}", getBlockPos(), e);
                 }
