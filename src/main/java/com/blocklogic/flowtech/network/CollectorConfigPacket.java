@@ -38,9 +38,8 @@ public record CollectorConfigPacket(
             if (context.player() instanceof ServerPlayer player) {
                 ServerLevel level = player.serverLevel();
 
-                // Validate that the player is close enough to the block
                 if (player.distanceToSqr(packet.pos().getX() + 0.5, packet.pos().getY() + 0.5, packet.pos().getZ() + 0.5) > 64) {
-                    return; // Too far away
+                    return;
                 }
 
                 if (level.getBlockEntity(packet.pos()) instanceof FlowtechCollectorBlockEntity collector) {

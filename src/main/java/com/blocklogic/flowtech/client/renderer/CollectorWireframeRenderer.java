@@ -25,25 +25,21 @@ public class CollectorWireframeRenderer {
     private static boolean showWireframes = false;
     private static BlockPos activeCollectorPos = null;
 
-    // Toggle wireframe visibility for a specific collector
     public static void toggleWireframe(BlockPos collectorPos) {
         if (activeCollectorPos != null && activeCollectorPos.equals(collectorPos)) {
             // Same collector - toggle off
             showWireframes = false;
             activeCollectorPos = null;
         } else {
-            // New collector or first time - toggle on
             showWireframes = true;
             activeCollectorPos = collectorPos;
         }
     }
 
-    // Check if wireframes are currently shown for a collector
     public static boolean isWireframeActive(BlockPos collectorPos) {
         return showWireframes && activeCollectorPos != null && activeCollectorPos.equals(collectorPos);
     }
 
-    // Clear wireframes (e.g., when collector is broken)
     public static void clearWireframes() {
         showWireframes = false;
         activeCollectorPos = null;
@@ -67,15 +63,11 @@ public class CollectorWireframeRenderer {
             return;
         }
 
-        // Check if the collector still exists and has wireframe enabled
         if (level.getBlockEntity(activeCollectorPos) instanceof FlowtechCollectorBlockEntity collector) {
-            // Calculate pickup zone with modules and offsets
             AABB pickupZone = calculatePickupZone(collector);
 
-            // Render wireframe
             renderWireframe(event.getPoseStack(), pickupZone, player.position());
         } else {
-            // Collector no longer exists, clear wireframes
             clearWireframes();
         }
     }
@@ -84,7 +76,6 @@ public class CollectorWireframeRenderer {
         BlockPos pos = collector.getBlockPos();
         int range = collector.getPickupRange();
 
-        // Apply offsets
         double minX = pos.getX() - range + collector.getEastWestOffset();
         double maxX = pos.getX() + range + 1 + collector.getEastWestOffset();
         double minY = pos.getY() - range + collector.getDownUpOffset();
@@ -98,20 +89,17 @@ public class CollectorWireframeRenderer {
     private static void renderWireframe(PoseStack poseStack, AABB aabb, Vec3 cameraPos) {
         poseStack.pushPose();
 
-        // Translate to camera-relative coordinates
         poseStack.translate(-cameraPos.x, -cameraPos.y, -cameraPos.z);
 
         Minecraft minecraft = Minecraft.getInstance();
         MultiBufferSource.BufferSource bufferSource = minecraft.renderBuffers().bufferSource();
         VertexConsumer buffer = bufferSource.getBuffer(RenderType.lines());
 
-        // Define wireframe color (cyan with transparency)
         float red = 0.0f;
         float green = 1.0f;
         float blue = 1.0f;
         float alpha = 0.8f;
 
-        // Render wireframe box
         LevelRenderer.renderLineBox(poseStack, buffer, aabb, red, green, blue, alpha);
 
         bufferSource.endBatch();

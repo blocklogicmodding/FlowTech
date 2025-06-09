@@ -1,14 +1,11 @@
 package com.blocklogic.flowtech.block.custom;
 
-import com.blocklogic.flowtech.block.entity.FlowtechCollectorBlockEntity;
 import com.blocklogic.flowtech.block.entity.FlowtechControllerBlockEntity;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.SimpleMenuProvider;

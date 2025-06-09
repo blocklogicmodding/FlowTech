@@ -31,10 +31,10 @@ public class FlowtechControllerMenu extends AbstractContainerMenu {
         addPlayerHotbar(inv);
 
         this.addSlot(new SlotItemHandler(this.blockEntity.inventory, 0, 152, 15)); // Sharpness Module Slot
-        this.addSlot(new SlotItemHandler(this.blockEntity.inventory, 0, 152, 33)); // Fire Aspect Module Slot
-        this.addSlot(new SlotItemHandler(this.blockEntity.inventory, 0, 152, 51)); // Smite Module Slot
-        this.addSlot(new SlotItemHandler(this.blockEntity.inventory, 0, 152, 69)); // Bane of Arthropods Module Slot
-        this.addSlot(new SlotItemHandler(this.blockEntity.inventory, 0, 152, 87)); // Looting Module Slot
+        this.addSlot(new SlotItemHandler(this.blockEntity.inventory, 1, 152, 33)); // Fire Aspect Module Slot
+        this.addSlot(new SlotItemHandler(this.blockEntity.inventory, 2, 152, 51)); // Smite Module Slot
+        this.addSlot(new SlotItemHandler(this.blockEntity.inventory, 3, 152, 69)); // Bane of Arthropods Module Slot
+        this.addSlot(new SlotItemHandler(this.blockEntity.inventory, 4, 152, 87)); // Looting Module Slot
     }
 
     private static final int HOTBAR_SLOT_COUNT = 9;

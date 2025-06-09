@@ -14,25 +14,16 @@ public class ModNetwork {
     private static void registerPayloads(RegisterPayloadHandlersEvent event) {
         PayloadRegistrar registrar = event.registrar(FlowTech.MODID);
 
-        // Register collector config packet (client to server)
         registrar.playToServer(
                 CollectorConfigPacket.TYPE,
                 CollectorConfigPacket.STREAM_CODEC,
                 CollectorConfigPacket::handle
         );
 
-        // Register collector XP packet (client to server)
         registrar.playToServer(
                 CollectorXpPacket.TYPE,
                 CollectorXpPacket.STREAM_CODEC,
                 CollectorXpPacket::handle
-        );
-
-        // Register collector sync packet (server to client)
-        registrar.playToClient(
-                CollectorSyncPacket.TYPE,
-                CollectorSyncPacket.STREAM_CODEC,
-                CollectorSyncPacket::handle
         );
     }
 }

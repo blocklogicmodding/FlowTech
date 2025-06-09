@@ -31,14 +31,12 @@ public class FlowtechCollectorMenu extends AbstractContainerMenu {
         addPlayerInventory(inv);
         addPlayerHotbar(inv);
 
-        // Module slots (5 total)
-        this.addSlot(new ModuleSlot(this.blockEntity.moduleSlots, 0, 152, 15, ModItems.PICKUP_ZONE_SIZE_MODULE.get()));  // Pickup Zone modules
-        this.addSlot(new ModuleSlot(this.blockEntity.moduleSlots, 1, 152, 33, ModItems.STACK_SIZE_MODULE.get()));        // Stack Size modules
-        this.addSlot(new ModuleSlot(this.blockEntity.moduleSlots, 2, 152, 51, ModItems.VOID_FILTER_MODULE.get()));       // Filter 1
-        this.addSlot(new ModuleSlot(this.blockEntity.moduleSlots, 3, 152, 69, ModItems.VOID_FILTER_MODULE.get()));       // Filter 2
-        this.addSlot(new ModuleSlot(this.blockEntity.moduleSlots, 4, 152, 87, ModItems.VOID_FILTER_MODULE.get()));       // Filter 3
+        this.addSlot(new ModuleSlot(this.blockEntity.moduleSlots, 0, 152, 15, ModItems.PICKUP_ZONE_SIZE_MODULE.get()));
+        this.addSlot(new ModuleSlot(this.blockEntity.moduleSlots, 1, 152, 33, ModItems.STACK_SIZE_MODULE.get()));
+        this.addSlot(new ModuleSlot(this.blockEntity.moduleSlots, 2, 152, 51, ModItems.VOID_FILTER_MODULE.get()));
+        this.addSlot(new ModuleSlot(this.blockEntity.moduleSlots, 3, 152, 69, ModItems.VOID_FILTER_MODULE.get()));
+        this.addSlot(new ModuleSlot(this.blockEntity.moduleSlots, 4, 152, 87, ModItems.VOID_FILTER_MODULE.get()));
 
-        // Output inventory slots (35 slots, 5x7 grid) - extract only
         int slotIndex = 0;
         for (int row = 0; row < 5; row++) {
             for (int col = 0; col < 7; col++) {
@@ -50,7 +48,6 @@ public class FlowtechCollectorMenu extends AbstractContainerMenu {
         }
     }
 
-    // Custom slot for modules with type validation
     private static class ModuleSlot extends SlotItemHandler {
         private final net.minecraft.world.item.Item allowedModule;
 
@@ -65,7 +62,6 @@ public class FlowtechCollectorMenu extends AbstractContainerMenu {
         }
     }
 
-    // Custom slot for output inventory - extract only
     private static class OutputSlot extends SlotItemHandler {
         public OutputSlot(net.neoforged.neoforge.items.IItemHandler itemHandler, int index, int xPosition, int yPosition) {
             super(itemHandler, index, xPosition, yPosition);
@@ -73,7 +69,7 @@ public class FlowtechCollectorMenu extends AbstractContainerMenu {
 
         @Override
         public boolean mayPlace(ItemStack stack) {
-            return false; // No insertion allowed
+            return false;
         }
     }
 
@@ -98,24 +94,20 @@ public class FlowtechCollectorMenu extends AbstractContainerMenu {
         ItemStack sourceStack = sourceSlot.getItem();
         ItemStack copyOfSourceStack = sourceStack.copy();
 
-        // From player inventory to container
         if (slotIndex < VANILLA_SLOT_COUNT) {
-            // Check if it's a module that can go into module slots
             if (isValidModule(sourceStack)) {
                 if (!moveItemStackTo(sourceStack, MODULE_SLOTS_FIRST_INDEX, MODULE_SLOTS_FIRST_INDEX + MODULE_SLOTS_COUNT, false)) {
                     return ItemStack.EMPTY;
                 }
             } else {
-                return ItemStack.EMPTY; // Can't move non-modules
+                return ItemStack.EMPTY;
             }
         }
-        // From module slots back to player inventory
         else if (slotIndex < MODULE_SLOTS_FIRST_INDEX + MODULE_SLOTS_COUNT) {
             if (!moveItemStackTo(sourceStack, VANILLA_FIRST_SLOT_INDEX, VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT, false)) {
                 return ItemStack.EMPTY;
             }
         }
-        // From output slots to player inventory
         else if (slotIndex < OUTPUT_SLOTS_FIRST_INDEX + OUTPUT_SLOTS_COUNT) {
             if (!moveItemStackTo(sourceStack, VANILLA_FIRST_SLOT_INDEX, VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT, false)) {
                 return ItemStack.EMPTY;

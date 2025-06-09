@@ -21,7 +21,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
@@ -31,7 +30,6 @@ import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import net.neoforged.neoforge.items.wrapper.EmptyItemHandler;
-import net.neoforged.neoforge.items.wrapper.SidedInvWrapper;
 
 import java.util.List;
 
@@ -40,16 +38,15 @@ import javax.annotation.Nullable;
 public class FlowtechCollectorBlockEntity extends BlockEntity implements MenuProvider {
 
     private int tickCounter = 0;
-    private static final int COLLECTION_INTERVAL = 20; // Collect every 20 ticks (1 second)
+    private static final int COLLECTION_INTERVAL = 10;
 
-    // Module slots (5 total)
     public final ItemStackHandler moduleSlots = new ItemStackHandler(5) {
         @Override
         public int getSlotLimit(int slot) {
             return switch (slot) {
-                case 0 -> 8;  // Pickup Zone Size modules (max 8)
-                case 1 -> 10; // Stack Size modules (max 10)
-                case 2, 3, 4 -> 1; // Filter modules (max 1 each)
+                case 0 -> 8;
+                case 1 -> 10;
+                case 2, 3, 4 -> 1;
                 default -> 1;
             };
         }
@@ -63,11 +60,10 @@ public class FlowtechCollectorBlockEntity extends BlockEntity implements MenuPro
         }
     };
 
-    // Output-only inventory (35 slots, 5x7 grid) - extract only
     public final ItemStackHandler outputInventory = new ItemStackHandler(35) {
         @Override
         public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
-            return stack; // No insertion allowed
+            return stack;
         }
 
         @Override
@@ -79,14 +75,12 @@ public class FlowtechCollectorBlockEntity extends BlockEntity implements MenuPro
         }
     };
 
-    // Persistent data
     private int storedXP = 0;
     private boolean xpCollectionEnabled = false;
     private int downUpOffset = 0;
     private int northSouthOffset = 0;
     private int eastWestOffset = 0;
 
-    // Side configuration (6 sides)
     private boolean topSideActive = false;
     private boolean eastSideActive = false;
     private boolean frontSideActive = false;
@@ -98,7 +92,6 @@ public class FlowtechCollectorBlockEntity extends BlockEntity implements MenuPro
         super(ModBlockEntities.COLLECTOR_BE.get(), pos, blockState);
     }
 
-    // Register capabilities
     public static void registerCapabilities(RegisterCapabilitiesEvent event) {
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.COLLECTOR_BE.get(),
                 (blockEntity, direction) -> {
@@ -109,29 +102,26 @@ public class FlowtechCollectorBlockEntity extends BlockEntity implements MenuPro
                 });
     }
 
-    // Get item handler based on side configuration
     @Nullable
     public IItemHandler getItemHandler(@Nullable Direction direction) {
         if (direction == null) {
-            return outputInventory; // Internal access gets full inventory
+            return outputInventory;
         }
 
-        // Get the block's facing direction
         Direction blockFacing = getBlockState().getValue(FlowtechCollectorBlock.FACING);
 
-        // Map absolute direction to relative side based on block facing
         boolean sideActive = switch (direction) {
             case UP -> topSideActive;
             case DOWN -> bottomSideActive;
             case NORTH, SOUTH, EAST, WEST -> {
                 if (direction == blockFacing) {
-                    yield frontSideActive; // This direction is the front of the block
+                    yield frontSideActive;
                 } else if (direction == blockFacing.getOpposite()) {
-                    yield backSideActive; // This direction is the back of the block
+                    yield backSideActive;
                 } else if (direction == blockFacing.getClockWise()) {
-                    yield eastSideActive; // Relative east side
+                    yield eastSideActive;
                 } else if (direction == blockFacing.getCounterClockWise()) {
-                    yield westSideActive; // Relative west side
+                    yield westSideActive;
                 } else {
                     yield false;
                 }
@@ -139,14 +129,12 @@ public class FlowtechCollectorBlockEntity extends BlockEntity implements MenuPro
         };
 
         if (sideActive) {
-            // Return extract-only wrapper for the output inventory
             return new ExtractOnlyWrapper(outputInventory);
         }
 
-        return EmptyItemHandler.INSTANCE; // No access for inactive sides
+        return EmptyItemHandler.INSTANCE;
     }
 
-    // Wrapper that only allows extraction
     private static class ExtractOnlyWrapper implements IItemHandler {
         private final IItemHandler wrapped;
 
@@ -166,7 +154,7 @@ public class FlowtechCollectorBlockEntity extends BlockEntity implements MenuPro
 
         @Override
         public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
-            return stack; // No insertion allowed
+            return stack;
         }
 
         @Override
@@ -181,11 +169,10 @@ public class FlowtechCollectorBlockEntity extends BlockEntity implements MenuPro
 
         @Override
         public boolean isItemValid(int slot, ItemStack stack) {
-            return false; // No insertion allowed
+            return false;
         }
     }
 
-    // Load data from placed block item
     public void loadFromBlockItem(ItemStack stack) {
         CustomData customData = stack.get(DataComponents.CUSTOM_DATA);
         if (customData != null) {
@@ -193,19 +180,16 @@ public class FlowtechCollectorBlockEntity extends BlockEntity implements MenuPro
             if (level != null) {
                 HolderLookup.Provider registries = level.registryAccess();
 
-                // Load module slots
                 if (tag.contains("moduleSlots")) {
                     moduleSlots.deserializeNBT(registries, tag.getCompound("moduleSlots"));
                 }
 
-                // Load persistent data
                 storedXP = tag.getInt("storedXP");
                 xpCollectionEnabled = tag.getBoolean("xpCollectionEnabled");
                 downUpOffset = tag.getInt("downUpOffset");
                 northSouthOffset = tag.getInt("northSouthOffset");
                 eastWestOffset = tag.getInt("eastWestOffset");
 
-                // Load side configuration
                 topSideActive = tag.getBoolean("topSideActive");
                 eastSideActive = tag.getBoolean("eastSideActive");
                 frontSideActive = tag.getBoolean("frontSideActive");
@@ -213,14 +197,12 @@ public class FlowtechCollectorBlockEntity extends BlockEntity implements MenuPro
                 bottomSideActive = tag.getBoolean("bottomSideActive");
                 backSideActive = tag.getBoolean("backSideActive");
 
-                // Update block state for XP collection immediately
                 if (!level.isClientSide()) {
                     FlowtechCollectorBlock.updateXpCollectionState(level, worldPosition, xpCollectionEnabled);
                 }
 
                 setChanged();
 
-                // Force update to clients
                 if (!level.isClientSide()) {
                     level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
                 }
@@ -228,7 +210,6 @@ public class FlowtechCollectorBlockEntity extends BlockEntity implements MenuPro
         }
     }
 
-    // Getters and setters for persistent data
     public int getStoredXP() { return storedXP; }
 
     public void setStoredXP(int xp) {
@@ -249,10 +230,6 @@ public class FlowtechCollectorBlockEntity extends BlockEntity implements MenuPro
             this.xpCollectionEnabled = enabled;
             setChanged();
 
-            // DEBUG: Print state change
-            System.out.println("XP Collection " + (enabled ? "ENABLED" : "DISABLED"));
-
-            // Update block state immediately
             if (level != null && !level.isClientSide()) {
                 FlowtechCollectorBlock.updateXpCollectionState(level, worldPosition, enabled);
                 level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
@@ -269,7 +246,6 @@ public class FlowtechCollectorBlockEntity extends BlockEntity implements MenuPro
     public int getEastWestOffset() { return eastWestOffset; }
     public void setEastWestOffset(int offset) { this.eastWestOffset = Math.max(-10, Math.min(10, offset)); setChanged(); }
 
-    // Side configuration getters/setters
     public boolean isTopSideActive() { return topSideActive; }
     public void setTopSideActive(boolean active) { this.topSideActive = active; setChanged(); }
 
@@ -288,26 +264,22 @@ public class FlowtechCollectorBlockEntity extends BlockEntity implements MenuPro
     public boolean isBackSideActive() { return backSideActive; }
     public void setBackSideActive(boolean active) { this.backSideActive = active; setChanged(); }
 
-    // Calculate pickup range based on modules
     public int getPickupRange() {
-        int baseRange = 3; // 7x7 default (3 blocks in each direction)
+        int baseRange = 3;
         int modules = moduleSlots.getStackInSlot(0).getCount();
-        return baseRange + modules; // Each module adds 1 block range
+        return baseRange + modules;
     }
 
-    // Calculate slot capacity based on modules
     public int getSlotCapacity() {
         int baseCapacity = 64;
         int modules = moduleSlots.getStackInSlot(1).getCount();
-        return baseCapacity + (modules * 64); // Each module adds 64 capacity
+        return baseCapacity + (modules * 64);
     }
 
     public void clearContents() {
-        // Clear ONLY the output inventory, keep modules for persistence
         for (int i = 0; i < outputInventory.getSlots(); i++) {
             outputInventory.setStackInSlot(i, ItemStack.EMPTY);
         }
-        // Don't clear modules here - they're saved to the block item
     }
 
     public void drops() {
@@ -317,7 +289,6 @@ public class FlowtechCollectorBlockEntity extends BlockEntity implements MenuPro
         }
         Containers.dropContents(this.level, this.worldPosition, inv);
 
-        // Clear the output inventory after dropping
         for (int i = 0; i < outputInventory.getSlots(); i++) {
             outputInventory.setStackInSlot(i, ItemStack.EMPTY);
         }
@@ -327,18 +298,15 @@ public class FlowtechCollectorBlockEntity extends BlockEntity implements MenuPro
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.saveAdditional(tag, registries);
 
-        // Save inventories
         tag.put("moduleSlots", moduleSlots.serializeNBT(registries));
         tag.put("outputInventory", outputInventory.serializeNBT(registries));
 
-        // Save persistent data
         tag.putInt("storedXP", storedXP);
         tag.putBoolean("xpCollectionEnabled", xpCollectionEnabled);
         tag.putInt("downUpOffset", downUpOffset);
         tag.putInt("northSouthOffset", northSouthOffset);
         tag.putInt("eastWestOffset", eastWestOffset);
 
-        // Save side configuration
         tag.putBoolean("topSideActive", topSideActive);
         tag.putBoolean("eastSideActive", eastSideActive);
         tag.putBoolean("frontSideActive", frontSideActive);
@@ -351,18 +319,15 @@ public class FlowtechCollectorBlockEntity extends BlockEntity implements MenuPro
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
 
-        // Load inventories
         moduleSlots.deserializeNBT(registries, tag.getCompound("moduleSlots"));
         outputInventory.deserializeNBT(registries, tag.getCompound("outputInventory"));
 
-        // Load persistent data
         storedXP = tag.getInt("storedXP");
         xpCollectionEnabled = tag.getBoolean("xpCollectionEnabled");
         downUpOffset = tag.getInt("downUpOffset");
         northSouthOffset = tag.getInt("northSouthOffset");
         eastWestOffset = tag.getInt("eastWestOffset");
 
-        // Load side configuration
         topSideActive = tag.getBoolean("topSideActive");
         eastSideActive = tag.getBoolean("eastSideActive");
         frontSideActive = tag.getBoolean("frontSideActive");
@@ -393,7 +358,6 @@ public class FlowtechCollectorBlockEntity extends BlockEntity implements MenuPro
         return saveWithoutMetadata(pRegistries);
     }
 
-    // Tick method for item and XP collection
     public void tick() {
         if (level == null || level.isClientSide()) return;
 
@@ -427,7 +391,7 @@ public class FlowtechCollectorBlockEntity extends BlockEntity implements MenuPro
     }
 
     private void collectXP() {
-        if (!xpCollectionEnabled) return; // Don't collect if disabled
+        if (!xpCollectionEnabled) return;
 
         AABB collectionArea = getCollectionArea();
         List<ExperienceOrb> xpOrbs = level.getEntitiesOfClass(ExperienceOrb.class, collectionArea);
@@ -444,10 +408,6 @@ public class FlowtechCollectorBlockEntity extends BlockEntity implements MenuPro
             storedXP += collectedXP;
             setChanged();
 
-            // DEBUG: Print to console
-            System.out.println("Collected " + collectedXP + " XP, total now: " + storedXP);
-
-            // Force block state update
             if (!level.isClientSide()) {
                 level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
             }
@@ -458,7 +418,6 @@ public class FlowtechCollectorBlockEntity extends BlockEntity implements MenuPro
         int range = getPickupRange();
         BlockPos pos = getBlockPos();
 
-        // Apply offsets
         double minX = pos.getX() - range + eastWestOffset;
         double maxX = pos.getX() + range + 1 + eastWestOffset;
         double minY = pos.getY() - range + downUpOffset;
@@ -470,18 +429,14 @@ public class FlowtechCollectorBlockEntity extends BlockEntity implements MenuPro
     }
 
     private boolean canCollectItem(ItemStack stack) {
-        // Check item filters if any are installed
         ItemStack filter1 = moduleSlots.getStackInSlot(2);
         ItemStack filter2 = moduleSlots.getStackInSlot(3);
         ItemStack filter3 = moduleSlots.getStackInSlot(4);
 
-        // If no filters installed, collect everything
         if (filter1.isEmpty() && filter2.isEmpty() && filter3.isEmpty()) {
             return true;
         }
-
         // TODO: Implement actual filter logic based on filter modules
-        // For now, just return true
         return true;
     }
 
@@ -492,7 +447,6 @@ public class FlowtechCollectorBlockEntity extends BlockEntity implements MenuPro
             ItemStack slotStack = outputInventory.getStackInSlot(i);
 
             if (slotStack.isEmpty()) {
-                // Empty slot - insert up to capacity
                 int insertAmount = Math.min(stack.getCount(), slotCapacity);
                 ItemStack toInsert = stack.copy();
                 toInsert.setCount(insertAmount);
@@ -503,7 +457,6 @@ public class FlowtechCollectorBlockEntity extends BlockEntity implements MenuPro
                     return ItemStack.EMPTY;
                 }
             } else if (ItemStack.isSameItemSameComponents(stack, slotStack)) {
-                // Same item - try to merge
                 int spaceLeft = slotCapacity - slotStack.getCount();
                 if (spaceLeft > 0) {
                     int insertAmount = Math.min(stack.getCount(), spaceLeft);
@@ -517,10 +470,9 @@ public class FlowtechCollectorBlockEntity extends BlockEntity implements MenuPro
             }
         }
 
-        return stack; // Return remaining items that couldn't be inserted
+        return stack;
     }
 
-    // Static ticker method for registration
     public static <T extends BlockEntity> BlockEntityTicker<T> createTicker() {
         return (level, pos, state, blockEntity) -> {
             if (blockEntity instanceof FlowtechCollectorBlockEntity collector) {

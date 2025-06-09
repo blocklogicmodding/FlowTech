@@ -85,7 +85,6 @@ public class FlowtechCollectorBlock extends BaseEntityBlock {
         return new FlowtechCollectorBlockEntity(blockPos, blockState);
     }
 
-    // Override getDrops to return empty list since we handle drops manually
     @Override
     protected List<ItemStack> getDrops(BlockState state, LootParams.Builder params) {
         return Collections.emptyList();
@@ -95,7 +94,6 @@ public class FlowtechCollectorBlock extends BaseEntityBlock {
     protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
         if (state.getBlock() != newState.getBlock()) {
             if (level.getBlockEntity(pos) instanceof FlowtechCollectorBlockEntity collector) {
-                // Drop the output inventory contents
                 collector.drops();
                 level.updateNeighbourForOutputSignal(pos, this);
             }
@@ -114,20 +112,15 @@ public class FlowtechCollectorBlock extends BaseEntityBlock {
         return stack;
     }
 
-    // THIS IS THE KEY METHOD - Gets called when block is broken by player
     @Override
     public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
         if (!level.isClientSide && level.getBlockEntity(pos) instanceof FlowtechCollectorBlockEntity collector) {
-            // Create the item stack
             ItemStack stack = new ItemStack(this);
 
-            // Save data to the item
             saveCollectorDataToItem(stack, collector, level);
 
-            // Drop the item with saved data
             popResource(level, pos, stack);
 
-            // DON'T clear contents here - let onRemove handle the dropping
         }
 
         return super.playerWillDestroy(level, pos, state, player);
@@ -145,7 +138,6 @@ public class FlowtechCollectorBlock extends BaseEntityBlock {
         return ItemInteractionResult.SUCCESS;
     }
 
-    // Update block state when XP collection changes
     public static void updateXpCollectionState(Level level, BlockPos pos, boolean xpCollection) {
         BlockState state = level.getBlockState(pos);
         if (state.getBlock() instanceof FlowtechCollectorBlock) {
@@ -176,17 +168,14 @@ public class FlowtechCollectorBlock extends BaseEntityBlock {
             HolderLookup.Provider registries = serverLevel.registryAccess();
             CompoundTag tag = new CompoundTag();
 
-            // Save module slots
             tag.put("moduleSlots", collector.moduleSlots.serializeNBT(registries));
 
-            // Save persistent data
             tag.putInt("storedXP", collector.getStoredXP());
             tag.putBoolean("xpCollectionEnabled", collector.isXpCollectionEnabled());
             tag.putInt("downUpOffset", collector.getDownUpOffset());
             tag.putInt("northSouthOffset", collector.getNorthSouthOffset());
             tag.putInt("eastWestOffset", collector.getEastWestOffset());
 
-            // Save side configuration
             tag.putBoolean("topSideActive", collector.isTopSideActive());
             tag.putBoolean("eastSideActive", collector.isEastSideActive());
             tag.putBoolean("frontSideActive", collector.isFrontSideActive());
@@ -194,7 +183,6 @@ public class FlowtechCollectorBlock extends BaseEntityBlock {
             tag.putBoolean("bottomSideActive", collector.isBottomSideActive());
             tag.putBoolean("backSideActive", collector.isBackSideActive());
 
-            // Save the data to the item
             stack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
         }
     }

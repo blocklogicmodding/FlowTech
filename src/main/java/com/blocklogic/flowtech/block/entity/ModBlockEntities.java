@@ -23,13 +23,7 @@ public class ModBlockEntities {
             BLOCK_ENTITIES.register("collector_be", () -> BlockEntityType.Builder.of(
                     FlowtechCollectorBlockEntity::new, ModBlocks.FLOWTECH_COLLECTOR.get()).build(null));
 
-    public static void register(IEventBus eventBus) {
-        BLOCK_ENTITIES.register(eventBus);
-        eventBus.addListener(ModBlockEntities::registerCapabilities);
-    }
-
     private static void registerCapabilities(RegisterCapabilitiesEvent event) {
-        // Register ItemHandler capability for FlowtechCollectorBlockEntity
         event.registerBlockEntity(
                 Capabilities.ItemHandler.BLOCK,
                 COLLECTOR_BE.get(),
@@ -41,7 +35,6 @@ public class ModBlockEntities {
                 }
         );
 
-        // Register ItemHandler capability for FlowtechControllerBlockEntity
         event.registerBlockEntity(
                 Capabilities.ItemHandler.BLOCK,
                 CONTROLLER_BE.get(),
@@ -52,5 +45,10 @@ public class ModBlockEntities {
                     return null;
                 }
         );
+    }
+
+    public static void register(IEventBus eventBus) {
+        BLOCK_ENTITIES.register(eventBus);
+        eventBus.addListener(ModBlockEntities::registerCapabilities);
     }
 }
