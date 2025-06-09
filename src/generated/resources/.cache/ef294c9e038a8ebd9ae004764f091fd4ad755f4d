@@ -1,8 +1,6 @@
-// 1.21.1	2025-06-08T17:21:36.9803805	Tags for minecraft:block mod id flowtech
+// 1.21.1	2025-06-09T17:28:09.5254833	Tags for minecraft:block mod id flowtech
 2667dfeb8c865acc373c207b055fe45b083e4e68 data/flowtech/tags/block/flowtech_machines.json
 b8e49ed81767c264182629f1e75cab946d1b766e data/flowtech/tags/block/flowtech_pads.json
-d3178508260f276310c1ab3c7d2bd22721a0afa4 data/flowtech/tags/block/incorrect_for_umbrite_tool.json
-32b13946c4cd1f944b029659ccce5fcb2adad4ff data/flowtech/tags/block/needs_umbrite_tool.json
 80569f23f5eb46979180327d05958f7cdbbc8f0b data/flowtech/tags/block/ores/umbrite.json
 1625979069b98506016197aa6f3baf26b0b5c96d data/flowtech/tags/block/raw_blocks/umbrite.json
 e5493a7f4eb4755abe5f27ebb6cdbd262b7f8027 data/minecraft/tags/block/mineable/pickaxe.json
