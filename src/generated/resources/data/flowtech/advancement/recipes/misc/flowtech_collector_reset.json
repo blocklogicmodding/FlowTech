@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_collector": {
+      "conditions": {
+        "items": [
+          {
+            "items": "flowtech:flowtech_collector"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "flowtech:flowtech_collector_reset"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_collector"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "flowtech:flowtech_collector_reset"
+    ]
+  }
+}

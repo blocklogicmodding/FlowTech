@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "flowtech:flowtech_collector"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "flowtech:flowtech_collector"
+  }
+}

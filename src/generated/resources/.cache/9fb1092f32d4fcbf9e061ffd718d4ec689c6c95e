@@ -1,8 +1,9 @@
-// 1.21.1	2025-06-09T15:00:35.7606865	Recipes
+// 1.21.1	2025-06-09T17:40:19.7255404	Recipes
 116f566bc46354450a9e604ed65ac12034def316 data/flowtech/advancement/recipes/misc/attack_pad.json
 3f8c9d444a62fc63c9257d1866db055cb20d978c data/flowtech/advancement/recipes/misc/bane_of_arthropods_module.json
 f126155374a684a13dcedfedea4c945c82ac47dc data/flowtech/advancement/recipes/misc/fire_aspect_module.json
 a95549cf9588d069a07361e0d63419233bac489d data/flowtech/advancement/recipes/misc/flowtech_collector.json
+72d4aa7868773109c655ece5a2e80aa4f2b38bed data/flowtech/advancement/recipes/misc/flowtech_collector_reset.json
 6fc16ec7294d6ae540c86bae98146271aeccc649 data/flowtech/advancement/recipes/misc/flowtech_controller.json
 d8df6c9841d1fe8e572958b251ccb08638eaf7df data/flowtech/advancement/recipes/misc/flow_pad_fast.json
 15565c814cfd9b99132df0c19c548d1488e33488 data/flowtech/advancement/recipes/misc/flow_pad_faster.json
@@ -39,6 +40,7 @@ f015ff00d5569fe6c5b7492c397f2215b90b991c data/flowtech/recipe/attack_pad.json
 aace9402521f8bbcee1e81ea549b0b29447ad18f data/flowtech/recipe/bane_of_arthropods_module.json
 29d9e3b41fa3a0f1807dc4bbe4886855a57b148c data/flowtech/recipe/fire_aspect_module.json
 7348cdf0fb83b21f1f0f2c5e40f3bdb13662eefc data/flowtech/recipe/flowtech_collector.json
+8b2fde56d8334231635158c860c6127dcd1b216d data/flowtech/recipe/flowtech_collector_reset.json
 876611065d822d4e3fd931e7b80657149d54516f data/flowtech/recipe/flowtech_controller.json
 116561c8134080ca46f09fdbdf474abb262dee98 data/flowtech/recipe/flow_pad_fast.json
 4fab1ea2a5a4b8a3770d384e77f04e0e189292ab data/flowtech/recipe/flow_pad_faster.json

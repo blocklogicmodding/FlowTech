@@ -229,6 +229,11 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .define('R', Items.OBSERVER)
                 .unlockedBy("has_ender_eye", has(Items.ENDER_EYE))
                 .save(recipeOutput);
+
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModBlocks.FLOWTECH_COLLECTOR.get())
+                .requires(ModBlocks.FLOWTECH_COLLECTOR.get())
+                .unlockedBy("has_collector", has(ModBlocks.FLOWTECH_COLLECTOR))
+                .save(recipeOutput, FlowTech.MODID + ":flowtech_collector_reset");
     }
 
     protected static void oreSmelting(RecipeOutput recipeOutput, List<ItemLike> ingredients, RecipeCategory category, ItemLike result,
