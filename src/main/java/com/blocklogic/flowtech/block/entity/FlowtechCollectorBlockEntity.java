@@ -2,6 +2,7 @@ package com.blocklogic.flowtech.block.entity;
 
 import com.blocklogic.flowtech.block.custom.FlowtechCollectorBlock;
 import com.blocklogic.flowtech.screen.custom.FlowtechCollectorMenu;
+import com.mojang.logging.LogUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -30,12 +31,16 @@ import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import net.neoforged.neoforge.items.wrapper.EmptyItemHandler;
+import org.slf4j.Logger;
 
 import java.util.List;
 
 import javax.annotation.Nullable;
 
 public class FlowtechCollectorBlockEntity extends BlockEntity implements MenuProvider {
+
+    private static final Logger LOGGER = LogUtils.getLogger();
+    public static Logger getLogger() { return LOGGER; }
 
     private int tickCounter = 0;
     private static final int COLLECTION_INTERVAL = 10;
@@ -55,7 +60,26 @@ public class FlowtechCollectorBlockEntity extends BlockEntity implements MenuPro
         protected void onContentsChanged(int slot) {
             setChanged();
             if (!level.isClientSide()) {
-                level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
+                try {
+                    level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
+                } catch (Exception e) {
+                    LOGGER.error("Failed to send block update for collector at {}", getBlockPos(), e);
+                }
+            }
+        }
+
+        @Override
+        public boolean isItemValid(int slot, ItemStack stack) {
+            if (stack.isEmpty()) {
+                return true;
+            }
+
+            try {
+                stack.save(level.registryAccess());
+                return super.isItemValid(slot, stack);
+            } catch (Exception e) {
+                LOGGER.warn("Rejected invalid item {} for collector slot {}", stack, slot, e);
+                return false;
             }
         }
     };
@@ -70,7 +94,26 @@ public class FlowtechCollectorBlockEntity extends BlockEntity implements MenuPro
         protected void onContentsChanged(int slot) {
             setChanged();
             if (!level.isClientSide()) {
-                level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
+                try {
+                    level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
+                } catch (Exception e) {
+                    LOGGER.error("Failed to send block update for collector at {}", getBlockPos(), e);
+                }
+            }
+        }
+
+        @Override
+        public boolean isItemValid(int slot, ItemStack stack) {
+            if (stack.isEmpty()) {
+                return false;
+            }
+
+            try {
+                stack.save(level.registryAccess());
+                return false;
+            } catch (Exception e) {
+                LOGGER.warn("Rejected invalid item {} for collector output slot {}", stack, slot, e);
+                return false;
             }
         }
     };
@@ -298,8 +341,19 @@ public class FlowtechCollectorBlockEntity extends BlockEntity implements MenuPro
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.saveAdditional(tag, registries);
 
-        tag.put("moduleSlots", moduleSlots.serializeNBT(registries));
-        tag.put("outputInventory", outputInventory.serializeNBT(registries));
+        try {
+            tag.put("moduleSlots", moduleSlots.serializeNBT(registries));
+        } catch (Exception e) {
+            LOGGER.error("Failed to serialize module slots for collector at {}", getBlockPos(), e);
+            tag.put("moduleSlots", new ItemStackHandler(5).serializeNBT(registries));
+        }
+
+        try {
+            tag.put("outputInventory", outputInventory.serializeNBT(registries));
+        } catch (Exception e) {
+            LOGGER.error("Failed to serialize output inventory for collector at {}", getBlockPos(), e);
+            tag.put("outputInventory", new ItemStackHandler(35).serializeNBT(registries));
+        }
 
         tag.putInt("storedXP", storedXP);
         tag.putBoolean("xpCollectionEnabled", xpCollectionEnabled);
@@ -319,8 +373,27 @@ public class FlowtechCollectorBlockEntity extends BlockEntity implements MenuPro
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
 
-        moduleSlots.deserializeNBT(registries, tag.getCompound("moduleSlots"));
-        outputInventory.deserializeNBT(registries, tag.getCompound("outputInventory"));
+        try {
+            if (tag.contains("moduleSlots")) {
+                moduleSlots.deserializeNBT(registries, tag.getCompound("moduleSlots"));
+            }
+        } catch (Exception e) {
+            LOGGER.error("Failed to deserialize module slots for collector at {}", getBlockPos(), e);
+            for (int i = 0; i < moduleSlots.getSlots(); i++) {
+                moduleSlots.setStackInSlot(i, ItemStack.EMPTY);
+            }
+        }
+
+        try {
+            if (tag.contains("outputInventory")) {
+                outputInventory.deserializeNBT(registries, tag.getCompound("outputInventory"));
+            }
+        } catch (Exception e) {
+            LOGGER.error("Failed to deserialize output inventory for collector at {}", getBlockPos(), e);
+            for (int i = 0; i < outputInventory.getSlots(); i++) {
+                outputInventory.setStackInSlot(i, ItemStack.EMPTY);
+            }
+        }
 
         storedXP = tag.getInt("storedXP");
         xpCollectionEnabled = tag.getBoolean("xpCollectionEnabled");
@@ -355,7 +428,14 @@ public class FlowtechCollectorBlockEntity extends BlockEntity implements MenuPro
 
     @Override
     public CompoundTag getUpdateTag(HolderLookup.Provider pRegistries) {
-        return saveWithoutMetadata(pRegistries);
+        try {
+            return saveWithoutMetadata(pRegistries);
+        } catch (Exception e) {
+            LOGGER.error("Failed to create update tag for collector at {}", getBlockPos(), e);
+            CompoundTag tag = new CompoundTag();
+            tag.putString("id", ModBlockEntities.COLLECTOR_BE.get().toString());
+            return tag;
+        }
     }
 
     public void tick() {

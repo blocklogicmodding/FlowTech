@@ -15,9 +15,6 @@ public class ModTags {
         public static final TagKey<Block> ORE_BLOCKS_UMBRITE = createTag("ores/umbrite");
         public static final TagKey<Block> RAW_BLOCKS_UMBRITE = createTag("raw_blocks/umbrite");
 
-        public static final TagKey<Block> NEEDS_UMBRITE_TOOL = createTag("needs_umbrite_tool");
-        public static final TagKey<Block> INCORRECT_FOR_UMBRITE_TOOL = createTag("incorrect_for_umbrite_tool");
-
         private static TagKey<Block> createTag (String name) {
             return BlockTags.create(ResourceLocation.fromNamespaceAndPath(FlowTech.MODID, name));
         }
