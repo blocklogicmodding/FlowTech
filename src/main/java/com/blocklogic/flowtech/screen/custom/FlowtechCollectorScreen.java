@@ -2,7 +2,7 @@ package com.blocklogic.flowtech.screen.custom;
 
 import com.blocklogic.flowtech.FlowTech;
 import com.blocklogic.flowtech.client.renderer.CollectorWireframeRenderer;
-import com.blocklogic.flowtech.network.CollectorConfigPacket;
+import com.blocklogic.flowtech.network.ModConfigPacket;
 import com.blocklogic.flowtech.network.CollectorXpPacket;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;
@@ -327,13 +327,13 @@ public class FlowtechCollectorScreen extends AbstractContainerScreen<FlowtechCol
     }
 
     private void toggleSideConfig(String side) {
-        CollectorConfigPacket.ConfigType configType = switch (side) {
-            case "top" -> CollectorConfigPacket.ConfigType.TOP_SIDE;
-            case "east" -> CollectorConfigPacket.ConfigType.EAST_SIDE;
-            case "front" -> CollectorConfigPacket.ConfigType.FRONT_SIDE;
-            case "west" -> CollectorConfigPacket.ConfigType.WEST_SIDE;
-            case "bottom" -> CollectorConfigPacket.ConfigType.BOTTOM_SIDE;
-            case "back" -> CollectorConfigPacket.ConfigType.BACK_SIDE;
+        ModConfigPacket.ConfigType configType = switch (side) {
+            case "top" -> ModConfigPacket.ConfigType.COLLECTOR_TOP_SIDE;
+            case "east" -> ModConfigPacket.ConfigType.COLLECTOR_EAST_SIDE;
+            case "front" -> ModConfigPacket.ConfigType.COLLECTOR_FRONT_SIDE;
+            case "west" -> ModConfigPacket.ConfigType.COLLECTOR_WEST_SIDE;
+            case "bottom" -> ModConfigPacket.ConfigType.COLLECTOR_BOTTOM_SIDE;
+            case "back" -> ModConfigPacket.ConfigType.COLLECTOR_BACK_SIDE;
             default -> null;
         };
 
@@ -357,33 +357,37 @@ public class FlowtechCollectorScreen extends AbstractContainerScreen<FlowtechCol
                 case "back" -> backSideActive = newValue;
             }
 
-            PacketDistributor.sendToServer(new CollectorConfigPacket(
-                    menu.blockEntity.getBlockPos(), configType, 0, newValue));
+            PacketDistributor.sendToServer(new ModConfigPacket(
+                    ModConfigPacket.ConfigTarget.COLLECTOR_BLOCK,
+                    menu.blockEntity.getBlockPos(),
+                    configType,
+                    0,
+                    newValue));
 
             this.init();
         }
     }
 
     private void adjustOffset(String axis, int delta) {
-        CollectorConfigPacket.ConfigType configType;
+        ModConfigPacket.ConfigType configType;
         int currentValue;
         int newValue;
 
         switch (axis) {
             case "downUp" -> {
-                configType = CollectorConfigPacket.ConfigType.DOWN_UP_OFFSET;
+                configType = ModConfigPacket.ConfigType.COLLECTOR_DOWN_UP_OFFSET;
                 currentValue = downUpOffset;
                 newValue = Math.max(-10, Math.min(10, currentValue + delta));
                 downUpOffset = newValue;
             }
             case "northSouth" -> {
-                configType = CollectorConfigPacket.ConfigType.NORTH_SOUTH_OFFSET;
+                configType = ModConfigPacket.ConfigType.COLLECTOR_NORTH_SOUTH_OFFSET;
                 currentValue = northSouthOffset;
                 newValue = Math.max(-10, Math.min(10, currentValue + delta));
                 northSouthOffset = newValue;
             }
             case "eastWest" -> {
-                configType = CollectorConfigPacket.ConfigType.EAST_WEST_OFFSET;
+                configType = ModConfigPacket.ConfigType.COLLECTOR_EAST_WEST_OFFSET;
                 currentValue = eastWestOffset;
                 newValue = Math.max(-10, Math.min(10, currentValue + delta));
                 eastWestOffset = newValue;
@@ -393,8 +397,12 @@ public class FlowtechCollectorScreen extends AbstractContainerScreen<FlowtechCol
             }
         }
 
-        PacketDistributor.sendToServer(new CollectorConfigPacket(
-                menu.blockEntity.getBlockPos(), configType, newValue, false));
+        PacketDistributor.sendToServer(new ModConfigPacket(
+                ModConfigPacket.ConfigTarget.COLLECTOR_BLOCK,
+                menu.blockEntity.getBlockPos(),
+                configType,
+                newValue,
+                false));
     }
 
     private void toggleWireframe() {
@@ -408,14 +416,26 @@ public class FlowtechCollectorScreen extends AbstractContainerScreen<FlowtechCol
         northSouthOffset = 0;
         eastWestOffset = 0;
 
-        PacketDistributor.sendToServer(new CollectorConfigPacket(
-                menu.blockEntity.getBlockPos(), CollectorConfigPacket.ConfigType.DOWN_UP_OFFSET, 0, false));
+        PacketDistributor.sendToServer(new ModConfigPacket(
+                ModConfigPacket.ConfigTarget.COLLECTOR_BLOCK,
+                menu.blockEntity.getBlockPos(),
+                ModConfigPacket.ConfigType.COLLECTOR_DOWN_UP_OFFSET,
+                0,
+                false));
 
-        PacketDistributor.sendToServer(new CollectorConfigPacket(
-                menu.blockEntity.getBlockPos(), CollectorConfigPacket.ConfigType.NORTH_SOUTH_OFFSET, 0, false));
+        PacketDistributor.sendToServer(new ModConfigPacket(
+                ModConfigPacket.ConfigTarget.COLLECTOR_BLOCK,
+                menu.blockEntity.getBlockPos(),
+                ModConfigPacket.ConfigType.COLLECTOR_NORTH_SOUTH_OFFSET,
+                0,
+                false));
 
-        PacketDistributor.sendToServer(new CollectorConfigPacket(
-                menu.blockEntity.getBlockPos(), CollectorConfigPacket.ConfigType.EAST_WEST_OFFSET, 0, false));
+        PacketDistributor.sendToServer(new ModConfigPacket(
+                ModConfigPacket.ConfigTarget.COLLECTOR_BLOCK,
+                menu.blockEntity.getBlockPos(),
+                ModConfigPacket.ConfigType.COLLECTOR_EAST_WEST_OFFSET,
+                0,
+                false));
     }
 
     private void withdrawXP() {
@@ -560,8 +580,12 @@ public class FlowtechCollectorScreen extends AbstractContainerScreen<FlowtechCol
         if (mouseX >= x + 118 && mouseX <= x + 134 && mouseY >= y + 110 && mouseY <= y + 118) {
             xpCollectionEnabled = !xpCollectionEnabled;
 
-            PacketDistributor.sendToServer(new CollectorConfigPacket(
-                    menu.blockEntity.getBlockPos(), CollectorConfigPacket.ConfigType.XP_COLLECTION_TOGGLE, 0, xpCollectionEnabled));
+            PacketDistributor.sendToServer(new ModConfigPacket(
+                    ModConfigPacket.ConfigTarget.COLLECTOR_BLOCK,
+                    menu.blockEntity.getBlockPos(),
+                    ModConfigPacket.ConfigType.COLLECTOR_XP_COLLECTION_TOGGLE,
+                    0,
+                    xpCollectionEnabled));
 
             return true;
         }

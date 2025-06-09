@@ -15,9 +15,9 @@ public class ModNetwork {
         PayloadRegistrar registrar = event.registrar(FlowTech.MODID);
 
         registrar.playToServer(
-                CollectorConfigPacket.TYPE,
-                CollectorConfigPacket.STREAM_CODEC,
-                CollectorConfigPacket::handle
+                ModConfigPacket.TYPE,
+                ModConfigPacket.STREAM_CODEC,
+                ModConfigPacket::handle
         );
 
         registrar.playToServer(

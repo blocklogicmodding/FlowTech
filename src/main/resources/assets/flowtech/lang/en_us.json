@@ -40,6 +40,8 @@
   "gui.flowtech.controller": "Controller",
   "gui.flowtech.collector.xp_input_levels": "Levels",
 
+  "gui.flowtech.void_filter": "Void Filter",
+
   "tooltip.flowtech.collector.xp_input_levels": "Enter the number of levels to withdraw or deposit",
 
   "tooltip.flowtech.collector.side_config.top": "Toggle Extraction from the Top",
@@ -72,5 +74,10 @@
   "tooltip.flowtech.collector.xp_collection.enabled": "XP Collection: Enabled",
   "tooltip.flowtech.collector.xp_collection.disabled": "XP Collection: Disabled",
   "gui.flowtech.collector.xp_levels_stored": "Levels Stored: %,d",
-  "tooltip.flowtech.collector.xp_display": "XP: %s"
+  "tooltip.flowtech.collector.xp_display": "XP: %s",
+
+  "tooltip.flowtech.void_filter.ignore_nbt.enabled": "Ignore NBT: Enabled",
+  "tooltip.flowtech.void_filter.ignore_nbt.disabled": "Ignore NBT: Disabled",
+  "tooltip.flowtech.void_filter.ignore_durability.enabled": "Ignore Durability: Enabled",
+  "tooltip.flowtech.void_filter.ignore_durability.disabled": "Ignore Durability: Disabled"
 }

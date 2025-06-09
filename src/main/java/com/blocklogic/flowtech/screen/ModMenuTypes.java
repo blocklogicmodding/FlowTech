@@ -3,6 +3,7 @@ package com.blocklogic.flowtech.screen;
 import com.blocklogic.flowtech.FlowTech;
 import com.blocklogic.flowtech.screen.custom.FlowtechCollectorMenu;
 import com.blocklogic.flowtech.screen.custom.FlowtechControllerMenu;
+import com.blocklogic.flowtech.screen.custom.VoidFilterMenu;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
@@ -21,6 +22,9 @@ public class ModMenuTypes {
 
     public static final DeferredHolder<MenuType<?>, MenuType<FlowtechCollectorMenu>> COLLECTOR_MENU =
             registerMenuType("flowtech_collector_menu", FlowtechCollectorMenu::new);
+
+    public static final DeferredHolder<MenuType<?>, MenuType<VoidFilterMenu>> VOID_FILTER_MENU =
+            registerMenuType("void_filter_menu", VoidFilterMenu::new);
 
     private static <T extends AbstractContainerMenu> DeferredHolder<MenuType<?>, MenuType<T>> registerMenuType(String name, IContainerFactory<T> factory) {
         return MENUS.register(name, () -> IMenuTypeExtension.create(factory));

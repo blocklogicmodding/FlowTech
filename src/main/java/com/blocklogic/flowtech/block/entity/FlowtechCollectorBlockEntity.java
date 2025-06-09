@@ -1,6 +1,9 @@
 package com.blocklogic.flowtech.block.entity;
 
 import com.blocklogic.flowtech.block.custom.FlowtechCollectorBlock;
+import com.blocklogic.flowtech.component.ModDataComponents;
+import com.blocklogic.flowtech.component.VoidFilterData;
+import com.blocklogic.flowtech.item.custom.VoidFilterItem;
 import com.blocklogic.flowtech.screen.custom.FlowtechCollectorMenu;
 import com.mojang.logging.LogUtils;
 import net.minecraft.core.BlockPos;
@@ -520,7 +523,18 @@ public class FlowtechCollectorBlockEntity extends BlockEntity implements MenuPro
         for (ItemEntity itemEntity : items) {
             if (itemEntity.isAlive() && !itemEntity.hasPickUpDelay()) {
                 ItemStack stack = itemEntity.getItem().copy();
-                if (mustKeep(stack)) {
+
+                if (shouldVoidItem(stack)) {
+                    int amount = stack.getCount();
+                    ItemStack currentStack = itemEntity.getItem();
+
+                    if (amount >= currentStack.getCount()) {
+                        itemEntity.discard();
+                    } else {
+                        ItemStack newStack = currentStack.copyWithCount(currentStack.getCount() - amount);
+                        itemEntity.setItem(newStack);
+                    }
+                } else {
                     ItemStack remaining = insertIntoInventory(stack);
 
                     int insertedAmount = stack.getCount() - remaining.getCount();
@@ -537,6 +551,19 @@ public class FlowtechCollectorBlockEntity extends BlockEntity implements MenuPro
                 }
             }
         }
+    }
+
+    private boolean shouldVoidItem(ItemStack stack) {
+        for (int i = 1; i <= 3; i++) {
+            ItemStack moduleStack = moduleSlots.getStackInSlot(i);
+            if (moduleStack.getItem() instanceof VoidFilterItem) {
+                VoidFilterData filterData = moduleStack.getOrDefault(ModDataComponents.VOID_FILTER_DATA.get(), VoidFilterData.DEFAULT);
+                if (filterData.shouldVoidItem(stack)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     private void collectXP() {
@@ -579,18 +606,6 @@ public class FlowtechCollectorBlockEntity extends BlockEntity implements MenuPro
             collectionAreaDirty = false;
         }
         return cachedCollectionArea;
-    }
-
-    private boolean mustKeep(ItemStack stack) {
-        ItemStack filter1 = moduleSlots.getStackInSlot(1);
-        ItemStack filter2 = moduleSlots.getStackInSlot(2);
-        ItemStack filter3 = moduleSlots.getStackInSlot(3);
-
-        if (filter1.isEmpty() && filter2.isEmpty() && filter3.isEmpty()) {
-            return true;
-        }
-        // TODO: Implement actual filter logic based on filter modules
-        return true;
     }
 
     private ItemStack insertIntoInventory(ItemStack stack) {

@@ -2,12 +2,14 @@ package com.blocklogic.flowtech;
 
 import com.blocklogic.flowtech.block.ModBlocks;
 import com.blocklogic.flowtech.block.entity.ModBlockEntities;
+import com.blocklogic.flowtech.component.ModDataComponents;
 import com.blocklogic.flowtech.item.ModCreativeTab;
 import com.blocklogic.flowtech.item.ModItems;
 import com.blocklogic.flowtech.network.ModNetwork;
 import com.blocklogic.flowtech.screen.ModMenuTypes;
 import com.blocklogic.flowtech.screen.custom.FlowtechCollectorScreen;
 import com.blocklogic.flowtech.screen.custom.FlowtechControllerScreen;
+import com.blocklogic.flowtech.screen.custom.VoidFilterScreen;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import org.slf4j.Logger;
 
@@ -63,6 +65,7 @@ public class FlowTech
         ModBlockEntities.register(modEventBus);
         ModMenuTypes.register(modEventBus);
         ModNetwork.register(modEventBus);
+        ModDataComponents.register(modEventBus);
 
         modEventBus.addListener(this::addCreative);
 
@@ -98,6 +101,7 @@ public class FlowTech
         public static void registerScreens(RegisterMenuScreensEvent event) {
             event.register(ModMenuTypes.COLLECTOR_MENU.get(), FlowtechCollectorScreen::new);
             event.register(ModMenuTypes.CONTROLLER_MENU.get(), FlowtechControllerScreen::new);
+            event.register(ModMenuTypes.VOID_FILTER_MENU.get(), VoidFilterScreen::new);
         }
     }
 }
