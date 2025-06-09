@@ -42,8 +42,22 @@ public class FlowtechCollectorBlockEntity extends BlockEntity implements MenuPro
     private static final Logger LOGGER = LogUtils.getLogger();
     public static Logger getLogger() { return LOGGER; }
 
+    private AABB cachedCollectionArea;
+    private boolean collectionAreaDirty = true;
+    private int cachedPickupRange = -1;
+    private boolean pickupRangeDirty = true;
+
+    private void invalidateCollectionAreaCache() {
+        collectionAreaDirty = true;
+    }
+
+    private void invalidatePickupRangeCache() {
+        pickupRangeDirty = true;
+        invalidateCollectionAreaCache();
+    }
+
     private int tickCounter = 0;
-    private static final int COLLECTION_INTERVAL = 10;
+    private static final int COLLECTION_INTERVAL = 100;
 
     public final ItemStackHandler moduleSlots = new ItemStackHandler(4) {
         @Override
@@ -57,6 +71,10 @@ public class FlowtechCollectorBlockEntity extends BlockEntity implements MenuPro
 
         @Override
         protected void onContentsChanged(int slot) {
+            if (slot == 0) {
+                invalidatePickupRangeCache();
+            }
+
             setChanged();
             if (!level.isClientSide()) {
                 try {
@@ -86,7 +104,6 @@ public class FlowtechCollectorBlockEntity extends BlockEntity implements MenuPro
     public final ItemStackHandler outputInventory = new ItemStackHandler(35) {
         @Override
         protected int getStackLimit(int slot, ItemStack stack) {
-            // Allow full stacks - use the item's natural max stack size (typically 64)
             return stack.getMaxStackSize();
         }
 
@@ -122,21 +139,19 @@ public class FlowtechCollectorBlockEntity extends BlockEntity implements MenuPro
         protected void onContentsChanged(int slot) {
             setChanged();
             if (!level.isClientSide()) {
-                // ONLY send block update - NO custom sync packets!
                 level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
             }
         }
 
         @Override
         public boolean isItemValid(int slot, ItemStack stack) {
-            // Allow items to be inserted into output inventory
             if (stack.isEmpty()) {
                 return false;
             }
 
             try {
                 stack.save(level.registryAccess());
-                return true; // Changed from false to true to allow item insertion
+                return true;
             } catch (Exception e) {
                 LOGGER.warn("Rejected invalid item {} for collector output slot {}", stack, slot, e);
                 return false;
@@ -307,13 +322,34 @@ public class FlowtechCollectorBlockEntity extends BlockEntity implements MenuPro
     }
 
     public int getDownUpOffset() { return downUpOffset; }
-    public void setDownUpOffset(int offset) { this.downUpOffset = Math.max(-10, Math.min(10, offset)); setChanged(); }
+    public void setDownUpOffset(int offset) {
+        int newOffset = Math.max(-10, Math.min(10, offset));
+        if (this.downUpOffset != newOffset) {
+            this.downUpOffset = newOffset;
+            invalidateCollectionAreaCache();
+            setChanged();
+        }
+    }
 
     public int getNorthSouthOffset() { return northSouthOffset; }
-    public void setNorthSouthOffset(int offset) { this.northSouthOffset = Math.max(-10, Math.min(10, offset)); setChanged(); }
+    public void setNorthSouthOffset(int offset) {
+        int newOffset = Math.max(-10, Math.min(10, offset));
+        if (this.northSouthOffset != newOffset) {
+            this.northSouthOffset = newOffset;
+            invalidateCollectionAreaCache();
+            setChanged();
+        }
+    }
 
     public int getEastWestOffset() { return eastWestOffset; }
-    public void setEastWestOffset(int offset) { this.eastWestOffset = Math.max(-10, Math.min(10, offset)); setChanged(); }
+    public void setEastWestOffset(int offset) {
+        int newOffset = Math.max(-10, Math.min(10, offset));
+        if (this.eastWestOffset != newOffset) {
+            this.eastWestOffset = newOffset;
+            invalidateCollectionAreaCache();
+            setChanged();
+        }
+    }
 
     public boolean isTopSideActive() { return topSideActive; }
     public void setTopSideActive(boolean active) { this.topSideActive = active; setChanged(); }
@@ -334,15 +370,13 @@ public class FlowtechCollectorBlockEntity extends BlockEntity implements MenuPro
     public void setBackSideActive(boolean active) { this.backSideActive = active; setChanged(); }
 
     public int getPickupRange() {
-        int baseRange = 3;
-        int modules = moduleSlots.getStackInSlot(0).getCount();
-        return baseRange + modules;
-    }
-
-    public void clearContents() {
-        for (int i = 0; i < outputInventory.getSlots(); i++) {
-            outputInventory.setStackInSlot(i, ItemStack.EMPTY);
+        if (pickupRangeDirty || cachedPickupRange == -1) {
+            int baseRange = 3;
+            int modules = moduleSlots.getStackInSlot(0).getCount();
+            cachedPickupRange = baseRange + modules;
+            pickupRangeDirty = false;
         }
+        return cachedPickupRange;
     }
 
     public void drops() {
@@ -389,6 +423,11 @@ public class FlowtechCollectorBlockEntity extends BlockEntity implements MenuPro
         tag.putBoolean("backSideActive", backSideActive);
     }
 
+    public void invalidateAllCaches() {
+        invalidatePickupRangeCache();
+        invalidateCollectionAreaCache();
+    }
+
     @Override
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
@@ -427,6 +466,9 @@ public class FlowtechCollectorBlockEntity extends BlockEntity implements MenuPro
         westSideActive = tag.getBoolean("westSideActive");
         bottomSideActive = tag.getBoolean("bottomSideActive");
         backSideActive = tag.getBoolean("backSideActive");
+
+        invalidatePickupRangeCache();
+        invalidateCollectionAreaCache();
     }
 
     @Override
@@ -477,13 +519,20 @@ public class FlowtechCollectorBlockEntity extends BlockEntity implements MenuPro
 
         for (ItemEntity itemEntity : items) {
             if (itemEntity.isAlive() && !itemEntity.hasPickUpDelay()) {
-                ItemStack stack = itemEntity.getItem();
+                ItemStack stack = itemEntity.getItem().copy();
                 if (canCollectItem(stack)) {
                     ItemStack remaining = insertIntoInventory(stack);
-                    if (remaining.isEmpty()) {
-                        itemEntity.discard();
-                    } else {
-                        itemEntity.setItem(remaining);
+
+                    int insertedAmount = stack.getCount() - remaining.getCount();
+
+                    if (insertedAmount > 0) {
+                        ItemStack currentStack = itemEntity.getItem();
+                        if (insertedAmount >= currentStack.getCount()) {
+                            itemEntity.discard();
+                        } else {
+                            ItemStack newStack = currentStack.copyWithCount(currentStack.getCount() - insertedAmount);
+                            itemEntity.setItem(newStack);
+                        }
                     }
                 }
             }
@@ -515,17 +564,21 @@ public class FlowtechCollectorBlockEntity extends BlockEntity implements MenuPro
     }
 
     private AABB getCollectionArea() {
-        int range = getPickupRange();
-        BlockPos pos = getBlockPos();
+        if (collectionAreaDirty || cachedCollectionArea == null) {
+            int range = getPickupRange();
+            BlockPos pos = getBlockPos();
 
-        double minX = pos.getX() - range + eastWestOffset;
-        double maxX = pos.getX() + range + 1 + eastWestOffset;
-        double minY = pos.getY() - range + downUpOffset;
-        double maxY = pos.getY() + range + 1 + downUpOffset;
-        double minZ = pos.getZ() - range + northSouthOffset;
-        double maxZ = pos.getZ() + range + 1 + northSouthOffset;
+            double minX = pos.getX() - range + eastWestOffset;
+            double maxX = pos.getX() + range + 1 + eastWestOffset;
+            double minY = pos.getY() - range + downUpOffset;
+            double maxY = pos.getY() + range + 1 + downUpOffset;
+            double minZ = pos.getZ() - range + northSouthOffset;
+            double maxZ = pos.getZ() + range + 1 + northSouthOffset;
 
-        return new AABB(minX, minY, minZ, maxX, maxY, maxZ);
+            cachedCollectionArea = new AABB(minX, minY, minZ, maxX, maxY, maxZ);
+            collectionAreaDirty = false;
+        }
+        return cachedCollectionArea;
     }
 
     private boolean canCollectItem(ItemStack stack) {
