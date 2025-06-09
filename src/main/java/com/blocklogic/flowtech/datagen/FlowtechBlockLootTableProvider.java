@@ -1,4 +1,4 @@
-package com.blocklogic.flowtech.data;
+package com.blocklogic.flowtech.datagen;
 
 import com.blocklogic.flowtech.block.ModBlocks;
 import com.blocklogic.flowtech.item.ModItems;
@@ -10,8 +10,8 @@ import net.minecraft.world.level.block.Block;
 
 import java.util.Set;
 
-public class ModBlockLootTableProvider extends BlockLootSubProvider {
-    protected ModBlockLootTableProvider(HolderLookup.Provider registries) {
+public class FlowtechBlockLootTableProvider extends BlockLootSubProvider {
+    protected FlowtechBlockLootTableProvider(HolderLookup.Provider registries) {
         super(Set.of(), FeatureFlags.REGISTRY.allFlags(), registries);
     }
 

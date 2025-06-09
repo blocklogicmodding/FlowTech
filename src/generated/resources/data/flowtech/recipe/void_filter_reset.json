@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "flowtech:void_filter_module"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "flowtech:void_filter_module"
+  }
+}

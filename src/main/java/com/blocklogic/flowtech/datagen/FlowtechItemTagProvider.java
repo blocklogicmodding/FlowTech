@@ -1,4 +1,4 @@
-package com.blocklogic.flowtech.data;
+package com.blocklogic.flowtech.datagen;
 
 import com.blocklogic.flowtech.FlowTech;
 import com.blocklogic.flowtech.block.ModBlocks;
@@ -14,8 +14,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
 
-public class ModItemTagProvider extends ItemTagsProvider {
-    public ModItemTagProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, CompletableFuture<TagLookup<Block>> blockTags, @Nullable ExistingFileHelper existingFileHelper) {
+public class FlowtechItemTagProvider extends ItemTagsProvider {
+    public FlowtechItemTagProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, CompletableFuture<TagLookup<Block>> blockTags, @Nullable ExistingFileHelper existingFileHelper) {
         super(output, lookupProvider, blockTags, FlowTech.MODID, existingFileHelper);
     }
 

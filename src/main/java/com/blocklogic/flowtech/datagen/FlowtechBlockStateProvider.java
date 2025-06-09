@@ -1,4 +1,4 @@
-package com.blocklogic.flowtech.data;
+package com.blocklogic.flowtech.datagen;
 
 import com.blocklogic.flowtech.FlowTech;
 import com.blocklogic.flowtech.block.ModBlocks;
@@ -7,8 +7,8 @@ import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.registries.DeferredBlock;
 
-public class ModBlockStateProvider extends BlockStateProvider {
-    public ModBlockStateProvider(PackOutput output, ExistingFileHelper exFileHelper) {
+public class FlowtechBlockStateProvider extends BlockStateProvider {
+    public FlowtechBlockStateProvider(PackOutput output, ExistingFileHelper exFileHelper) {
         super(output, FlowTech.MODID, exFileHelper);
     }
 

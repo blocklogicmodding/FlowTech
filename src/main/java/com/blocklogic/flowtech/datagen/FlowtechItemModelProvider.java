@@ -1,4 +1,4 @@
-package com.blocklogic.flowtech.data;
+package com.blocklogic.flowtech.datagen;
 
 import com.blocklogic.flowtech.FlowTech;
 import com.blocklogic.flowtech.item.ModItems;
@@ -9,8 +9,8 @@ import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.registries.DeferredItem;
 
-public class ModItemModelProvider extends ItemModelProvider {
-    public ModItemModelProvider(PackOutput output, ExistingFileHelper existingFileHelper) {
+public class FlowtechItemModelProvider extends ItemModelProvider {
+    public FlowtechItemModelProvider(PackOutput output, ExistingFileHelper existingFileHelper) {
         super(output, FlowTech.MODID, existingFileHelper);
     }
 

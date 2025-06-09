@@ -1,4 +1,4 @@
-// 1.21.1	2025-06-09T20:31:46.4991721	Recipes
+// 1.21.1	2025-06-10T01:47:19.7841618	Recipes
 116f566bc46354450a9e604ed65ac12034def316 data/flowtech/advancement/recipes/misc/attack_pad.json
 3f8c9d444a62fc63c9257d1866db055cb20d978c data/flowtech/advancement/recipes/misc/bane_of_arthropods_module.json
 7e295c7fdf228d2efaa3531a79d3396abd26539c data/flowtech/advancement/recipes/misc/collection_radius_increase_module.json
@@ -34,6 +34,7 @@ a233addd3e7727b0e08bda8320706dcfa6841953 data/flowtech/advancement/recipes/misc/
 fb8cef8b5b59f766dcc7ccfaeab00723abe8d9f1 data/flowtech/advancement/recipes/misc/umbrite_ingot_from_smelting_umbrite_stone_ore.json
 b8bcdc41119db6ed7955281c404931f713a6c2bf data/flowtech/advancement/recipes/misc/umbrite_nugget.json
 402a9f86c5e5089bc982ba29e2eaf2806a60c904 data/flowtech/advancement/recipes/misc/void_filter_module.json
+c2e77e0159bf22b9a0a877e47eb7873d29512a21 data/flowtech/advancement/recipes/misc/void_filter_reset.json
 fc9f36554ad7f59db43748d96213b9485c8bacf3 data/flowtech/advancement/recipes/tools/pad_wrench.json
 f015ff00d5569fe6c5b7492c397f2215b90b991c data/flowtech/recipe/attack_pad.json
 aace9402521f8bbcee1e81ea549b0b29447ad18f data/flowtech/recipe/bane_of_arthropods_module.json
@@ -71,5 +72,6 @@ a29d7ca48ceb4e0a450b20c2b80812e42c4e02ee data/flowtech/recipe/umbrite_ingot_from
 31758f13fbab75bb8a22a7f5d62814f5f01c875e data/flowtech/recipe/umbrite_ingot_from_smelting_umbrite_stone_ore.json
 d54a1a582ebc154617aa72e0be1c65f62a5dbb2e data/flowtech/recipe/umbrite_nugget.json
 1796c01bc004c3008085162ef8850fba3ad61db6 data/flowtech/recipe/void_filter_module.json
+c664f3fb0d859395c9af19692c167dc0f2f7eea6 data/flowtech/recipe/void_filter_reset.json
 db8d02e419fe1fc75370cbffa0eb5c3a42dfa2be data/minecraft/advancement/recipes/misc/umbrite_ingot_from_nuggets.json
 d794d9e2bf9bc8345eb2d75f73e4c786a2e8e8f1 data/minecraft/recipe/umbrite_ingot_from_nuggets.json

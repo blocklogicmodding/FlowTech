@@ -1,4 +1,4 @@
-package com.blocklogic.flowtech.data;
+package com.blocklogic.flowtech.datagen;
 
 import com.blocklogic.flowtech.FlowTech;
 import com.blocklogic.flowtech.block.ModBlocks;
@@ -15,8 +15,8 @@ import net.neoforged.neoforge.common.conditions.IConditionBuilder;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-public class ModRecipeProvider extends RecipeProvider implements IConditionBuilder {
-    public ModRecipeProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
+public class FlowtechRecipeProvider extends RecipeProvider implements IConditionBuilder {
+    public FlowtechRecipeProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
         super(output, registries);
     }
 
@@ -224,6 +224,11 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .requires(ModBlocks.FLOWTECH_COLLECTOR.get())
                 .unlockedBy("has_collector", has(ModBlocks.FLOWTECH_COLLECTOR))
                 .save(recipeOutput, FlowTech.MODID + ":flowtech_collector_reset");
+
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.VOID_FILTER_MODULE.get())
+                .requires(ModItems.VOID_FILTER_MODULE.get())
+                .unlockedBy("has_void_filter", has(ModItems.VOID_FILTER_MODULE))
+                .save(recipeOutput, FlowTech.MODID + ":void_filter_reset");
     }
 
     protected static void oreSmelting(RecipeOutput recipeOutput, List<ItemLike> ingredients, RecipeCategory category, ItemLike result,
