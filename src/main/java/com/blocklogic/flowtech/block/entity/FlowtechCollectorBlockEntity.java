@@ -520,7 +520,7 @@ public class FlowtechCollectorBlockEntity extends BlockEntity implements MenuPro
         for (ItemEntity itemEntity : items) {
             if (itemEntity.isAlive() && !itemEntity.hasPickUpDelay()) {
                 ItemStack stack = itemEntity.getItem().copy();
-                if (canCollectItem(stack)) {
+                if (shouldVoid(stack)) {
                     ItemStack remaining = insertIntoInventory(stack);
 
                     int insertedAmount = stack.getCount() - remaining.getCount();
@@ -581,7 +581,7 @@ public class FlowtechCollectorBlockEntity extends BlockEntity implements MenuPro
         return cachedCollectionArea;
     }
 
-    private boolean canCollectItem(ItemStack stack) {
+    private boolean shouldVoid(ItemStack stack) {
         ItemStack filter1 = moduleSlots.getStackInSlot(1);
         ItemStack filter2 = moduleSlots.getStackInSlot(2);
         ItemStack filter3 = moduleSlots.getStackInSlot(3);
