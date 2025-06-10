@@ -16,6 +16,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
@@ -71,7 +73,7 @@ public class PadWrenchWireframeRenderer {
         }
 
         if (data.firstMultiPos() != null && data.selectionMode() == PadWrenchData.SelectionMode.MULTI) {
-            renderMultiSelectionWireframe(poseStack, cameraPos, data.firstMultiPos());
+            renderMultiSelectionWireframe(poseStack, cameraPos, data.firstMultiPos(), level, minecraft);
         }
     }
 
@@ -87,15 +89,42 @@ public class PadWrenchWireframeRenderer {
     private static void renderLinkedPadsWireframe(PoseStack poseStack, Vec3 cameraPos, Set<BlockPos> linkedPads, Level level) {
         for (BlockPos padPos : linkedPads) {
             if (level.getBlockEntity(padPos) instanceof AttackPadBlockEntity attackPad && attackPad.isLinked()) {
-                AABB aabb = new AABB(padPos);
+                AABB aabb = new AABB(
+                        padPos.getX(),
+                        padPos.getY(),
+                        padPos.getZ(),
+                        padPos.getX() + 1.0,
+                        padPos.getY() + 0.0625,
+                        padPos.getZ() + 1.0
+                );
                 renderWireframeBox(poseStack, cameraPos, aabb, 0.0f, 1.0f, 0.0f, 0.6f);
             }
         }
     }
 
-    private static void renderMultiSelectionWireframe(PoseStack poseStack, Vec3 cameraPos, BlockPos firstPos) {
-        AABB aabb = new AABB(firstPos);
-        renderWireframeBox(poseStack, cameraPos, aabb, 1.0f, 1.0f, 0.0f, 0.8f);
+    private static void renderMultiSelectionWireframe(PoseStack poseStack, Vec3 cameraPos, BlockPos firstPos, Level level, Minecraft minecraft) {
+        HitResult hitResult = minecraft.hitResult;
+        if (hitResult != null && hitResult.getType() == HitResult.Type.BLOCK) {
+            BlockHitResult blockHitResult = (BlockHitResult) hitResult;
+            BlockPos currentPos = blockHitResult.getBlockPos();
+
+            int minX = Math.min(firstPos.getX(), currentPos.getX());
+            int maxX = Math.max(firstPos.getX(), currentPos.getX());
+            int minY = Math.min(firstPos.getY(), currentPos.getY());
+            int maxY = Math.max(firstPos.getY(), currentPos.getY());
+            int minZ = Math.min(firstPos.getZ(), currentPos.getZ());
+            int maxZ = Math.max(firstPos.getZ(), currentPos.getZ());
+
+            AABB selectionArea = new AABB(
+                    minX,
+                    minY,
+                    minZ,
+                    maxX + 1.0,
+                    maxY + 0.0625,
+                    maxZ + 1.0
+            );
+            renderWireframeBox(poseStack, cameraPos, selectionArea, 1.0f, 1.0f, 1.0f, 0.6f);
+        }
     }
 
     private static void renderWireframeBox(PoseStack poseStack, Vec3 cameraPos, AABB aabb, float red, float green, float blue, float alpha) {
