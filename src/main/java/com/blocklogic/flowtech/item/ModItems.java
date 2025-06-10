@@ -1,6 +1,7 @@
 package com.blocklogic.flowtech.item;
 
 import com.blocklogic.flowtech.FlowTech;
+import com.blocklogic.flowtech.item.custom.PadWrenchItem;
 import com.blocklogic.flowtech.item.custom.VoidFilterItem;
 import net.minecraft.world.item.*;
 import net.neoforged.bus.api.IEventBus;
@@ -32,7 +33,7 @@ public class ModItems {
             () -> new VoidFilterItem(new Item.Properties().stacksTo(1)));
 
     public static final DeferredItem<Item> PAD_WRENCH = ITEMS.register("pad_wrench",
-            () -> new Item(new Item.Properties()));
+            () -> new PadWrenchItem(new Item.Properties()));
 
     public static final DeferredItem<Item> RAW_UMBRITE = ITEMS.register("raw_umbrite",
             () -> new Item(new Item.Properties()));

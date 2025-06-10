@@ -23,6 +23,10 @@ public class ModBlockEntities {
             BLOCK_ENTITIES.register("collector_be", () -> BlockEntityType.Builder.of(
                     FlowtechCollectorBlockEntity::new, ModBlocks.FLOWTECH_COLLECTOR.get()).build(null));
 
+    public static final Supplier<BlockEntityType<AttackPadBlockEntity>> ATTACK_PAD_BE =
+            BLOCK_ENTITIES.register("attack_pad_be", () -> BlockEntityType.Builder.of(
+                    AttackPadBlockEntity::new, ModBlocks.ATTACK_PAD.get()).build(null));
+
     private static void registerCapabilities(RegisterCapabilitiesEvent event) {
         event.registerBlockEntity(
                 Capabilities.ItemHandler.BLOCK,

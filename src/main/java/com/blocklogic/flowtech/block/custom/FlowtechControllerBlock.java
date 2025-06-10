@@ -1,6 +1,9 @@
 package com.blocklogic.flowtech.block.custom;
 
 import com.blocklogic.flowtech.block.entity.FlowtechControllerBlockEntity;
+import com.blocklogic.flowtech.component.ModDataComponents;
+import com.blocklogic.flowtech.component.PadWrenchData;
+import com.blocklogic.flowtech.item.custom.PadWrenchItem;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -72,11 +75,59 @@ public class FlowtechControllerBlock extends BaseEntityBlock {
     protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
         if(state.getBlock() != newState.getBlock()) {
             if(level.getBlockEntity(pos) instanceof FlowtechControllerBlockEntity flowtechControllerBlockEntity) {
+                flowtechControllerBlockEntity.clearAllLinkedPads();
+
+                clearControllerFromNearbyWrenches(level, pos);
+
                 flowtechControllerBlockEntity.drops();
                 level.updateNeighbourForOutputSignal(pos, this);
             }
         }
         super.onRemove(state, level, pos, newState, movedByPiston);
+    }
+
+    private void clearControllerFromNearbyWrenches(Level level, BlockPos controllerPos) {
+        if (level.isClientSide()) return;
+
+        level.players().forEach(player -> {
+            if (player.distanceToSqr(controllerPos.getX(), controllerPos.getY(), controllerPos.getZ()) <= 64 * 64) {
+                clearControllerFromPlayerWrenches(player, controllerPos);
+            }
+        });
+    }
+
+    private void clearControllerFromPlayerWrenches(Player player, BlockPos controllerPos) {
+        ItemStack mainHand = player.getMainHandItem();
+        if (mainHand.getItem() instanceof PadWrenchItem) {
+            clearControllerFromWrench(mainHand, controllerPos, player);
+        }
+
+        ItemStack offHand = player.getOffhandItem();
+        if (offHand.getItem() instanceof PadWrenchItem) {
+            clearControllerFromWrench(offHand, controllerPos, player);
+        }
+
+        for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
+            ItemStack stack = player.getInventory().getItem(i);
+            if (stack.getItem() instanceof PadWrenchItem) {
+                clearControllerFromWrench(stack, controllerPos, player);
+            }
+        }
+    }
+
+    private void clearControllerFromWrench(ItemStack wrenchStack, BlockPos controllerPos, Player player) {
+        PadWrenchData data = wrenchStack.getOrDefault(
+                ModDataComponents.PAD_WRENCH_DATA.get(),
+                PadWrenchData.DEFAULT
+        );
+
+        if (data.selectedController() != null && data.selectedController().equals(controllerPos)) {
+            PadWrenchData newData = data.withSelectedController(null);
+            wrenchStack.set(ModDataComponents.PAD_WRENCH_DATA.get(), newData);
+
+            Component message = Component.translatable("item.flowtech.pad_wrench.controller.cleared");
+            player.displayClientMessage(message, true);
+        }
     }
 
     @Override

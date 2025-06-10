@@ -19,6 +19,13 @@ public class ModDataComponents {
                     .cacheEncoding()
                     .build());
 
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<PadWrenchData>> PAD_WRENCH_DATA =
+            DATA_COMPONENT_TYPES.register("pad_wrench_data", () -> DataComponentType.<PadWrenchData>builder()
+                    .persistent(PadWrenchData.CODEC)
+                    .networkSynchronized(ByteBufCodecs.fromCodec(PadWrenchData.CODEC))
+                    .cacheEncoding()
+                    .build());
+
     public static void register(IEventBus eventBus) {
         DATA_COMPONENT_TYPES.register(eventBus);
     }

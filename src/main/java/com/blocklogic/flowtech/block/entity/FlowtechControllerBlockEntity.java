@@ -4,6 +4,8 @@ import com.blocklogic.flowtech.screen.custom.FlowtechControllerMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.LongTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -20,6 +22,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.items.ItemStackHandler;
 
 import javax.annotation.Nullable;
+import java.util.HashSet;
+import java.util.Set;
 
 public class FlowtechControllerBlockEntity extends BlockEntity implements MenuProvider {
     public final ItemStackHandler inventory = new ItemStackHandler(5) {
@@ -37,9 +41,50 @@ public class FlowtechControllerBlockEntity extends BlockEntity implements MenuPr
         }
     };
 
+    private final Set<BlockPos> linkedPads = new HashSet<>();
+
     public FlowtechControllerBlockEntity(BlockPos pos, BlockState blockState) {
         super(ModBlockEntities.CONTROLLER_BE.get(), pos, blockState);
     }
+
+    public void addPad(BlockPos padPos) {
+        linkedPads.add(padPos);
+        setChanged();
+
+        if (level != null && !level.isClientSide()) {
+            level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
+        }
+    }
+
+    public void removePad(BlockPos padPos) {
+        linkedPads.remove(padPos);
+        setChanged();
+
+        if (level != null && !level.isClientSide()) {
+            level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
+        }
+    }
+
+    public Set<BlockPos> getLinkedPads() {
+        return new HashSet<>(linkedPads);
+    }
+
+    public int getLinkedPadCount() {
+        return linkedPads.size();
+    }
+
+    public void clearAllLinkedPads() {
+        if (level != null && !level.isClientSide()) {
+            for (BlockPos padPos : linkedPads) {
+                if (level.getBlockEntity(padPos) instanceof AttackPadBlockEntity attackPad) {
+                    attackPad.clearControllerPos();
+                }
+            }
+        }
+        linkedPads.clear();
+    }
+
+
 
     public void clearContents() {
         inventory.setStackInSlot(0, ItemStack.EMPTY);
@@ -58,12 +103,30 @@ public class FlowtechControllerBlockEntity extends BlockEntity implements MenuPr
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.saveAdditional(tag, registries);
         tag.put("inventory", inventory.serializeNBT(registries));
+
+        // Save linked pads
+        ListTag padList = new ListTag();
+        for (BlockPos padPos : linkedPads) {
+            padList.add(LongTag.valueOf(padPos.asLong()));
+        }
+        tag.put("linkedPads", padList);
     }
 
     @Override
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
         inventory.deserializeNBT(registries, tag.getCompound("inventory"));
+
+        // Load linked pads
+        linkedPads.clear();
+        if (tag.contains("linkedPads")) {
+            ListTag padList = tag.getList("linkedPads", 4); // 4 = LongTag
+            for (int i = 0; i < padList.size(); i++) {
+                long posLong = ((LongTag) padList.get(i)).getAsLong();
+                BlockPos padPos = BlockPos.of(posLong);
+                linkedPads.add(padPos);
+            }
+        }
     }
 
     @Override
@@ -87,6 +150,4 @@ public class FlowtechControllerBlockEntity extends BlockEntity implements MenuPr
     public CompoundTag getUpdateTag(HolderLookup.Provider pRegistries) {
         return saveWithoutMetadata(pRegistries);
     }
-
-
 }

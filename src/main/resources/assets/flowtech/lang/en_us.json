@@ -26,13 +26,6 @@
   "item.flowtech.umbrite_ingot": "Umbrite Ingot",
   "item.flowtech.umbrite_nugget": "Umbrite Nugget",
 
-  "item.flowtech.umbrite_sword": "Umbrite Sword",
-  "item.flowtech.umbrite_pickaxe": "Umbrite Pickaxe",
-  "item.flowtech.umbrite_axe": "Umbrite Axe",
-  "item.flowtech.umbrite_shovel": "Umbrite Shovel",
-  "item.flowtech.umbrite_hoe": "Umbrite Hoe",
-  "item.flowtech.umbrite_hammer": "Umbrite Hammer",
-
   "menu.flowtech.collector": "FlowTech Collector",
   "menu.flowtech.controller": "FlowTech Controller",
 
@@ -79,5 +72,30 @@
   "tooltip.flowtech.void_filter.ignore_nbt.enabled": "Ignore NBT: Enabled",
   "tooltip.flowtech.void_filter.ignore_nbt.disabled": "Ignore NBT: Disabled",
   "tooltip.flowtech.void_filter.ignore_durability.enabled": "Ignore Durability: Enabled",
-  "tooltip.flowtech.void_filter.ignore_durability.disabled": "Ignore Durability: Disabled"
+  "tooltip.flowtech.void_filter.ignore_durability.disabled": "Ignore Durability: Disabled",
+
+  "item.flowtech.pad_wrench.mode.add": "Add Mode",
+  "item.flowtech.pad_wrench.mode.remove": "Remove Mode",
+  "item.flowtech.pad_wrench.selection.single": "Single Selection",
+  "item.flowtech.pad_wrench.selection.multi": "Multi-Selection",
+  "item.flowtech.pad_wrench.controller.selected": "Selected FlowTech Controller at %d, %d, %d",
+  "item.flowtech.pad_wrench.error.no_controller": "No controller selected! Right-click a FlowTech Controller first.",
+  "item.flowtech.pad_wrench.pad.linked": "Linked Attack Pad to controller",
+  "item.flowtech.pad_wrench.pad.unlinked": "Unlinked Attack Pad from controller",
+  "item.flowtech.pad_wrench.multi.start": "Started multi-selection at %d, %d, %d",
+  "item.flowtech.pad_wrench.multi.linked": "Linked %d Attack Pads",
+  "item.flowtech.pad_wrench.multi.unlinked": "Unlinked %d Attack Pads",
+
+  "item.flowtech.pad_wrench.tooltip.operation.add": "Operation: Add",
+  "item.flowtech.pad_wrench.tooltip.operation.remove": "Operation: Remove",
+  "item.flowtech.pad_wrench.tooltip.selection.single": "Selection Mode: Single",
+  "item.flowtech.pad_wrench.tooltip.selection.multi": "Selection Mode: Multi",
+  "item.flowtech.pad_wrench.tooltip.controller.selected": "Controller: %d, %d, %d",
+  "item.flowtech.pad_wrench.tooltip.controller.none": "No Controller Selected",
+  "item.flowtech.pad_wrench.tooltip.multi.active": "Multi-Start: %d, %d, %d",
+  "item.flowtech.pad_wrench.tooltip.usage.selection": "Right-click: Toggle Selection Mode",
+  "item.flowtech.pad_wrench.tooltip.usage.operation": "Shift+Right-click: Toggle Operation Mode",
+  "item.flowtech.pad_wrench.tooltip.usage.controller": "Use on Controller: Select Target",
+  "item.flowtech.pad_wrench.tooltip.usage.pad": "Use on Pad: Link/Unlink",
+  "item.flowtech.pad_wrench.controller.cleared": "Controller Removed - Pad Wrench Cleared"
 }

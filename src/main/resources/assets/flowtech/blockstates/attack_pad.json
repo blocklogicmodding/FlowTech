@@ -1,18 +1,33 @@
 {
 	"variants": {
-		"facing=north": {
+		"facing=north,linked=false": {
 			"model": "flowtech:block/attack_pad"
 		},
-		"facing=south": {
+		"facing=south,linked=false": {
 			"model": "flowtech:block/attack_pad",
 			"y": 180
 		},
-		"facing=east": {
+		"facing=east,linked=false": {
 			"model": "flowtech:block/attack_pad",
 			"y": 90
 		},
-		"facing=west": {
+		"facing=west,linked=false": {
 			"model": "flowtech:block/attack_pad",
+			"y": 270
+		},
+		"facing=north,linked=true": {
+			"model": "flowtech:block/attack_pad_linked"
+		},
+		"facing=south,linked=true": {
+			"model": "flowtech:block/attack_pad_linked",
+			"y": 180
+		},
+		"facing=east,linked=true": {
+			"model": "flowtech:block/attack_pad_linked",
+			"y": 90
+		},
+		"facing=west,linked=true": {
+			"model": "flowtech:block/attack_pad_linked",
 			"y": 270
 		}
 	}
