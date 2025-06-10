@@ -1,11 +1,11 @@
 {
-  "values": [
-    "flowtech:bane_of_arthropods_module",
-    "flowtech:fire_aspect_module",
-    "flowtech:sharpness_module",
-    "flowtech:smite_module",
-    "flowtech:looting_module",
-    "flowtech:collection_radius_increase_module",
-    "flowtech:void_filter_module"
-  ]
+    "values": [
+        "flowtech:bane_of_arthropods_module",
+        "flowtech:fire_aspect_module",
+        "flowtech:sharpness_module",
+        "flowtech:smite_module",
+        "flowtech:looting_module",
+        "flowtech:collection_radius_increase_module",
+        "flowtech:void_filter_module"
+    ]
 }

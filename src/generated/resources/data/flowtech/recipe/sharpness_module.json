@@ -1,24 +1,24 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "misc",
-  "key": {
-    "I": {
-      "item": "minecraft:iron_ingot"
+    "type": "minecraft:crafting_shaped",
+    "category": "misc",
+    "key": {
+        "I": {
+            "item": "minecraft:iron_ingot"
+        },
+        "S": {
+            "item": "minecraft:diamond_sword"
+        },
+        "U": {
+            "item": "flowtech:umbrite_ingot"
+        }
     },
-    "S": {
-      "item": "minecraft:diamond_sword"
-    },
-    "U": {
-      "item": "flowtech:umbrite_ingot"
+    "pattern": [
+        "UIU",
+        "ISI",
+        "UIU"
+    ],
+    "result": {
+        "count": 1,
+        "id": "flowtech:sharpness_module"
     }
-  },
-  "pattern": [
-    "UIU",
-    "ISI",
-    "UIU"
-  ],
-  "result": {
-    "count": 1,
-    "id": "flowtech:sharpness_module"
-  }
 }

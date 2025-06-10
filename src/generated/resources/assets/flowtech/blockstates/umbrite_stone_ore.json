@@ -1,7 +1,7 @@
 {
-  "variants": {
-    "": {
-      "model": "flowtech:block/umbrite_stone_ore"
+    "variants": {
+        "": {
+            "model": "flowtech:block/umbrite_stone_ore"
+        }
     }
-  }
 }

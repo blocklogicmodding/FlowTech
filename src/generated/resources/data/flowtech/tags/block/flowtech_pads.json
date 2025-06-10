@@ -1,8 +1,8 @@
 {
-  "values": [
-    "flowtech:attack_pad",
-    "flowtech:flow_pad_fast",
-    "flowtech:flow_pad_faster",
-    "flowtech:flow_pad_fastest"
-  ]
+    "values": [
+        "flowtech:attack_pad",
+        "flowtech:flow_pad_fast",
+        "flowtech:flow_pad_faster",
+        "flowtech:flow_pad_fastest"
+    ]
 }

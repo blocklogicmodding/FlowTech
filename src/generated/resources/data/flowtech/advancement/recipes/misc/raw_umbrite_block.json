@@ -1,32 +1,32 @@
 {
-  "parent": "minecraft:recipes/root",
-  "criteria": {
-    "has_raw_umbrite": {
-      "conditions": {
-        "items": [
-          {
-            "items": "flowtech:raw_umbrite"
-          }
-        ]
-      },
-      "trigger": "minecraft:inventory_changed"
+    "parent": "minecraft:recipes/root",
+    "criteria": {
+        "has_raw_umbrite": {
+            "conditions": {
+                "items": [
+                    {
+                        "items": "flowtech:raw_umbrite"
+                    }
+                ]
+            },
+            "trigger": "minecraft:inventory_changed"
+        },
+        "has_the_recipe": {
+            "conditions": {
+                "recipe": "flowtech:raw_umbrite_block"
+            },
+            "trigger": "minecraft:recipe_unlocked"
+        }
     },
-    "has_the_recipe": {
-      "conditions": {
-        "recipe": "flowtech:raw_umbrite_block"
-      },
-      "trigger": "minecraft:recipe_unlocked"
+    "requirements": [
+        [
+            "has_the_recipe",
+            "has_raw_umbrite"
+        ]
+    ],
+    "rewards": {
+        "recipes": [
+            "flowtech:raw_umbrite_block"
+        ]
     }
-  },
-  "requirements": [
-    [
-      "has_the_recipe",
-      "has_raw_umbrite"
-    ]
-  ],
-  "rewards": {
-    "recipes": [
-      "flowtech:raw_umbrite_block"
-    ]
-  }
 }

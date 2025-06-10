@@ -37,5 +37,7 @@ public class DataGenerators {
         generator.addProvider(event.includeServer(), new FlowtechItemTagProvider(packOutput, lookupProvider, blockTagsProvider.contentsGetter(), existingFileHelper));
 
         generator.addProvider(event.includeServer(), new FlowtechRecipeProvider(packOutput, lookupProvider));
+
+        generator.addProvider(event.includeServer(), new FlowtechDatapackProvider(packOutput, lookupProvider));
     }
 }

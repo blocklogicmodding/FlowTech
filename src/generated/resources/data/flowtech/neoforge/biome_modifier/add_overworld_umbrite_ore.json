@@ -1,0 +1,9 @@
+{
+    "type": "neoforge:add_features",
+    "biomes": "#minecraft:is_overworld",
+    "features": [
+        "flowtech:overworld_umbrite_ore_placed",
+        "flowtech:overworld_umbrite_ore_hidden"
+    ],
+    "step": "underground_ores"
+}

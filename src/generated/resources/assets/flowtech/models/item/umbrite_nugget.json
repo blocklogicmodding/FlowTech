@@ -1,6 +1,6 @@
 {
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "flowtech:item/umbrite_nugget"
-  }
+    "parent": "minecraft:item/generated",
+    "textures": {
+        "layer0": "flowtech:item/umbrite_nugget"
+    }
 }

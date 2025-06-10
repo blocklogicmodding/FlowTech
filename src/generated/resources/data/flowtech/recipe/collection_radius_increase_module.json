@@ -1,24 +1,24 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "misc",
-  "key": {
-    "E": {
-      "item": "minecraft:ender_eye"
+    "type": "minecraft:crafting_shaped",
+    "category": "misc",
+    "key": {
+        "E": {
+            "item": "minecraft:ender_eye"
+        },
+        "R": {
+            "item": "minecraft:observer"
+        },
+        "U": {
+            "item": "flowtech:umbrite_ingot"
+        }
     },
-    "R": {
-      "item": "minecraft:observer"
-    },
-    "U": {
-      "item": "flowtech:umbrite_ingot"
+    "pattern": [
+        "UEU",
+        "ERE",
+        "UEU"
+    ],
+    "result": {
+        "count": 1,
+        "id": "flowtech:collection_radius_increase_module"
     }
-  },
-  "pattern": [
-    "UEU",
-    "ERE",
-    "UEU"
-  ],
-  "result": {
-    "count": 1,
-    "id": "flowtech:collection_radius_increase_module"
-  }
 }

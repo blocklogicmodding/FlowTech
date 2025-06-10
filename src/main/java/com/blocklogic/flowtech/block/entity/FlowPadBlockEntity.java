@@ -26,6 +26,8 @@ public class FlowPadBlockEntity extends BlockEntity {
     private static final double FASTER_SPEED = 0.2;
     private static final double FASTEST_SPEED = 0.5;
 
+
+
     public FlowPadBlockEntity(BlockPos pos, BlockState blockState) {
         super(ModBlockEntities.FLOW_PAD_BE.get(), pos, blockState);
     }

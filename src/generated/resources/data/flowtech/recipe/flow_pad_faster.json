@@ -1,27 +1,27 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "misc",
-  "key": {
-    "F": {
-      "item": "flowtech:flow_pad_fast"
+    "type": "minecraft:crafting_shaped",
+    "category": "misc",
+    "key": {
+        "F": {
+            "item": "flowtech:flow_pad_fast"
+        },
+        "G": {
+            "item": "minecraft:gold_block"
+        },
+        "S": {
+            "tag": "c:stones"
+        },
+        "U": {
+            "item": "flowtech:umbrite_ingot"
+        }
     },
-    "G": {
-      "item": "minecraft:gold_block"
-    },
-    "S": {
-      "tag": "c:stones"
-    },
-    "U": {
-      "item": "flowtech:umbrite_ingot"
+    "pattern": [
+        "GUG",
+        "UFU",
+        "SSS"
+    ],
+    "result": {
+        "count": 8,
+        "id": "flowtech:flow_pad_faster"
     }
-  },
-  "pattern": [
-    "GUG",
-    "UFU",
-    "SSS"
-  ],
-  "result": {
-    "count": 8,
-    "id": "flowtech:flow_pad_faster"
-  }
 }

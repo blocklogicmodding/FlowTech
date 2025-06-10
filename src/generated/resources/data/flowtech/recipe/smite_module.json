@@ -1,24 +1,24 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "misc",
-  "key": {
-    "B": {
-      "item": "minecraft:bone_block"
+    "type": "minecraft:crafting_shaped",
+    "category": "misc",
+    "key": {
+        "B": {
+            "item": "minecraft:bone_block"
+        },
+        "R": {
+            "item": "minecraft:rotten_flesh"
+        },
+        "U": {
+            "item": "flowtech:umbrite_ingot"
+        }
     },
-    "R": {
-      "item": "minecraft:rotten_flesh"
-    },
-    "U": {
-      "item": "flowtech:umbrite_ingot"
+    "pattern": [
+        "URU",
+        "RBR",
+        "URU"
+    ],
+    "result": {
+        "count": 1,
+        "id": "flowtech:smite_module"
     }
-  },
-  "pattern": [
-    "URU",
-    "RBR",
-    "URU"
-  ],
-  "result": {
-    "count": 1,
-    "id": "flowtech:smite_module"
-  }
 }

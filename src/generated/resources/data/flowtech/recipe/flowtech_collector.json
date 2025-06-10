@@ -1,30 +1,30 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "misc",
-  "key": {
-    "C": {
-      "tag": "c:chests"
+    "type": "minecraft:crafting_shaped",
+    "category": "misc",
+    "key": {
+        "C": {
+            "tag": "c:chests"
+        },
+        "E": {
+            "item": "minecraft:ender_eye"
+        },
+        "H": {
+            "item": "minecraft:hopper"
+        },
+        "P": {
+            "item": "minecraft:ender_pearl"
+        },
+        "U": {
+            "item": "flowtech:umbrite_ingot"
+        }
     },
-    "E": {
-      "item": "minecraft:ender_eye"
-    },
-    "H": {
-      "item": "minecraft:hopper"
-    },
-    "P": {
-      "item": "minecraft:ender_pearl"
-    },
-    "U": {
-      "item": "flowtech:umbrite_ingot"
+    "pattern": [
+        "UEU",
+        "PCP",
+        "UHU"
+    ],
+    "result": {
+        "count": 1,
+        "id": "flowtech:flowtech_collector"
     }
-  },
-  "pattern": [
-    "UEU",
-    "PCP",
-    "UHU"
-  ],
-  "result": {
-    "count": 1,
-    "id": "flowtech:flowtech_collector"
-  }
 }

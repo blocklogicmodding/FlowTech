@@ -1,13 +1,13 @@
 {
-  "type": "minecraft:crafting_shapeless",
-  "category": "misc",
-  "ingredients": [
-    {
-      "item": "flowtech:umbrite_block"
+    "type": "minecraft:crafting_shapeless",
+    "category": "misc",
+    "ingredients": [
+        {
+            "item": "flowtech:umbrite_block"
+        }
+    ],
+    "result": {
+        "count": 9,
+        "id": "flowtech:umbrite_ingot"
     }
-  ],
-  "result": {
-    "count": 9,
-    "id": "flowtech:umbrite_ingot"
-  }
 }

@@ -1,14 +1,14 @@
 {
-  "type": "minecraft:blasting",
-  "category": "misc",
-  "cookingtime": 100,
-  "experience": 0.25,
-  "group": "umbrite",
-  "ingredient": {
-    "item": "flowtech:umbrite_end_ore"
-  },
-  "result": {
-    "count": 1,
-    "id": "flowtech:umbrite_ingot"
-  }
+    "type": "minecraft:blasting",
+    "category": "misc",
+    "cookingtime": 100,
+    "experience": 0.25,
+    "group": "umbrite",
+    "ingredient": {
+        "item": "flowtech:umbrite_end_ore"
+    },
+    "result": {
+        "count": 1,
+        "id": "flowtech:umbrite_ingot"
+    }
 }

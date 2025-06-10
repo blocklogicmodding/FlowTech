@@ -1,6 +1,6 @@
 {
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "flowtech:item/smite_module"
-  }
+    "parent": "minecraft:item/generated",
+    "textures": {
+        "layer0": "flowtech:item/smite_module"
+    }
 }

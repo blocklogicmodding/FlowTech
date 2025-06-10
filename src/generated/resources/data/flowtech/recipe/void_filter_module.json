@@ -1,27 +1,27 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "misc",
-  "key": {
-    "H": {
-      "item": "minecraft:hopper"
+    "type": "minecraft:crafting_shaped",
+    "category": "misc",
+    "key": {
+        "H": {
+            "item": "minecraft:hopper"
+        },
+        "O": {
+            "tag": "c:obsidians"
+        },
+        "P": {
+            "item": "minecraft:paper"
+        },
+        "U": {
+            "item": "flowtech:umbrite_ingot"
+        }
     },
-    "O": {
-      "tag": "c:obsidians"
-    },
-    "P": {
-      "item": "minecraft:paper"
-    },
-    "U": {
-      "item": "flowtech:umbrite_ingot"
+    "pattern": [
+        "PPP",
+        "OHO",
+        "UOU"
+    ],
+    "result": {
+        "count": 1,
+        "id": "flowtech:void_filter_module"
     }
-  },
-  "pattern": [
-    "PPP",
-    "OHO",
-    "UOU"
-  ],
-  "result": {
-    "count": 1,
-    "id": "flowtech:void_filter_module"
-  }
 }

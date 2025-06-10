@@ -1,21 +1,21 @@
 {
-  "type": "minecraft:block",
-  "pools": [
-    {
-      "bonus_rolls": 0.0,
-      "conditions": [
+    "type": "minecraft:block",
+    "pools": [
         {
-          "condition": "minecraft:survives_explosion"
+            "bonus_rolls": 0.0,
+            "conditions": [
+                {
+                    "condition": "minecraft:survives_explosion"
+                }
+            ],
+            "entries": [
+                {
+                    "type": "minecraft:item",
+                    "name": "flowtech:flow_pad_faster"
+                }
+            ],
+            "rolls": 1.0
         }
-      ],
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "name": "flowtech:flow_pad_faster"
-        }
-      ],
-      "rolls": 1.0
-    }
-  ],
-  "random_sequence": "flowtech:blocks/flow_pad_faster"
+    ],
+    "random_sequence": "flowtech:blocks/flow_pad_faster"
 }

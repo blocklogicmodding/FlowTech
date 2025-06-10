@@ -1,32 +1,32 @@
 {
-  "parent": "minecraft:recipes/root",
-  "criteria": {
-    "has_the_recipe": {
-      "conditions": {
-        "recipe": "flowtech:umbrite_block_from_blasting_umbrite_stone_ore"
-      },
-      "trigger": "minecraft:recipe_unlocked"
+    "parent": "minecraft:recipes/root",
+    "criteria": {
+        "has_the_recipe": {
+            "conditions": {
+                "recipe": "flowtech:umbrite_block_from_blasting_umbrite_stone_ore"
+            },
+            "trigger": "minecraft:recipe_unlocked"
+        },
+        "has_umbrite_stone_ore": {
+            "conditions": {
+                "items": [
+                    {
+                        "items": "flowtech:umbrite_stone_ore"
+                    }
+                ]
+            },
+            "trigger": "minecraft:inventory_changed"
+        }
     },
-    "has_umbrite_stone_ore": {
-      "conditions": {
-        "items": [
-          {
-            "items": "flowtech:umbrite_stone_ore"
-          }
+    "requirements": [
+        [
+            "has_the_recipe",
+            "has_umbrite_stone_ore"
         ]
-      },
-      "trigger": "minecraft:inventory_changed"
+    ],
+    "rewards": {
+        "recipes": [
+            "flowtech:umbrite_block_from_blasting_umbrite_stone_ore"
+        ]
     }
-  },
-  "requirements": [
-    [
-      "has_the_recipe",
-      "has_umbrite_stone_ore"
-    ]
-  ],
-  "rewards": {
-    "recipes": [
-      "flowtech:umbrite_block_from_blasting_umbrite_stone_ore"
-    ]
-  }
 }

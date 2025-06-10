@@ -1,7 +1,7 @@
 {
-  "variants": {
-    "": {
-      "model": "flowtech:block/raw_umbrite_block"
+    "variants": {
+        "": {
+            "model": "flowtech:block/raw_umbrite_block"
+        }
     }
-  }
 }
