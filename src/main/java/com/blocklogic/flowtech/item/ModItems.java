@@ -29,7 +29,7 @@ public class ModItems {
             () -> new Item(new Item.Properties()));
 
     public static final DeferredItem<Item> VOID_FILTER_MODULE = ITEMS.register("void_filter_module",
-            () -> new VoidFilterItem(new Item.Properties()));
+            () -> new VoidFilterItem(new Item.Properties().stacksTo(1)));
 
     public static final DeferredItem<Item> PAD_WRENCH = ITEMS.register("pad_wrench",
             () -> new Item(new Item.Properties()));
