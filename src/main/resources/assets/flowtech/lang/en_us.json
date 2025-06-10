@@ -31,9 +31,16 @@
 
   "gui.flowtech.collector": "Collector",
   "gui.flowtech.controller": "Controller",
+  "gui.flowtech.controller.remove": "Remove",
   "gui.flowtech.collector.xp_input_levels": "Levels",
 
   "gui.flowtech.void_filter": "Void Filter",
+
+  "tooltip.flowtech.controller.remove_pad": "Remove Selected Pad",
+  "tooltip.flowtech.controller.player_kill_mode.enabled": "Player-Kill Mode: Enabled",
+  "tooltip.flowtech.controller.player_kill_mode.disabled": "Player-Kill Mode: Disabled",
+  "tooltip.flowtech.controller.pad_coordinates": "Attack Pad at %d, %d, %d",
+  "tooltip.flowtech.controller.scrollbar": "Showing pads %d-%d",
 
   "tooltip.flowtech.collector.xp_input_levels": "Enter the number of levels to withdraw or deposit",
 
@@ -97,5 +104,7 @@
   "item.flowtech.pad_wrench.tooltip.usage.operation": "Shift+Right-click: Toggle Operation Mode",
   "item.flowtech.pad_wrench.tooltip.usage.controller": "Use on Controller: Select Target",
   "item.flowtech.pad_wrench.tooltip.usage.pad": "Use on Pad: Link/Unlink",
-  "item.flowtech.pad_wrench.controller.cleared": "Controller Removed - Pad Wrench Cleared"
+  "item.flowtech.pad_wrench.controller.cleared": "Controller Removed - Pad Wrench Cleared",
+
+  "fakeplayer.flowtech.attack_pad": "FlowTech Attack Pad"
 }

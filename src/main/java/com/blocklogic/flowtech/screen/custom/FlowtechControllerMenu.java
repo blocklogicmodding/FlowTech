@@ -2,6 +2,7 @@ package com.blocklogic.flowtech.screen.custom;
 
 import com.blocklogic.flowtech.block.ModBlocks;
 import com.blocklogic.flowtech.block.entity.FlowtechControllerBlockEntity;
+import com.blocklogic.flowtech.item.ModItems;
 import com.blocklogic.flowtech.screen.ModMenuTypes;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
@@ -9,9 +10,11 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.SlotItemHandler;
 
 public class FlowtechControllerMenu extends AbstractContainerMenu {
@@ -30,11 +33,43 @@ public class FlowtechControllerMenu extends AbstractContainerMenu {
         addPlayerInventory(inv);
         addPlayerHotbar(inv);
 
-        this.addSlot(new SlotItemHandler(this.blockEntity.inventory, 0, 152, 15)); // Sharpness Module Slot
-        this.addSlot(new SlotItemHandler(this.blockEntity.inventory, 1, 152, 33)); // Fire Aspect Module Slot
-        this.addSlot(new SlotItemHandler(this.blockEntity.inventory, 2, 152, 51)); // Smite Module Slot
-        this.addSlot(new SlotItemHandler(this.blockEntity.inventory, 3, 152, 69)); // Bane of Arthropods Module Slot
-        this.addSlot(new SlotItemHandler(this.blockEntity.inventory, 4, 152, 87)); // Looting Module Slot
+        this.addSlot(new ModuleSlot(this.blockEntity.inventory, 0, 44, 18, ModItems.SHARPNESS_MODULE.get()));
+        this.addSlot(new ModuleSlot(this.blockEntity.inventory, 1, 62, 18, ModItems.FIRE_ASPECT_MODULE.get()));
+        this.addSlot(new ModuleSlot(this.blockEntity.inventory, 2, 80, 18, ModItems.SMITE_MODULE.get()));
+        this.addSlot(new ModuleSlot(this.blockEntity.inventory, 3, 98, 18, ModItems.BOA_MODULE.get()));
+        this.addSlot(new ModuleSlot(this.blockEntity.inventory, 4, 116, 18, ModItems.LOOTING_MODULE.get()));
+    }
+
+    private static class ModuleSlot extends SlotItemHandler {
+        private final Item allowedModule;
+
+        public ModuleSlot(IItemHandler itemHandler, int index, int xPosition, int yPosition, Item allowedModule) {
+            super(itemHandler, index, xPosition, yPosition);
+            this.allowedModule = allowedModule;
+        }
+
+        @Override
+        public boolean mayPlace(ItemStack stack) {
+            return stack.getItem() == allowedModule;
+        }
+
+        @Override
+        public int getMaxStackSize() {
+            return 10;
+        }
+
+        @Override
+        public int getMaxStackSize(ItemStack stack) {
+            return 10;
+        }
+    }
+
+    public boolean isPlayerKillMode() {
+        return blockEntity.isPlayerKillMode();
+    }
+
+    public void setPlayerKillMode(boolean playerKillMode) {
+        blockEntity.setPlayerKillMode(playerKillMode);
     }
 
     private static final int HOTBAR_SLOT_COUNT = 9;
@@ -43,9 +78,9 @@ public class FlowtechControllerMenu extends AbstractContainerMenu {
     private static final int PLAYER_INVENTORY_SLOT_COUNT = PLAYER_INVENTORY_COLUMN_COUNT * PLAYER_INVENTORY_ROW_COUNT;
     private static final int VANILLA_SLOT_COUNT = HOTBAR_SLOT_COUNT + PLAYER_INVENTORY_SLOT_COUNT;
     private static final int VANILLA_FIRST_SLOT_INDEX = 0;
-    private static final int TE_INVENTORY_FIRST_SLOT_INDEX = VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT;
+    private static final int MODULE_INVENTORY_FIRST_SLOT_INDEX = VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT;
+    private static final int MODULE_INVENTORY_SLOT_COUNT = 5;
 
-    private static final int TE_INVENTORY_SLOT_COUNT = 5;
     @Override
     public ItemStack quickMoveStack(Player playerIn, int pIndex) {
         Slot sourceSlot = slots.get(pIndex);
@@ -54,11 +89,15 @@ public class FlowtechControllerMenu extends AbstractContainerMenu {
         ItemStack copyOfSourceStack = sourceStack.copy();
 
         if (pIndex < VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT) {
-            if (!moveItemStackTo(sourceStack, TE_INVENTORY_FIRST_SLOT_INDEX, TE_INVENTORY_FIRST_SLOT_INDEX
-                    + TE_INVENTORY_SLOT_COUNT, false)) {
+            if (isValidModule(sourceStack)) {
+                if (!moveItemStackTo(sourceStack, MODULE_INVENTORY_FIRST_SLOT_INDEX, MODULE_INVENTORY_FIRST_SLOT_INDEX
+                        + MODULE_INVENTORY_SLOT_COUNT, false)) {
+                    return ItemStack.EMPTY;
+                }
+            } else {
                 return ItemStack.EMPTY;
             }
-        } else if (pIndex < TE_INVENTORY_FIRST_SLOT_INDEX + TE_INVENTORY_SLOT_COUNT) {
+        } else if (pIndex < MODULE_INVENTORY_FIRST_SLOT_INDEX + MODULE_INVENTORY_SLOT_COUNT) {
             if (!moveItemStackTo(sourceStack, VANILLA_FIRST_SLOT_INDEX, VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT, false)) {
                 return ItemStack.EMPTY;
             }
@@ -76,6 +115,14 @@ public class FlowtechControllerMenu extends AbstractContainerMenu {
         return copyOfSourceStack;
     }
 
+    private boolean isValidModule(ItemStack stack) {
+        return stack.getItem() == ModItems.SHARPNESS_MODULE.get() ||
+                stack.getItem() == ModItems.FIRE_ASPECT_MODULE.get() ||
+                stack.getItem() == ModItems.SMITE_MODULE.get() ||
+                stack.getItem() == ModItems.BOA_MODULE.get() ||
+                stack.getItem() == ModItems.LOOTING_MODULE.get();
+    }
+
     @Override
     public boolean stillValid(Player player) {
         return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()),
@@ -85,14 +132,14 @@ public class FlowtechControllerMenu extends AbstractContainerMenu {
     private void addPlayerInventory(Inventory playerInventory) {
         for (int i = 0; i < 3; ++i) {
             for (int l = 0; l < 9; ++l) {
-                this.addSlot(new Slot(playerInventory, l + i * 9 + 9, 8 + l * 18, 121 + i * 18));
+                this.addSlot(new Slot(playerInventory, l + i * 9 + 9, 8 + l * 18, 55 + i * 18));
             }
         }
     }
 
     private void addPlayerHotbar(Inventory playerInventory) {
         for (int i = 0; i < 9; ++i) {
-            this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 180));
+            this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 114));
         }
     }
 }

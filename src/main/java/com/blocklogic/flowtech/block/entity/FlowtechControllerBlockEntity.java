@@ -1,5 +1,6 @@
 package com.blocklogic.flowtech.block.entity;
 
+import com.blocklogic.flowtech.item.ModItems;
 import com.blocklogic.flowtech.screen.custom.FlowtechControllerMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -22,7 +23,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.items.ItemStackHandler;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class FlowtechControllerBlockEntity extends BlockEntity implements MenuProvider {
@@ -39,9 +42,22 @@ public class FlowtechControllerBlockEntity extends BlockEntity implements MenuPr
                 level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
             }
         }
+
+        @Override
+        public boolean isItemValid(int slot, ItemStack stack) {
+            return switch (slot) {
+                case 0 -> stack.getItem() == ModItems.SHARPNESS_MODULE.get();
+                case 1 -> stack.getItem() == ModItems.FIRE_ASPECT_MODULE.get();
+                case 2 -> stack.getItem() == ModItems.SMITE_MODULE.get();
+                case 3 -> stack.getItem() == ModItems.BOA_MODULE.get();
+                case 4 -> stack.getItem() == ModItems.LOOTING_MODULE.get();
+                default -> false;
+            };
+        }
     };
 
     private final Set<BlockPos> linkedPads = new HashSet<>();
+    private boolean playerKillMode = false;
 
     public FlowtechControllerBlockEntity(BlockPos pos, BlockState blockState) {
         super(ModBlockEntities.CONTROLLER_BE.get(), pos, blockState);
@@ -69,6 +85,10 @@ public class FlowtechControllerBlockEntity extends BlockEntity implements MenuPr
         return new HashSet<>(linkedPads);
     }
 
+    public List<BlockPos> getLinkedPadsList() {
+        return new ArrayList<>(linkedPads);
+    }
+
     public int getLinkedPadCount() {
         return linkedPads.size();
     }
@@ -82,12 +102,75 @@ public class FlowtechControllerBlockEntity extends BlockEntity implements MenuPr
             }
         }
         linkedPads.clear();
+        setChanged();
     }
 
+    public boolean isPlayerKillMode() {
+        return playerKillMode;
+    }
 
+    public void setPlayerKillMode(boolean playerKillMode) {
+        this.playerKillMode = playerKillMode;
+        setChanged();
+
+        if (level != null && !level.isClientSide()) {
+            level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
+        }
+    }
+
+    public int getModuleCount(int slot) {
+        if (slot < 0 || slot >= inventory.getSlots()) {
+            return 0;
+        }
+        ItemStack stack = inventory.getStackInSlot(slot);
+        return stack.isEmpty() ? 0 : Math.min(stack.getCount(), 10);
+    }
+
+    public boolean hasSharpnessModule() {
+        return getModuleCount(0) > 0;
+    }
+
+    public boolean hasFireAspectModule() {
+        return getModuleCount(1) > 0;
+    }
+
+    public boolean hasSmiteModule() {
+        return getModuleCount(2) > 0;
+    }
+
+    public boolean hasBaneOfArthropodsModule() {
+        return getModuleCount(3) > 0;
+    }
+
+    public boolean hasLootingModule() {
+        return getModuleCount(4) > 0;
+    }
+
+    public int getSharpnessLevel() {
+        return getModuleCount(0);
+    }
+
+    public int getFireAspectLevel() {
+        return getModuleCount(1);
+    }
+
+    public int getSmiteLevel() {
+        return getModuleCount(2);
+    }
+
+    public int getBaneOfArthropodsLevel() {
+        return getModuleCount(3);
+    }
+
+    public int getLootingLevel() {
+        return getModuleCount(4);
+    }
 
     public void clearContents() {
-        inventory.setStackInSlot(0, ItemStack.EMPTY);
+        for (int i = 0; i < inventory.getSlots(); i++) {
+            inventory.setStackInSlot(i, ItemStack.EMPTY);
+        }
+        setChanged();
     }
 
     public void drops() {
@@ -99,12 +182,26 @@ public class FlowtechControllerBlockEntity extends BlockEntity implements MenuPr
         Containers.dropContents(this.level, this.worldPosition, inv);
     }
 
+    public boolean removePadAt(BlockPos padPos) {
+        if (linkedPads.remove(padPos)) {
+            if (level != null && !level.isClientSide()) {
+                if (level.getBlockEntity(padPos) instanceof AttackPadBlockEntity attackPad) {
+                    attackPad.clearControllerPos();
+                }
+                level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
+            }
+            setChanged();
+            return true;
+        }
+        return false;
+    }
+
     @Override
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.saveAdditional(tag, registries);
         tag.put("inventory", inventory.serializeNBT(registries));
+        tag.putBoolean("playerKillMode", playerKillMode);
 
-        // Save linked pads
         ListTag padList = new ListTag();
         for (BlockPos padPos : linkedPads) {
             padList.add(LongTag.valueOf(padPos.asLong()));
@@ -116,11 +213,11 @@ public class FlowtechControllerBlockEntity extends BlockEntity implements MenuPr
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
         inventory.deserializeNBT(registries, tag.getCompound("inventory"));
+        playerKillMode = tag.getBoolean("playerKillMode");
 
-        // Load linked pads
         linkedPads.clear();
         if (tag.contains("linkedPads")) {
-            ListTag padList = tag.getList("linkedPads", 4); // 4 = LongTag
+            ListTag padList = tag.getList("linkedPads", 4);
             for (int i = 0; i < padList.size(); i++) {
                 long posLong = ((LongTag) padList.get(i)).getAsLong();
                 BlockPos padPos = BlockPos.of(posLong);
