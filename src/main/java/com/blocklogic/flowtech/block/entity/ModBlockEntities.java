@@ -27,6 +27,13 @@ public class ModBlockEntities {
             BLOCK_ENTITIES.register("attack_pad_be", () -> BlockEntityType.Builder.of(
                     AttackPadBlockEntity::new, ModBlocks.ATTACK_PAD.get()).build(null));
 
+    public static final Supplier<BlockEntityType<FlowPadBlockEntity>> FLOW_PAD_BE =
+            BLOCK_ENTITIES.register("flow_pad_be", () -> BlockEntityType.Builder.of(
+                    FlowPadBlockEntity::new,
+                    ModBlocks.FAST_FLOW_PAD.get(),
+                    ModBlocks.FASTER_FLOW_PAD.get(),
+                    ModBlocks.FASTEST_FLOW_PAD.get()).build(null));
+
     private static void registerCapabilities(RegisterCapabilitiesEvent event) {
         event.registerBlockEntity(
                 Capabilities.ItemHandler.BLOCK,

@@ -1,7 +1,5 @@
 package com.blocklogic.flowtech.block.entity;
 
-import com.blocklogic.flowtech.block.entity.FlowtechControllerBlockEntity;
-import com.blocklogic.flowtech.item.ModItems;
 import com.blocklogic.flowtech.util.FakePlayerHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -36,7 +34,7 @@ public class AttackPadBlockEntity extends BlockEntity {
     private UUID placer;
     private WeakReference<FakePlayer> fakePlayer = new WeakReference<>(null);
 
-    private static final float BASE_DAMAGE = 5.0f;
+    private static final float BASE_DAMAGE = 3.0f;
     private static final int DAMAGE_INTERVAL = 5;
     private int tickCounter = 0;
 

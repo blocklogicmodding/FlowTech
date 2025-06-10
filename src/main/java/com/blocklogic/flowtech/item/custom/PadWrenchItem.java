@@ -6,6 +6,7 @@ import com.blocklogic.flowtech.block.entity.AttackPadBlockEntity;
 import com.blocklogic.flowtech.block.entity.FlowtechControllerBlockEntity;
 import com.blocklogic.flowtech.component.ModDataComponents;
 import com.blocklogic.flowtech.component.PadWrenchData;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
@@ -225,6 +226,8 @@ public class PadWrenchItem extends Item {
 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+        tooltipComponents.add(Component.translatable("item.flowtech.pad_wrench.subtitle").withStyle(ChatFormatting.LIGHT_PURPLE));
+
         PadWrenchData data = stack.getOrDefault(ModDataComponents.PAD_WRENCH_DATA.get(), PadWrenchData.DEFAULT);
 
         Component operationText = data.operationMode() == PadWrenchData.OperationMode.ADD

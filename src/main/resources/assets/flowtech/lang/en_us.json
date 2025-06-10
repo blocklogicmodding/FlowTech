@@ -2,29 +2,57 @@
   "creativetab.flowtech.flowtech": "FlowTech",
 
   "block.flowtech.flow_pad_fast": "Fast Flow Pad",
+  "block.flowtech.flow_pad_fast.subtitle": "Moves entities at moderate speed in the direction it faces",
   "block.flowtech.flow_pad_faster": "Faster Flow Pad",
+  "block.flowtech.flow_pad_faster.subtitle": "Moves entities at high speed in the direction it faces",
   "block.flowtech.flow_pad_fastest": "Fastest Flow Pad",
+  "block.flowtech.flow_pad_fastest.subtitle": "Moves entities at maximum speed in the direction it faces",
   "block.flowtech.attack_pad": "Attack Pad",
+  "block.flowtech.attack_pad.subtitle": "Damages entities when powered. Link to a FlowTech Controller to manage damage types, enchantments, and kill modes",
+
   "block.flowtech.flowtech_collector": "FlowTech Collector",
+  "block.flowtech.flowtech_collector.subtitle": "Automatically collects items and XP within a configurable radius",
   "block.flowtech.flowtech_controller": "FlowTech Controller",
+  "block.flowtech.flowtech_controller.subtitle": "Central hub for managing Attack Pad modules and settings",
+
   "block.flowtech.umbrite_stone_ore": "Umbrite Stone Ore",
+  "block.flowtech.umbrite_stone_ore.subtitle": "Found in stone layers",
   "block.flowtech.umbrite_deepslate_ore": "Umbrite Deepslate Ore",
+  "block.flowtech.umbrite_deepslate_ore.subtitle": "Found in deepslate layers",
   "block.flowtech.umbrite_nether_ore": "Umbrite Nether Ore",
+  "block.flowtech.umbrite_nether_ore.subtitle": "Found in the Nether",
   "block.flowtech.umbrite_end_ore": "Umbrite End Ore",
+  "block.flowtech.umbrite_end_ore.subtitle": "Found in the End",
   "block.flowtech.umbrite_block": "Umbrite Block",
+  "block.flowtech.umbrite_block.subtitle": "Compressed storage block made from 9 Umbrite Ingots",
   "block.flowtech.raw_umbrite_block": "Raw Umbrite Block",
+  "block.flowtech.raw_umbrite_block.subtitle": "Compressed storage block made from 9 Raw Umbrite",
 
   "item.flowtech.bane_of_arthropods_module": "Bane of Arthropods Module",
+  "item.flowtech.bane_of_arthropods_module.subtitle": "Increases damage against spiders, silverfish, and other arthropods",
   "item.flowtech.fire_aspect_module": "Fire Aspect Module",
+  "item.flowtech.fire_aspect_module.subtitle": "Sets attacked entities on fire for additional damage over time",
   "item.flowtech.sharpness_module": "Sharpness Module",
+  "item.flowtech.sharpness_module.subtitle": "Increases base attack damage against all entities",
   "item.flowtech.smite_module": "Smite Module",
+  "item.flowtech.smite_module.subtitle": "Increases damage against undead entities like zombies and skeletons",
   "item.flowtech.looting_module": "Looting Module",
+  "item.flowtech.looting_module.subtitle": "Increases item drops and rare loot from defeated entities",
+
   "item.flowtech.collection_radius_increase_module": "Collection Radius Increase Module",
+  "item.flowtech.collection_radius_increase_module.subtitle": "Expands the collection area of FlowTech Collectors",
   "item.flowtech.void_filter_module": "Void Filter Module",
+  "item.flowtech.void_filter_module.subtitle": "Automatically destroys filtered items collected by FlowTech Collectors",
+
   "item.flowtech.pad_wrench": "Pad Wrench",
+  "item.flowtech.pad_wrench.subtitle": "Essential tool for linking Attack Pads to FlowTech Controllers",
+
   "item.flowtech.raw_umbrite": "Raw Umbrite",
+  "item.flowtech.raw_umbrite.subtitle": "Raw Umbrite ore that can be smelted into ingots",
   "item.flowtech.umbrite_ingot": "Umbrite Ingot",
+  "item.flowtech.umbrite_ingot.subtitle": "Refined Umbrite metal used in FlowTech crafting recipes",
   "item.flowtech.umbrite_nugget": "Umbrite Nugget",
+  "item.flowtech.umbrite_nugget.subtitle": "Small piece of Umbrite, nine can be crafted into an ingot",
 
   "menu.flowtech.collector": "FlowTech Collector",
   "menu.flowtech.controller": "FlowTech Controller",
@@ -33,8 +61,12 @@
   "gui.flowtech.controller": "Controller",
   "gui.flowtech.controller.remove": "Remove",
   "gui.flowtech.collector.xp_input_levels": "Levels",
-
   "gui.flowtech.void_filter": "Void Filter",
+
+  "gui.flowtech.collector.offset.down_up": "D/U Offset",
+  "gui.flowtech.collector.offset.north_south": "N/S Offset",
+  "gui.flowtech.collector.offset.east_west": "E/W Offset",
+  "gui.flowtech.collector.xp_levels_stored": "Levels Stored: %,d",
 
   "tooltip.flowtech.controller.remove_pad": "Remove Selected Pad",
   "tooltip.flowtech.controller.player_kill_mode.enabled": "Player-Kill Mode: Enabled",
@@ -43,7 +75,6 @@
   "tooltip.flowtech.controller.scrollbar": "Showing pads %d-%d",
 
   "tooltip.flowtech.collector.xp_input_levels": "Enter the number of levels to withdraw or deposit",
-
   "tooltip.flowtech.collector.side_config.top": "Toggle Extraction from the Top",
   "tooltip.flowtech.collector.side_config.east": "Toggle Extraction from the East",
   "tooltip.flowtech.collector.side_config.front": "Toggle Extraction from the Front",
@@ -61,9 +92,6 @@
   "tooltip.flowtech.collector.offset.east_west.increase": "Increase East/West Collection Radius",
   "tooltip.flowtech.collector.offset.east_west.value": "East/West Offset: %s",
   "tooltip.flowtech.collector.offset.reset_all": "Reset Offsets",
-  "gui.flowtech.collector.offset.down_up": "D/U Offset",
-  "gui.flowtech.collector.offset.north_south": "N/S Offset",
-  "gui.flowtech.collector.offset.east_west": "E/W Offset",
 
   "tooltip.flowtech.collector.wireframe_toggle": "Show/Hide Collection Radius",
 
@@ -73,7 +101,6 @@
   "tooltip.flowtech.collector.xp.deposit_all": "Deposit all your XP into the Collector",
   "tooltip.flowtech.collector.xp_collection.enabled": "XP Collection: Enabled",
   "tooltip.flowtech.collector.xp_collection.disabled": "XP Collection: Disabled",
-  "gui.flowtech.collector.xp_levels_stored": "Levels Stored: %,d",
   "tooltip.flowtech.collector.xp_display": "XP: %s",
 
   "tooltip.flowtech.void_filter.ignore_nbt.enabled": "Ignore NBT: Enabled",
@@ -92,6 +119,7 @@
   "item.flowtech.pad_wrench.multi.start": "Started multi-selection at %d, %d, %d",
   "item.flowtech.pad_wrench.multi.linked": "Linked %d Attack Pads",
   "item.flowtech.pad_wrench.multi.unlinked": "Unlinked %d Attack Pads",
+  "item.flowtech.pad_wrench.controller.cleared": "Controller Removed - Pad Wrench Cleared",
 
   "item.flowtech.pad_wrench.tooltip.operation.add": "Operation: Add",
   "item.flowtech.pad_wrench.tooltip.operation.remove": "Operation: Remove",
@@ -104,7 +132,6 @@
   "item.flowtech.pad_wrench.tooltip.usage.operation": "Shift+Right-click: Toggle Operation Mode",
   "item.flowtech.pad_wrench.tooltip.usage.controller": "Use on Controller: Select Target",
   "item.flowtech.pad_wrench.tooltip.usage.pad": "Use on Pad: Link/Unlink",
-  "item.flowtech.pad_wrench.controller.cleared": "Controller Removed - Pad Wrench Cleared",
 
   "fakeplayer.flowtech.attack_pad": "FlowTech Attack Pad"
 }

@@ -73,17 +73,17 @@ public class FlowtechCollectorMenu extends AbstractContainerMenu {
 
         @Override
         public int getMaxStackSize() {
-            return getItemHandler().getSlotLimit(getSlotIndex()); // ← Use the handler's limit
+            return getItemHandler().getSlotLimit(getSlotIndex());
         }
 
         @Override
         public int getMaxStackSize(ItemStack stack) {
-            return getItemHandler().getSlotLimit(getSlotIndex()); // ← Use the handler's limit
+            return getItemHandler().getSlotLimit(getSlotIndex());
         }
 
         @Override
         public boolean mayPlace(ItemStack stack) {
-            return false; // Output only
+            return false;
         }
     }
 
