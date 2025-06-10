@@ -1,7 +1,7 @@
 
 # FlowTech
 
-![FlowTech Banner](flowtech_banner.png)
+![FlowTech Banner](https://deonjonker.com/blm/flowtech/flowtech_banner.png)
 
 _Modular flow control for efficient mob farming_
 
