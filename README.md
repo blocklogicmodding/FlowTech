@@ -1,25 +1,62 @@
 
-Installation information
-=======
+# FlowTech
 
-This template repository can be directly cloned to get you started with a new
-mod. Simply create a new repository cloned from this one, by following the
-instructions provided by [GitHub](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template).
+![FlowTech Banner](flowtech_banner.png)
 
-Once you have your clone, simply open the repository in the IDE of your choice. The usual recommendation for an IDE is either IntelliJ IDEA or Eclipse.
+_Modular flow control for efficient mob farming_
 
-If at any point you are missing libraries in your IDE, or you've run into problems you can
-run `gradlew --refresh-dependencies` to refresh the local cache. `gradlew clean` to reset everything 
-{this does not affect your code} and then start the process again.
+----------
 
-Mapping Names:
-============
-By default, the MDK is configured to use the official mapping names from Mojang for methods and fields 
-in the Minecraft codebase. These names are covered by a specific license. All modders should be aware of this
-license. For the latest license text, refer to the mapping file itself, or the reference copy here:
-https://github.com/NeoForged/NeoForm/blob/main/Mojang.md
+## Build Better Mob Farms
 
-Additional Resources: 
-==========
-Community Documentation: https://docs.neoforged.net/  
-NeoForged Discord: https://discord.neoforged.net/
+FlowTech is a modular automation mod focused on mob farm efficiency through directional flow control, centralized damage systems, and intelligent item collection. Clean design, minimal GUIs, visual feedback.
+
+## Features
+
+### Flow Pads
+
+-   **Directional Movement**: Push mobs and items in the direction you place them
+-   **Three Speed Tiers**: Fast, Faster, and Fastest for different flow rates
+-   **Waterloggable**: Works seamlessly with water-based farm designs
+-   **No Configuration**: Direction set by placement orientation
+
+### Attack Pads + Controller
+
+-   **Centralized Damage Control**: One FlowTech Controller manages multiple Attack Pads
+-   **Pad Wrench Linking**: Connect pads to controllers with visual feedback
+-   **Stackable Enchantment Modules**: Up to 10 modules per slot
+    -   **Sharpness**: Increased damage output
+    -   **Fire Aspect**: Burning damage over time
+    -   **Smite**: Specialized undead damage
+    -   **Bane of Arthropods**: Arthropod-specific damage
+    -   **Looting**: Enhanced drop rates
+-   **Player-Kill Mode**: Reduce mobs to 0.5 HP instead of killing for manual XP collection
+-   **Redstone Activation**: Attack Pads require redstone signal to operate
+
+### Collector Block
+
+-   **Configurable Collection Zone**: Adjust pickup radius with Collection Radius Increase Modules
+-   **Zone Positioning**: Offset collection area in any direction
+-   **XP Storage**: Collect and store experience orbs with level-based deposit/withdrawal
+-   **Void Filtering**: Automatically delete unwanted items with up to 3 configurable filter modules
+-   **Side Configuration**: Choose which sides allow extraction
+-   **Visual Zone Preview**: Wireframe overlay shows collection boundaries
+
+### Pad Wrench
+
+-   **Operation Modes**: Add or Remove mode for linking/unlinking pads
+-   **Selection Types**: Single pad or area selection for bulk operations
+-   **Visual Feedback**: Wireframe highlights show linked systems
+-   **Detailed Tooltips**: Current mode, target controller, and selection status
+-   **Area Operations**: Box selection for linking multiple pads at once
+
+### Umbrite Material
+
+-   **Multi-Dimensional Ore**: Spawns in Overworld, Nether, and End dimensions
+-   **Complete Processing Chain**: Raw ore to ingots, nuggets, and storage blocks
+-   **Crafting Component**: Required material for all FlowTech machinery
+
+## Links
+
+-   **Wiki**: [FlowTech Wiki](https://github.com/blocklogicmodding/FlowTech/wiki)
+-   **Discord**: [Join our Discord](https://discord.gg/YtdA3AMqsX)
