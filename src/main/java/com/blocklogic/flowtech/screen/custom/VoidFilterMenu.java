@@ -141,42 +141,7 @@ public class VoidFilterMenu extends AbstractContainerMenu {
 
     @Override
     public ItemStack quickMoveStack(Player player, int slotIndex) {
-        Slot sourceSlot = slots.get(slotIndex);
-        if (sourceSlot == null || !sourceSlot.hasItem()) {
-            return ItemStack.EMPTY;
-        }
-
-        ItemStack sourceStack = sourceSlot.getItem();
-        ItemStack copyOfSourceStack = sourceStack.copy();
-
-        final int FILTER_SLOTS_COUNT = 45;
-        final int PLAYER_INVENTORY_COUNT = 27;
-        final int PLAYER_HOTBAR_COUNT = 9;
-        final int TOTAL_SLOTS = FILTER_SLOTS_COUNT + PLAYER_INVENTORY_COUNT + PLAYER_HOTBAR_COUNT;
-
-        if (slotIndex < FILTER_SLOTS_COUNT) {
-            if (!moveItemStackTo(sourceStack, FILTER_SLOTS_COUNT, TOTAL_SLOTS, true)) {
-                return ItemStack.EMPTY;
-            }
-        }
-        else {
-            for (int i = 0; i < FILTER_SLOTS_COUNT; i++) {
-                if (filterSlots.getStackInSlot(i).isEmpty()) {
-                    filterSlots.setStackInSlot(i, sourceStack.copyWithCount(1));
-                    return ItemStack.EMPTY;
-                }
-            }
-            return ItemStack.EMPTY;
-        }
-
-        if (sourceStack.getCount() == 0) {
-            sourceSlot.set(ItemStack.EMPTY);
-        } else {
-            sourceSlot.setChanged();
-        }
-
-        sourceSlot.onTake(player, sourceStack);
-        return copyOfSourceStack;
+        return ItemStack.EMPTY;
     }
 
     @Override
