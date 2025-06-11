@@ -64,14 +64,6 @@ public class FlowtechControllerMenu extends AbstractContainerMenu {
         }
     }
 
-    public boolean isPlayerKillMode() {
-        return blockEntity.isPlayerKillMode();
-    }
-
-    public void setPlayerKillMode(boolean playerKillMode) {
-        blockEntity.setPlayerKillMode(playerKillMode);
-    }
-
     private static final int HOTBAR_SLOT_COUNT = 9;
     private static final int PLAYER_INVENTORY_ROW_COUNT = 3;
     private static final int PLAYER_INVENTORY_COLUMN_COUNT = 9;
