@@ -1,20 +1,28 @@
 package com.blocklogic.flowtech.block.entity;
 
+import com.blocklogic.flowtech.util.FakePlayerHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
+import net.neoforged.neoforge.common.util.FakePlayer;
 
 import javax.annotation.Nullable;
+import java.lang.ref.WeakReference;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,6 +32,7 @@ public class AttackPadBlockEntity extends BlockEntity {
     private BlockPos controllerPos;
     @Nullable
     private UUID placer;
+    private WeakReference<FakePlayer> fakePlayer = new WeakReference<>(null);
 
     private static final float BASE_DAMAGE = 3.0f;
     private static final int DAMAGE_INTERVAL = 5;
@@ -70,40 +79,65 @@ public class AttackPadBlockEntity extends BlockEntity {
         if (entities.isEmpty()) return;
 
         FlowtechControllerBlockEntity controller = getLinkedController();
-        float damage = calculateDamage(controller);
+
+        if (controller != null) {
+            dealEnchantedDamage(entities, controller);
+        } else {
+            dealDirectDamage(entities);
+        }
+    }
+
+    private void dealEnchantedDamage(List<LivingEntity> entities, FlowtechControllerBlockEntity controller) {
+        fakePlayer = FakePlayerHandler.get(fakePlayer, (ServerLevel) level, placer,
+                this.worldPosition.below(100));
+        FakePlayer fakePlayer = this.fakePlayer.get();
+        if (fakePlayer == null) return;
+
+        ItemStack tempSword = new ItemStack(Items.DIAMOND_SWORD, 1);
+
+        int sharpness = controller.getModuleCount(0);
+        if (sharpness > 0) {
+            tempSword.enchant(level.holderOrThrow(Enchantments.SHARPNESS), sharpness * 10);
+        }
+
+        int fireAspect = controller.getModuleCount(1);
+        if (fireAspect > 0) {
+            tempSword.enchant(level.holderOrThrow(Enchantments.FIRE_ASPECT), fireAspect);
+        }
+
+        int smite = controller.getModuleCount(2);
+        if (smite > 0) {
+            tempSword.enchant(level.holderOrThrow(Enchantments.SMITE), smite * 10);
+        }
+
+        int baneOfArthropods = controller.getModuleCount(3);
+        if (baneOfArthropods > 0) {
+            tempSword.enchant(level.holderOrThrow(Enchantments.BANE_OF_ARTHROPODS), baneOfArthropods * 10);
+        }
+
+        int looting = controller.getModuleCount(4);
+        if (looting > 0) {
+            tempSword.enchant(level.holderOrThrow(Enchantments.LOOTING), looting);
+        }
+
+        fakePlayer.setItemInHand(InteractionHand.MAIN_HAND, tempSword);
 
         for (LivingEntity entity : entities) {
             if (entity instanceof Player) continue;
 
-            DamageSource damageSource = level.damageSources().generic();
-            entity.hurt(damageSource, damage);
+            fakePlayer.attack(entity);
         }
+
+        fakePlayer.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
     }
 
-    private float calculateDamage(FlowtechControllerBlockEntity controller) {
-        if (controller == null) return BASE_DAMAGE;
+    private void dealDirectDamage(List<LivingEntity> entities) {
+        for (LivingEntity entity : entities) {
+            if (entity instanceof Player) continue;
 
-        float damage = BASE_DAMAGE;
-
-        // Add sharpness bonus damage
-        int sharpness = controller.getModuleCount(0);
-        if (sharpness > 0) {
-            damage += sharpness * 1.25f; // Each sharpness level adds 1.25 damage
+            DamageSource damageSource = level.damageSources().generic();
+            entity.hurt(damageSource, BASE_DAMAGE);
         }
-
-        // Add smite bonus damage (could be conditional based on entity type)
-        int smite = controller.getModuleCount(2);
-        if (smite > 0) {
-            damage += smite * 2.5f; // Each smite level adds 2.5 damage to undead
-        }
-
-        // Add bane of arthropods bonus damage (could be conditional based on entity type)
-        int baneOfArthropods = controller.getModuleCount(3);
-        if (baneOfArthropods > 0) {
-            damage += baneOfArthropods * 2.5f; // Each bane level adds 2.5 damage to arthropods
-        }
-
-        return damage;
     }
 
     @Nullable
