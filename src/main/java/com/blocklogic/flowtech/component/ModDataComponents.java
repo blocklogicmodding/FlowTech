@@ -15,7 +15,6 @@ public class ModDataComponents {
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<VoidFilterData>> VOID_FILTER_DATA =
             DATA_COMPONENT_TYPES.register("void_filter_data", () -> DataComponentType.<VoidFilterData>builder()
                     .persistent(VoidFilterData.CODEC)
-                    .networkSynchronized(ByteBufCodecs.fromCodec(VoidFilterData.CODEC))
                     .cacheEncoding()
                     .build());
 
