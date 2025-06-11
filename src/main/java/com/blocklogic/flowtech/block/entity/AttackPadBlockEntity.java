@@ -23,6 +23,7 @@ import net.neoforged.neoforge.common.util.FakePlayer;
 
 import javax.annotation.Nullable;
 import java.lang.ref.WeakReference;
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.UUID;
 
@@ -34,7 +35,7 @@ public class AttackPadBlockEntity extends BlockEntity {
     private UUID placer;
     private WeakReference<FakePlayer> fakePlayer = new WeakReference<>(null);
 
-    private static final float BASE_DAMAGE = 3.0f;
+    private static final float BASE_DAMAGE = 5.0f;
     private static final int DAMAGE_INTERVAL = 5;
     private int tickCounter = 0;
 
@@ -126,6 +127,7 @@ public class AttackPadBlockEntity extends BlockEntity {
             if (entity instanceof Player) continue;
 
             fakePlayer.attack(entity);
+            fakePlayer.attackStrengthTicker = 100;
         }
 
         fakePlayer.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
