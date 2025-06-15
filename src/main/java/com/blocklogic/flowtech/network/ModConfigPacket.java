@@ -1,10 +1,6 @@
 package com.blocklogic.flowtech.network;
 
 import com.blocklogic.flowtech.block.entity.FlowtechCollectorBlockEntity;
-import com.blocklogic.flowtech.block.entity.FlowtechControllerBlockEntity;
-import com.blocklogic.flowtech.component.ModDataComponents;
-import com.blocklogic.flowtech.component.VoidFilterData;
-import com.blocklogic.flowtech.item.custom.VoidFilterItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -13,7 +9,6 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public record ModConfigPacket(
@@ -45,8 +40,6 @@ public record ModConfigPacket(
             if (context.player() instanceof ServerPlayer player) {
                 switch (packet.target()) {
                     case COLLECTOR_BLOCK -> handleCollectorConfig(packet, player);
-                    case CONTROLLER_BLOCK -> handleControllerConfig(packet, player);
-                    case VOID_FILTER_ITEM -> handleVoidFilterConfig(packet, player);
                 }
             }
         });
@@ -107,53 +100,8 @@ public record ModConfigPacket(
         }
     }
 
-    private static void handleControllerConfig(ModConfigPacket packet, ServerPlayer player) {
-        if (packet.pos() == null) return;
-
-        ServerLevel level = player.serverLevel();
-
-        if (player.distanceToSqr(packet.pos().getX() + 0.5, packet.pos().getY() + 0.5, packet.pos().getZ() + 0.5) > 64) {
-            return;
-        }
-
-        if (level.getBlockEntity(packet.pos()) instanceof FlowtechControllerBlockEntity controller) {
-            switch (packet.configType()) {
-                case CONTROLLER_PLAYER_KILL_MODE -> {
-                    controller.setPlayerKillMode(packet.boolValue());
-                    level.sendBlockUpdated(packet.pos(), level.getBlockState(packet.pos()), level.getBlockState(packet.pos()), 3);
-                }
-            }
-        }
-    }
-
-    private static void handleVoidFilterConfig(ModConfigPacket packet, ServerPlayer player) {
-        ItemStack mainHand = player.getMainHandItem();
-        ItemStack offHand = player.getOffhandItem();
-
-        ItemStack filterItem = null;
-        if (mainHand.getItem() instanceof VoidFilterItem) {
-            filterItem = mainHand;
-        } else if (offHand.getItem() instanceof VoidFilterItem) {
-            filterItem = offHand;
-        }
-
-        if (filterItem == null) return;
-
-        VoidFilterData currentData = filterItem.getOrDefault(ModDataComponents.VOID_FILTER_DATA.get(), VoidFilterData.DEFAULT);
-
-        VoidFilterData newData = switch (packet.configType()) {
-            case VOID_FILTER_IGNORE_NBT -> currentData.withIgnoreNBT(packet.boolValue());
-            case VOID_FILTER_IGNORE_DURABILITY -> currentData.withIgnoreDurability(packet.boolValue());
-            default -> currentData;
-        };
-
-        filterItem.set(ModDataComponents.VOID_FILTER_DATA.get(), newData);
-    }
-
     public enum ConfigTarget {
-        COLLECTOR_BLOCK,
-        CONTROLLER_BLOCK,
-        VOID_FILTER_ITEM;
+        COLLECTOR_BLOCK;
 
         public static final StreamCodec<FriendlyByteBuf, ConfigTarget> STREAM_CODEC = StreamCodec.of(
                 (buf, target) -> buf.writeEnum(target),
@@ -171,12 +119,7 @@ public record ModConfigPacket(
         COLLECTOR_FRONT_SIDE,
         COLLECTOR_WEST_SIDE,
         COLLECTOR_BOTTOM_SIDE,
-        COLLECTOR_BACK_SIDE,
-
-        CONTROLLER_PLAYER_KILL_MODE,
-
-        VOID_FILTER_IGNORE_NBT,
-        VOID_FILTER_IGNORE_DURABILITY;
+        COLLECTOR_BACK_SIDE;
 
         public static final StreamCodec<FriendlyByteBuf, ConfigType> STREAM_CODEC = StreamCodec.of(
                 (buf, type) -> buf.writeEnum(type),

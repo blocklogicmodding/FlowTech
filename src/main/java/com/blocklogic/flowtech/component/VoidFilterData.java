@@ -43,18 +43,6 @@ public record VoidFilterData(
         return list;
     }
 
-    public VoidFilterData withIgnoreNBT(boolean ignoreNBT) {
-        return new VoidFilterData(this.filterItems, ignoreNBT, this.ignoreDurability);
-    }
-
-    public VoidFilterData withIgnoreDurability(boolean ignoreDurability) {
-        return new VoidFilterData(this.filterItems, this.ignoreNBT, ignoreDurability);
-    }
-
-    public VoidFilterData withFilterItems(List<ItemStack> filterItems) {
-        return new VoidFilterData(filterItems, this.ignoreNBT, this.ignoreDurability);
-    }
-
     public void loadIntoHandler(ItemStackHandler handler) {
         for (int i = 0; i < Math.min(filterItems.size(), handler.getSlots()); i++) {
             handler.setStackInSlot(i, filterItems.get(i).copy());

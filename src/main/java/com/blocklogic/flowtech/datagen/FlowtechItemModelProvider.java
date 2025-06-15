@@ -28,10 +28,4 @@ public class FlowtechItemModelProvider extends ItemModelProvider {
         basicItem(ModItems.UMBRITE_INGOT.get());
         basicItem(ModItems.UMBRITE_NUGGET.get());
     }
-
-    private ItemModelBuilder handheldItem (DeferredItem<?> item) {
-        return withExistingParent(item.getId().getPath(),
-                ResourceLocation.parse("item/handheld")).texture("layer0",
-                ResourceLocation.fromNamespaceAndPath(FlowTech.MODID, "item/" + item.getId().getPath()));
-    }
 }

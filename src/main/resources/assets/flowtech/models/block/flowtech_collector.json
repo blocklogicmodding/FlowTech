@@ -1,12 +1,6 @@
 {
-  "parent": "minecraft:block/cube",
+  "parent": "minecraft:block/cube_all",
   "textures": {
-    "north": "flowtech:block/collector_front",
-    "south": "flowtech:block/collector_back",
-    "east": "flowtech:block/collector_back",
-    "west": "flowtech:block/collector_back",
-    "up": "flowtech:block/collector_back",
-    "down": "flowtech:block/collector_back",
-    "particle": "flowtech:block/collector_front"
+    "all": "flowtech:block/collector_front"
   }
 }

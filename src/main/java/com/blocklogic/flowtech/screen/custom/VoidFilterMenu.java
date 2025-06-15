@@ -99,40 +99,8 @@ public class VoidFilterMenu extends AbstractContainerMenu {
         return ignoreNBT;
     }
 
-    public void setIgnoreNBT(boolean ignoreNBT) {
-        this.ignoreNBT = ignoreNBT;
-
-        if (filterItem.getItem() instanceof VoidFilterItem) {
-            PacketDistributor.sendToServer(new ModConfigPacket(
-                    ModConfigPacket.ConfigTarget.VOID_FILTER_ITEM,
-                    null,
-                    ModConfigPacket.ConfigType.VOID_FILTER_IGNORE_NBT,
-                    0,
-                    ignoreNBT
-            ));
-        }
-
-        saveFilterData();
-    }
-
     public boolean isIgnoreDurability() {
         return ignoreDurability;
-    }
-
-    public void setIgnoreDurability(boolean ignoreDurability) {
-        this.ignoreDurability = ignoreDurability;
-
-        if (filterItem.getItem() instanceof VoidFilterItem) {
-            PacketDistributor.sendToServer(new ModConfigPacket(
-                    ModConfigPacket.ConfigTarget.VOID_FILTER_ITEM,
-                    null,
-                    ModConfigPacket.ConfigType.VOID_FILTER_IGNORE_DURABILITY,
-                    0,
-                    ignoreDurability
-            ));
-        }
-
-        saveFilterData();
     }
 
     public ItemStackHandler getFilterSlots() {

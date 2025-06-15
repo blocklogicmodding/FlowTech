@@ -549,7 +549,7 @@ public class FlowtechCollectorScreen extends AbstractContainerScreen<FlowtechCol
     private void renderXPCollectionToggle(GuiGraphics guiGraphics, int x, int y) {
         ResourceLocation toggleHandle = ResourceLocation.fromNamespaceAndPath(FlowTech.MODID, "toggle_scroller_handle");
         int handleX = xpCollectionEnabled ? x + 125 : x + 117;
-        int handleY = y + 110;
+        int handleY = y + 109;
         guiGraphics.blitSprite(toggleHandle, handleX, handleY, 6, 10);
     }
 
