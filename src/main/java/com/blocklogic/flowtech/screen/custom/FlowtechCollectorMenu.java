@@ -50,7 +50,7 @@ public class FlowtechCollectorMenu extends AbstractContainerMenu {
     }
 
     private static class ModuleSlot extends SlotItemHandler {
-        private final net.minecraft.world.item.Item allowedModule;
+        private final Item allowedModule;
 
         public ModuleSlot(IItemHandler itemHandler, int index, int xPosition, int yPosition, Item allowedModule) {
             super(itemHandler, index, xPosition, yPosition);

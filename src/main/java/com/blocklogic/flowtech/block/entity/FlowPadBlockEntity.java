@@ -22,9 +22,9 @@ public class FlowPadBlockEntity extends BlockEntity {
     private static final int MOVEMENT_INTERVAL = 2;
     private int tickCounter = 0;
 
-    private static final double FAST_SPEED = 0.1;
-    private static final double FASTER_SPEED = 0.2;
-    private static final double FASTEST_SPEED = 0.5;
+    private static final double FAST_SPEED = 0.15;
+    private static final double FASTER_SPEED = 0.3;
+    private static final double FASTEST_SPEED = 0.6;
 
 
 

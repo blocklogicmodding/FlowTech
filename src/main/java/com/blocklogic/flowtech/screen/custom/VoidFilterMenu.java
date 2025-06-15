@@ -2,8 +2,6 @@ package com.blocklogic.flowtech.screen.custom;
 
 import com.blocklogic.flowtech.component.ModDataComponents;
 import com.blocklogic.flowtech.component.VoidFilterData;
-import com.blocklogic.flowtech.item.custom.VoidFilterItem;
-import com.blocklogic.flowtech.network.ModConfigPacket;
 import com.blocklogic.flowtech.screen.ModMenuTypes;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
@@ -14,7 +12,6 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import net.neoforged.neoforge.items.SlotItemHandler;
-import net.neoforged.neoforge.network.PacketDistributor;
 
 public class VoidFilterMenu extends AbstractContainerMenu {
     private final ItemStack filterItem;

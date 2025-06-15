@@ -1,5 +1,6 @@
 package com.blocklogic.flowtech.block.entity;
 
+import com.blocklogic.flowtech.block.custom.AttackPadBlock;
 import com.blocklogic.flowtech.util.FakePlayerHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -23,7 +24,6 @@ import net.neoforged.neoforge.common.util.FakePlayer;
 
 import javax.annotation.Nullable;
 import java.lang.ref.WeakReference;
-import java.lang.reflect.Field;
 import java.util.List;
 import java.util.UUID;
 
@@ -162,7 +162,7 @@ public class AttackPadBlockEntity extends BlockEntity {
         setChanged();
 
         if (level != null && !level.isClientSide()) {
-            com.blocklogic.flowtech.block.custom.AttackPadBlock.updateLinkedState(level, getBlockPos(), controllerPos != null);
+            AttackPadBlock.updateLinkedState(level, getBlockPos(), controllerPos != null);
             level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
         }
     }
