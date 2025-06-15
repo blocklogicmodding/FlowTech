@@ -7,9 +7,9 @@ _Modular flow control for efficient mob farming_
 
 ----------
 
-## Build Better Mob Farms
+## Automate Mobs
 
-FlowTech is a modular automation mod focused on mob farm efficiency through directional flow control, centralized damage systems, and intelligent item collection. Clean design, minimal GUIs, visual feedback.
+FlowTech is a modular automation mod focused on mob farm efficiency through directional flow control, centralized damage systems, and intelligent item collection. Clean design, minimal GUIs, and visual feedback.
 
 ## Features
 
@@ -30,7 +30,6 @@ FlowTech is a modular automation mod focused on mob farm efficiency through dire
     -   **Smite**: Specialized undead damage
     -   **Bane of Arthropods**: Arthropod-specific damage
     -   **Looting**: Enhanced drop rates
--   **Player-Kill Mode**: Reduce mobs to 0.5 HP instead of killing for manual XP collection
 -   **Redstone Activation**: Attack Pads require redstone signal to operate
 
 ### Collector Block
@@ -46,7 +45,7 @@ FlowTech is a modular automation mod focused on mob farm efficiency through dire
 
 -   **Operation Modes**: Add or Remove mode for linking/unlinking pads
 -   **Selection Types**: Single pad or area selection for bulk operations
--   **Visual Feedback**: Wireframe highlights show linked systems
+-   **Visual Feedback**: Wireframe highlights linked systems
 -   **Detailed Tooltips**: Current mode, target controller, and selection status
 -   **Area Operations**: Box selection for linking multiple pads at once
 
@@ -56,7 +55,17 @@ FlowTech is a modular automation mod focused on mob farm efficiency through dire
 -   **Complete Processing Chain**: Raw ore to ingots, nuggets, and storage blocks
 -   **Crafting Component**: Required material for all FlowTech machinery
 
-## Links
+## Support
 
 -   **Wiki**: [FlowTech Wiki](https://github.com/blocklogicmodding/FlowTech/wiki)
--   **Discord**: [Join our Discord](https://discord.gg/YtdA3AMqsX)
+- **Issues**: [FlowTech Issue Tracker](https://github.com/blocklogicmodding/FlowTech/issues)
+-   **Discord**: [Join the BLM Discord](https://discord.gg/YtdA3AMqsX)
+
+## License
+
+All rights reserved. This mod is protected by copyright and may not be redistributed or modified without explicit permission.
+
+**Permitted Uses:**
+
+-   Inclusion in modpacks (public or private)
+-   Content creation (videos, streams, reviews, etc.)
