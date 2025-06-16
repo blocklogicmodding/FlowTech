@@ -3,7 +3,7 @@
     "category": "misc",
     "key": {
         "I": {
-            "item": "minecraft:iron_ingot"
+            "item": "minecraft:iron_block"
         },
         "S": {
             "item": "minecraft:diamond_sword"
@@ -13,9 +13,9 @@
         }
     },
     "pattern": [
-        "UIU",
-        "ISI",
-        "UIU"
+        "USU",
+        "SIS",
+        "USU"
     ],
     "result": {
         "count": 1,

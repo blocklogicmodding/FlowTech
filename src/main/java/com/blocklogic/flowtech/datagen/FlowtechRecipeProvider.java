@@ -149,12 +149,12 @@ public class FlowtechRecipeProvider extends RecipeProvider implements ICondition
                 .save(recipeOutput);
 
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.SHARPNESS_MODULE.get())
-                .pattern("UIU")
-                .pattern("ISI")
-                .pattern("UIU")
+                .pattern("USU")
+                .pattern("SIS")
+                .pattern("USU")
                 .define('U', ModItems.UMBRITE_INGOT.get())
                 .define('S', Items.DIAMOND_SWORD)
-                .define('I', Items.IRON_INGOT)
+                .define('I', Items.IRON_BLOCK)
                 .unlockedBy("has_diamond_sword", has(Items.DIAMOND_SWORD))
                 .save(recipeOutput);
 
@@ -179,9 +179,9 @@ public class FlowtechRecipeProvider extends RecipeProvider implements ICondition
                 .save(recipeOutput);
 
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.BOA_MODULE.get())
-                .pattern("USU")
-                .pattern("TET")
-                .pattern("USU")
+                .pattern("UEU")
+                .pattern("TST")
+                .pattern("UEU")
                 .define('U', ModItems.UMBRITE_INGOT.get())
                 .define('S', Items.SPIDER_EYE)
                 .define('E', Items.FERMENTED_SPIDER_EYE)
@@ -191,11 +191,12 @@ public class FlowtechRecipeProvider extends RecipeProvider implements ICondition
 
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.LOOTING_MODULE.get())
                 .pattern("ULU")
-                .pattern("LGL")
+                .pattern("DGD")
                 .pattern("ULU")
                 .define('U', ModItems.UMBRITE_INGOT.get())
                 .define('L', Items.LAPIS_BLOCK)
-                .define('G', Items.GOLD_INGOT)
+                .define('D', Items.DIAMOND_BLOCK)
+                .define('G', Items.GOLD_BLOCK)
                 .unlockedBy("has_gold_ingot", has(Items.GOLD_INGOT))
                 .save(recipeOutput);
 

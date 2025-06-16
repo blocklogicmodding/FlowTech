@@ -2,8 +2,11 @@
     "type": "minecraft:crafting_shaped",
     "category": "misc",
     "key": {
+        "D": {
+            "item": "minecraft:diamond_block"
+        },
         "G": {
-            "item": "minecraft:gold_ingot"
+            "item": "minecraft:gold_block"
         },
         "L": {
             "item": "minecraft:lapis_block"
@@ -14,7 +17,7 @@
     },
     "pattern": [
         "ULU",
-        "LGL",
+        "DGD",
         "ULU"
     ],
     "result": {

@@ -16,9 +16,9 @@
         }
     },
     "pattern": [
-        "USU",
-        "TET",
-        "USU"
+        "UEU",
+        "TST",
+        "UEU"
     ],
     "result": {
         "count": 1,
