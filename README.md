@@ -55,12 +55,6 @@ FlowTech is a modular automation mod focused on mob farm efficiency through dire
 -   **Complete Processing Chain**: Raw ore to ingots, nuggets, and storage blocks
 -   **Crafting Component**: Required material for all FlowTech machinery
 
-## Support
-
--   **Wiki**: [FlowTech Wiki](https://github.com/blocklogicmodding/FlowTech/wiki)
-- **Issues**: [FlowTech Issue Tracker](https://github.com/blocklogicmodding/FlowTech/issues)
--   **Discord**: [Join the BLM Discord](https://discord.gg/YtdA3AMqsX)
-
 ## License
 
 All rights reserved. This mod is protected by copyright and may not be redistributed or modified without explicit permission.
@@ -69,3 +63,7 @@ All rights reserved. This mod is protected by copyright and may not be redistrib
 
 -   Inclusion in modpacks (public or private)
 -   Content creation (videos, streams, reviews, etc.)
+
+----------
+
+[**Wiki**](https://github.com/blocklogicmodding/FlowTech/wiki) | [**Issue Tracker**](https://github.com/blocklogicmodding/FlowTech/issues) | [**BLM Discord**](https://discord.gg/YtdA3AMqsXe)
