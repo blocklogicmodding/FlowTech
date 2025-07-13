@@ -1,33 +1,63 @@
 {
 	"variants": {
-		"facing=north,linked=false": {
+		"facing=north,linked=false,powered=false": {
 			"model": "flowtech:block/attack_pad"
 		},
-		"facing=south,linked=false": {
+		"facing=south,linked=false,powered=false": {
 			"model": "flowtech:block/attack_pad",
 			"y": 180
 		},
-		"facing=east,linked=false": {
+		"facing=east,linked=false,powered=false": {
 			"model": "flowtech:block/attack_pad",
 			"y": 90
 		},
-		"facing=west,linked=false": {
+		"facing=west,linked=false,powered=false": {
 			"model": "flowtech:block/attack_pad",
 			"y": 270
 		},
-		"facing=north,linked=true": {
+		"facing=north,linked=false,powered=true": {
+			"model": "flowtech:block/attack_pad_powered"
+		},
+		"facing=south,linked=false,powered=true": {
+			"model": "flowtech:block/attack_pad_powered",
+			"y": 180
+		},
+		"facing=east,linked=false,powered=true": {
+			"model": "flowtech:block/attack_pad_powered",
+			"y": 90
+		},
+		"facing=west,linked=false,powered=true": {
+			"model": "flowtech:block/attack_pad_powered",
+			"y": 270
+		},
+		"facing=north,linked=true,powered=false": {
 			"model": "flowtech:block/attack_pad_linked"
 		},
-		"facing=south,linked=true": {
+		"facing=south,linked=true,powered=false": {
 			"model": "flowtech:block/attack_pad_linked",
 			"y": 180
 		},
-		"facing=east,linked=true": {
+		"facing=east,linked=true,powered=false": {
 			"model": "flowtech:block/attack_pad_linked",
 			"y": 90
 		},
-		"facing=west,linked=true": {
+		"facing=west,linked=true,powered=false": {
 			"model": "flowtech:block/attack_pad_linked",
+			"y": 270
+		},
+		"facing=north,linked=true,powered=true": {
+			"model": "flowtech:block/attack_pad_linked_powered"
+		},
+		"facing=south,linked=true,powered=true": {
+			"model": "flowtech:block/attack_pad_linked_powered",
+			"y": 180
+		},
+		"facing=east,linked=true,powered=true": {
+			"model": "flowtech:block/attack_pad_linked_powered",
+			"y": 90
+		},
+		"facing=west,linked=true,powered=true": {
+			"model": "flowtech:block/attack_pad_linked_powered",
 			"y": 270
 		}
 	}

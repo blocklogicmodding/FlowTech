@@ -66,7 +66,11 @@ public class AttackPadBlockEntity extends BlockEntity {
 
     private boolean isPowered() {
         if (level == null) return false;
-        return level.hasNeighborSignal(worldPosition);
+        BlockState state = getBlockState();
+        if (state.getBlock() instanceof AttackPadBlock) {
+            return state.getValue(AttackPadBlock.POWERED);
+        }
+        return false;
     }
 
     private void dealDamage() {

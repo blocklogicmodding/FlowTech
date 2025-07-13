@@ -34,6 +34,7 @@ import javax.annotation.Nullable;
 public class AttackPadBlock extends BaseEntityBlock {
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
     public static final BooleanProperty LINKED = BooleanProperty.create("linked");
+    public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
     public static final VoxelShape SHAPE = Block.box(0, 0, 0, 16, 1, 16);
     public static final MapCodec<AttackPadBlock> CODEC = simpleCodec(AttackPadBlock::new);
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
@@ -43,6 +44,7 @@ public class AttackPadBlock extends BaseEntityBlock {
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(FACING, Direction.NORTH)
                 .setValue(LINKED, false)
+                .setValue(POWERED, false)
                 .setValue(WATERLOGGED, Boolean.FALSE));
     }
 
@@ -58,12 +60,30 @@ public class AttackPadBlock extends BaseEntityBlock {
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(FACING, LINKED, WATERLOGGED);
+        builder.add(FACING, LINKED, POWERED, WATERLOGGED);
     }
 
     @Override
     protected FluidState getFluidState(BlockState state) {
         return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
+    }
+
+    public static void updatePoweredState(Level level, BlockPos pos, boolean powered) {
+        BlockState state = level.getBlockState(pos);
+        if (state.getBlock() instanceof AttackPadBlock) {
+            level.setBlock(pos, state.setValue(POWERED, powered), 3);
+        }
+    }
+
+    @Override
+    protected void neighborChanged(BlockState state, Level level, BlockPos pos, Block neighborBlock, BlockPos neighborPos, boolean movedByPiston) {
+        if (!level.isClientSide()) {
+            boolean isPowered = level.hasNeighborSignal(pos);
+            if (isPowered != state.getValue(POWERED)) {
+                level.setBlock(pos, state.setValue(POWERED, isPowered), 3);
+            }
+        }
+        super.neighborChanged(state, level, pos, neighborBlock, neighborPos, movedByPiston);
     }
 
     @Override
